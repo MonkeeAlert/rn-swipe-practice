@@ -1,8 +1,7 @@
 import React from 'react';
-import {StyleSheet, Text, View, Dimensions} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import {useTheme} from '../../assets/hooks';
-
-const SIZE = Dimensions.get('screen').width - 100;
+import {BORDERS} from '../../assets/constants';
 
 interface IBorders {
   children: Element | Element[];
@@ -13,7 +12,7 @@ const Borders = (props: IBorders) => {
 
   const theme = StyleSheet.create({
     borders: {
-      borderColor: colors.darkBlue,
+      borderColor: colors.lightBlue,
     },
   });
 
@@ -24,10 +23,11 @@ export {Borders};
 
 const styles = StyleSheet.create({
   borders: {
-    width: SIZE,
-    height: SIZE,
-    borderWidth: 5,
-    borderRadius: SIZE / 2,
+    width: BORDERS,
+    height: BORDERS,
+    borderWidth: 2,
+    borderRadius: BORDERS / 2,
+    borderStyle: 'dashed',
     alignItems: 'center',
     justifyContent: 'center',
   },
