@@ -1,15 +1,8 @@
 import React from 'react';
-import {SafeAreaView, StyleSheet} from 'react-native';
-import CircleOverBordersScreen from './src/screens/CircleOverBordersScreen';
+import MainStack from './src/navigation/MainStack';
 
 const App = () => {
-  return (
-    <SafeAreaView>
-      <CircleOverBordersScreen />
-    </SafeAreaView>
-  );
+  return <MainStack />;
 };
-
-const styles = StyleSheet.create({});
 
 export default App;

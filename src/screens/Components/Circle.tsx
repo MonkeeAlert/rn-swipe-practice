@@ -16,8 +16,13 @@ const RELEASE_ANIMATION = {
   duration: 300,
   useNativeDriver: true,
 };
+const OVER_BORDERS_ANIMATIONS = {
+  toValue: 2,
+  duration: 300,
+  useNativeDriver: true,
+};
 
-const Circle = () => {
+export const Circle = () => {
   const {colors} = useTheme();
   const [isOverBorders, setOverBorders] = useState(false);
   const [wasTouched, setWasTouched] = useState(false);
@@ -37,9 +42,9 @@ const Circle = () => {
         Animated.timing(opacity, GRANT_ANIMATION).start();
         Animated.timing(scale, GRANT_ANIMATION).start();
       },
-      onPanResponderMove: (event, gestures) => {
-        const overflowByXAxis = Math.abs(gestures.dx) > BORDERS / 2;
-        const overflowByYAxis = Math.abs(gestures.dy) > BORDERS / 2;
+      onPanResponderMove: (_, gestures) => {
+        const overflowByXAxis = Math.abs(gestures.dx) > OUTER_RADIUS;
+        const overflowByYAxis = Math.abs(gestures.dy) > OUTER_RADIUS;
         const overflowByCuts =
           Math.abs(gestures.dx) + Math.abs(gestures.dy) > OUTER_RADIUS + SIZE;
 
@@ -62,11 +67,7 @@ const Circle = () => {
     if (wasTouched) {
       if (isOverBorders) {
         Animated.timing(opacity, GRANT_ANIMATION).start();
-        Animated.timing(scale, {
-          toValue: 2,
-          duration: 300,
-          useNativeDriver: true,
-        }).start();
+        Animated.timing(scale, OVER_BORDERS_ANIMATIONS).start();
       } else {
         Animated.timing(opacity, GRANT_ANIMATION).start();
         Animated.timing(scale, GRANT_ANIMATION).start();
@@ -98,8 +99,6 @@ const Circle = () => {
     />
   );
 };
-
-export {Circle};
 
 const styles = StyleSheet.create({
   circle: {

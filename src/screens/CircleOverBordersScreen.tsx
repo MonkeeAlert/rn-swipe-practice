@@ -1,13 +1,26 @@
 import React from 'react';
 import {StyleSheet, View, Text} from 'react-native';
-import {Borders} from './CircleOverBorders/Borders';
-import {Circle} from './CircleOverBorders/Circle';
+import {useTheme} from '../assets/hooks';
+import {Borders} from './Components/Borders';
+import {Circle} from './Components/Circle';
 
 const CircleOverBordersScreen = () => {
+  const {colors} = useTheme();
+  const theme = StyleSheet.create({
+    container: {
+      backgroundColor: colors.white,
+    },
+    text: {
+      fontSize: 21,
+      color: colors.black,
+    },
+  });
+
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, theme.container]}>
       <View style={styles.header}>
-        <Text style={styles.text}>Drag that circle over borders</Text>
+        <Text style={theme.text}>Drag that circle</Text>
+        <Text style={theme.text}>over borders</Text>
       </View>
       <Borders>
         <Circle />
@@ -27,8 +40,6 @@ const styles = StyleSheet.create({
   header: {
     position: 'relative',
     bottom: 30,
-  },
-  text: {
-    fontSize: 21,
+    alignItems: 'center',
   },
 });

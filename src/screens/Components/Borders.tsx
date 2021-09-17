@@ -7,7 +7,7 @@ interface IBorders {
   children: Element | Element[];
 }
 
-const Borders = (props: IBorders) => {
+export const Borders = (props: IBorders) => {
   const {colors} = useTheme();
 
   const theme = StyleSheet.create({
@@ -18,8 +18,6 @@ const Borders = (props: IBorders) => {
 
   return <View style={[styles.borders, theme.borders]}>{props.children}</View>;
 };
-
-export {Borders};
 
 const styles = StyleSheet.create({
   borders: {
