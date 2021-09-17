@@ -1,4 +1,4 @@
-package com.rnswipepractice;
+package com.rntraining;
 
 import android.app.Application;
 import android.content.Context;
@@ -9,6 +9,9 @@ import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.soloader.SoLoader;
 import java.lang.reflect.InvocationTargetException;
+import com.facebook.react.ReactActivityDelegate;
+import com.facebook.react.ReactRootView;
+import com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView;
 import java.util.List;
 
 public class MainApplication extends Application implements ReactApplication {
@@ -47,6 +50,16 @@ public class MainApplication extends Application implements ReactApplication {
     initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
   }
 
+  // @Override
+  //  protected ReactActivityDelegate createReactActivityDelegate() {
+  //    return new ReactActivityDelegate(this, getMainComponentName()) {
+  //      @Override
+  //      protected ReactRootView createRootView() {
+  //       return new RNGestureHandlerEnabledRootView(MainActivity.this);
+  //      }
+  //    };
+  //  }
+
   /**
    * Loads Flipper in React Native templates. Call this in the onCreate method with something like
    * initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
@@ -62,7 +75,7 @@ public class MainApplication extends Application implements ReactApplication {
          We use reflection here to pick up the class that initializes Flipper,
         since Flipper library is not available in release mode
         */
-        Class<?> aClass = Class.forName("com.rnswipepractice.ReactNativeFlipper");
+        Class<?> aClass = Class.forName("com.rntraining.ReactNativeFlipper");
         aClass
             .getMethod("initializeFlipper", Context.class, ReactInstanceManager.class)
             .invoke(null, context, reactInstanceManager);

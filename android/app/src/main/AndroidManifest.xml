@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="com.rnswipepractice">
+  package="com.rntraining">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
