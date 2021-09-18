@@ -1,15 +1,12 @@
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-import {ScrollView, View} from 'react-native';
+import {ScrollView, StatusBar, View} from 'react-native';
 import NavigationLink from '../components/NavigationLink';
 import Title from '../components/Title';
 import {StyleSheet} from 'react-native';
 import {useTheme} from '../assets/hooks';
 import {routes} from '../assets/routes';
-import {
-  CardStyleInterpolators,
-  createStackNavigator,
-} from '@react-navigation/stack';
+import {createStackNavigator} from '@react-navigation/stack';
 
 const Stack = createStackNavigator();
 
@@ -23,6 +20,7 @@ const Dashboard = () => {
 
   return (
     <ScrollView style={theme.container}>
+      <StatusBar backgroundColor={colors.white} barStyle={'dark-content'} />
       <View style={styles.header}>
         <Title text={'Trainings'} size={28} />
       </View>
