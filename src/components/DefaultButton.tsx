@@ -48,10 +48,10 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     justifyContent: 'center',
-    height: 48,
+    height: 46,
     borderRadius: 3,
   },
   text: {
-    fontSize: 18,
+    fontSize: 16,
   },
 });
