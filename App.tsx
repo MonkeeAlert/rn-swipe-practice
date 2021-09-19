@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import MainStack from './src/navigation/MainStack';
+import MainStackScreen from './src/navigation/MainStackNavigator';
 import SplashScreen from 'react-native-splash-screen';
 
 const App = () => {
@@ -7,7 +7,7 @@ const App = () => {
     SplashScreen.hide();
   }, []);
 
-  return <MainStack />;
+  return <MainStackScreen />;
 };
 
 export default App;

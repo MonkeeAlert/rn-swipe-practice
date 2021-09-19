@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {useTheme} from '../../assets/hooks';
-import {BORDERS} from '../../assets/constants';
+import {useTheme} from '../../../assets/hooks';
+import {borders} from '../../../assets/constants';
 
 interface IBorders {
   children: Element | Element[];
@@ -12,7 +12,7 @@ export const Borders = (props: IBorders) => {
 
   const theme = StyleSheet.create({
     borders: {
-      borderColor: colors.lightBlue,
+      borderColor: colors.infoLight,
     },
   });
 
@@ -21,10 +21,10 @@ export const Borders = (props: IBorders) => {
 
 const styles = StyleSheet.create({
   borders: {
-    width: BORDERS,
-    height: BORDERS,
+    width: borders,
+    height: borders,
     borderWidth: 2,
-    borderRadius: BORDERS / 2,
+    borderRadius: borders / 2,
     borderStyle: 'dashed',
     alignItems: 'center',
     justifyContent: 'center',

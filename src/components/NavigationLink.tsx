@@ -17,7 +17,7 @@ const NavigationLink = (props: INavigationLink) => {
 
   const theme = StyleSheet.create({
     container: {
-      backgroundColor: props.color ?? colors.lightBlue,
+      backgroundColor: props.color ?? colors.infoLight,
     },
   });
 

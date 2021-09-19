@@ -1,11 +1,11 @@
 import React, {useRef, useEffect, useState} from 'react';
 import {StyleSheet, Animated, PanResponder} from 'react-native';
-import {BORDERS} from '../../assets/constants';
-import {useTheme} from '../../assets/hooks';
+import {borders} from '../../../assets/constants';
+import {useTheme} from '../../../assets/hooks';
 
 const SIZE = 50;
 const INITIAL_POINTS = {x: 0, y: 0};
-const OUTER_RADIUS = BORDERS / 2;
+const OUTER_RADIUS = borders / 2;
 const GRANT_ANIMATION = {
   toValue: 0.5,
   duration: 300,
@@ -77,7 +77,7 @@ export const Circle = () => {
 
   const theme = StyleSheet.create({
     circle: {
-      backgroundColor: colors.blue,
+      backgroundColor: colors.infoMain,
     },
   });
 

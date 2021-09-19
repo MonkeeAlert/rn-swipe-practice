@@ -4,12 +4,22 @@ import {Dimensions} from 'react-native';
 export const colors = {
   white: '#fff',
   black: '#141414',
-  blue: '#1565c0',
-  lightBlue: '#5e92f3',
-  darkBlue: '#003c8f',
-  green: '#00e676',
-  lightGreen: '#66ffa6',
-  darkGreen: '#00b248',
+  grey: '#e0e0e0',
+  darkGrey: '#aeaeae',
+  infoMain: '#0288d1',
+  infoLight: '#03a9f4',
+  infoDark: '#01579b',
+  successMain: '#2e7d32',
+  successLight: '#4caf50',
+  successDark: '#1b5e20',
 };
 
-export const BORDERS = Dimensions.get('screen').width - 100;
+export const borders = Dimensions.get('screen').width - 100;
+
+export const defaultTodoPlaceholders = [
+  'Wash the dishes',
+  'Make the bed',
+  'Buy some food',
+  'Jogging',
+  'Watch Netflix',
+];
