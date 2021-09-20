@@ -1,5 +1,4 @@
 import React from 'react';
-import {Dimensions} from 'react-native';
 import {StyleSheet, Text, View} from 'react-native';
 import {Icon} from 'react-native-elements';
 import {useTheme} from '../../../assets/hooks';
@@ -15,7 +14,7 @@ export const EmptyList = () => {
   });
 
   return (
-    <View>
+    <View style={styles.container}>
       <View style={styles.icon}>
         <Icon
           name={'done-all'}
@@ -24,12 +23,15 @@ export const EmptyList = () => {
           size={48}
         />
       </View>
-      <Text style={[styles.text, theme.text]}>List is empty, well done!</Text>
+      <Text style={[styles.text, theme.text]}>List is empty</Text>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    backgroundColor: 'red',
+  },
   icon: {
     marginBottom: 18,
   },

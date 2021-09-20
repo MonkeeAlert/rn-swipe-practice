@@ -1,39 +1,22 @@
 import React, {useState} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
-import {EmptyList} from './Components/EmptyList';
-// import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {SafeAreaView, StyleSheet} from 'react-native';
+import {List} from './Components/List';
+import data from '../../assets/todoList.json';
 
-// const Tab = createBottomTabNavigator();
-
-// const Tabs = () => {
-//   return (
-//     <Tab.Navigator>
-//       <Tab.Screen />
-//       <Tab.Screen />
-//       <Tab.Screen />
-//       <Tab.Screen />
-//     </Tab.Navigator>
-//   )
-// }
+const DATA = data;
 
 const TodosScreen = () => {
-  const [list, setList] = useState([]);
-
-  if (list.length === 0) {
-    return (
-      <View style={styles.empty}>
-        <EmptyList />
-      </View>
-    );
-  }
+  return (
+    <SafeAreaView style={styles.container}>
+      <List data={DATA.todos} />
+    </SafeAreaView>
+  );
 };
 
 export default TodosScreen;
 
 const styles = StyleSheet.create({
-  empty: {
-    alignItems: 'center',
-    justifyContent: 'center',
+  container: {
     flex: 1,
   },
 });
