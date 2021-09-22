@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet} from 'react-native';
 import {View, Text, TouchableOpacity, ColorValue} from 'react-native';
-import {useTheme} from '../assets/hooks';
+import {useTheme} from '../utils/hooks';
 
 interface IButton {
   text: string;

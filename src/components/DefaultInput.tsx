@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet} from 'react-native';
 import {TextInput, TextInputProps} from 'react-native';
-import {useTheme} from '../assets/hooks';
+import {useTheme} from '../utils/hooks';
 
 const DefaultInput = (props: TextInputProps) => {
   const {colors} = useTheme();

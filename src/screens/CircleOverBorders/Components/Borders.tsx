@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {useTheme} from '../../../assets/hooks';
-import {borders} from '../../../assets/constants';
+import {useTheme} from '../../../utils/hooks';
+import {borders} from '../../../utils/constants';
 
 interface IBorders {
   children: Element | Element[];

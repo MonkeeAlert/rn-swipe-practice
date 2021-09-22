@@ -1,7 +1,7 @@
 import React, {useRef, useEffect, useState} from 'react';
 import {StyleSheet, Animated, PanResponder} from 'react-native';
-import {borders} from '../../../assets/constants';
-import {useTheme} from '../../../assets/hooks';
+import {borders} from '../../../utils/constants';
+import {useTheme} from '../../../utils/hooks';
 
 const SIZE = 50;
 const INITIAL_POINTS = {x: 0, y: 0};

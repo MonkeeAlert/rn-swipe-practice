@@ -6,7 +6,7 @@ import {
 } from '@react-navigation/stack';
 import {ScrollView, StatusBar, View} from 'react-native';
 import {StyleSheet} from 'react-native';
-import {useTheme} from '../assets/hooks';
+import {useTheme} from '../utils/hooks';
 import {routes} from '../assets/routes';
 import NavigationLink from '../components/NavigationLink';
 import Title from '../components/Title';

@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
-import {useTheme} from '../../../assets/hooks';
+import {useTheme} from '../../../utils/hooks';
 
 interface ICategory {
   title: string;

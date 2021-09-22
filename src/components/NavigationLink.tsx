@@ -1,7 +1,7 @@
 import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {StyleSheet, TouchableWithoutFeedback, View} from 'react-native';
-import {useTheme} from '../assets/hooks';
+import {useTheme} from '../utils/hooks';
 import Title from './Title';
 
 interface INavigationLink {
