@@ -2,21 +2,22 @@ import React, {useState, useEffect} from 'react';
 import {StyleSheet, FlatList, View, ScrollView} from 'react-native';
 import {ListCategory} from './ListCategory';
 import {EmptyList} from './EmptyList';
-import {IListItem, ListItem} from './ListItem';
+import {ListItem} from './ListItem';
 import {useTheme} from '../../../utils/hooks';
+import {ITodo} from '../../../store/types/todosTypes';
 
 interface IList {
-  data: IListItem[];
+  data: ITodo[];
 }
 
 const CATEGORIES = ['All', 'Active', 'Done', 'Deleted'];
 
 export const List = (props: IList) => {
   const {colors} = useTheme();
-  const [data, setData] = useState<IListItem[]>([]);
+  const [data, setData] = useState<ITodo[]>([]);
   const [activeCategory, setActiveCategory] = useState<string>('all');
 
-  const renderItem = (itemData: {item: IListItem}) => (
+  const renderItem = (itemData: {item: ITodo}) => (
     <ListItem {...itemData.item} />
   );
 
@@ -30,10 +31,10 @@ export const List = (props: IList) => {
         setData(filtered);
       }
     }
-  }, [activeCategory]);
+  }, [activeCategory, props.data]);
 
   const Categories = () => {
-    return data.length > 0 ? (
+    return (
       <ScrollView
         horizontal={true}
         showsHorizontalScrollIndicator={false}
@@ -46,27 +47,32 @@ export const List = (props: IList) => {
           />
         ))}
       </ScrollView>
-    ) : (
-      <View />
     );
   };
 
   const theme = StyleSheet.create({
     container: {
-      flex: 1,
       alignItems: data.length === 0 ? 'center' : 'flex-start',
       justifyContent: data.length === 0 ? 'center' : 'flex-start',
       backgroundColor: colors.white,
+    },
+    empty: {
+      flex: 1,
     },
   });
 
   return (
     <View style={styles.container}>
-      <Categories />
+      <View>
+        <Categories />
+      </View>
       <FlatList
         data={data}
         renderItem={item => renderItem(item)}
-        contentContainerStyle={[theme.container]}
+        contentContainerStyle={[
+          theme.container,
+          data.length === 0 ? theme.empty : null,
+        ]}
         ListEmptyComponent={EmptyList}
       />
     </View>
@@ -80,7 +86,5 @@ const styles = StyleSheet.create({
   categories: {
     marginVertical: 10,
     paddingHorizontal: 12,
-    flexGrow: 0.05,
-    flexBasis: 1,
   },
 });

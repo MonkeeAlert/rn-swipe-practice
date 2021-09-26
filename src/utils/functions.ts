@@ -73,3 +73,18 @@ const getFormattedDate = (o: IParsedDate) => {
 
   return `${time}, ${date}`;
 };
+
+/**
+ * Function for GUID
+ *
+ * @see https://learnersbucket.com/examples/javascript/unique-id-generator-in-javascript/
+ * @returns GUID
+ */
+export const generateID = () => {
+  let gen = () =>
+    Math.floor((1 + Math.random()) * 0x10000)
+      .toString(16)
+      .substring(1);
+
+  return `${gen()}${gen()}-${gen()}${gen()}-${gen()}${gen()}`;
+};

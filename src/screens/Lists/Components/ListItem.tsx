@@ -5,26 +5,19 @@ import {getDate} from '../../../utils/functions';
 import {useTheme} from '../../../utils/hooks';
 import {RectButton} from 'react-native-gesture-handler';
 import {Icon} from 'react-native-elements';
+import {useDispatch} from 'react-redux';
+import {ITodo} from '../../../store/types/todosTypes';
+import {deleteTodo} from '../../../store/actions/todosActions';
 
-export interface IListItem {
-  id: number;
-  created_at: number;
-  started_at: number;
-  finished_at: number;
-  category: string;
-  title: string;
-  completed: boolean;
-}
-
-interface IListItemStatus {
+interface ITodoStatus {
   status: 'Not started' | 'In progress' | 'Completed';
 }
 
-export const ListItem = (props: IListItem) => {
+export const ListItem = (props: ITodo) => {
   const {colors} = useTheme();
+  const dispatch = useDispatch();
   const [createdAt, setCreatedAt] = useState('');
-  const [status, setStatus] =
-    useState<IListItemStatus['status']>('Not started');
+  const [status, setStatus] = useState<ITodoStatus['status']>('Not started');
 
   const theme = StyleSheet.create({
     row: {
@@ -46,12 +39,23 @@ export const ListItem = (props: IListItem) => {
     buttonText: {
       color: colors.darkGrey,
     },
+    buttonDelete: {
+      backgroundColor: colors.error,
+    },
+    rightButtonsBorder: {
+      borderColor: colors.grey,
+      borderLeftWidth: 1,
+    },
+    leftButtonsBorder: {
+      borderColor: colors.error,
+      borderRightWidth: 1,
+    },
   });
 
   useEffect(() => {
     if (props.created_at) {
       const d = getDate(props.created_at).toString();
-      const s: IListItemStatus['status'] =
+      const s: ITodoStatus['status'] =
         props.started_at !== props.finished_at
           ? props.completed
             ? 'Completed'
@@ -64,21 +68,23 @@ export const ListItem = (props: IListItem) => {
   }, []);
 
   const renderLeftActions = (_, dragX: any) => {
-    const trans = dragX.interpolate({
-      inputRange: [0, 50, 100, 101],
-      outputRange: [-20, 0, 0, 1],
+    const transition = dragX.interpolate({
+      inputRange: [0, 50, 100],
+      outputRange: [0, 1, 1],
     });
 
-    const deleteTodo = () => {
-      console.log('@delete');
+    const handleDeleteTodo = () => {
+      dispatch(deleteTodo(props.id));
     };
 
     return (
       <View style={styles.inline}>
-        <RectButton style={theme.button} onPress={deleteTodo}>
-          <View>
-            <Icon type={'material'} name={'delete'} color={colors.error} />
-          </View>
+        <RectButton
+          style={[theme.button, theme.buttonDelete]}
+          onPress={handleDeleteTodo}>
+          <Animated.View style={{opacity: transition}}>
+            <Icon type={'material'} name={'delete'} color={colors.white} />
+          </Animated.View>
         </RectButton>
       </View>
     );
@@ -105,17 +111,17 @@ export const ListItem = (props: IListItem) => {
     return (
       <View style={styles.inline}>
         <RectButton style={theme.button} onPress={completeTodo}>
-          <View>
+          <View style={theme.rightButtonsBorder}>
             <Icon type={'material'} name={'done'} color={colors.darkGrey} />
           </View>
         </RectButton>
         <RectButton style={theme.button} onPress={editTodo}>
-          <View>
+          <View style={theme.rightButtonsBorder}>
             <Icon type={'material'} name={'edit'} color={colors.darkGrey} />
           </View>
         </RectButton>
         <RectButton style={theme.button} onPress={changeTodoState}>
-          <View>
+          <View style={theme.rightButtonsBorder}>
             <Icon
               type={'material'}
               name={'play-arrow'}

@@ -1,16 +1,20 @@
 import {useNavigation} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
 import {Dimensions} from 'react-native';
+import {useDispatch} from 'react-redux';
 import {StyleSheet, View, SafeAreaView} from 'react-native';
 import {defaultTodoPlaceholders} from '../../utils/constants';
 import {useTheme} from '../../utils/hooks';
 import DefaultButton from '../../components/DefaultButton';
 import DefaultInput from '../../components/DefaultInput';
 import Title from '../../components/Title';
+import {addTodo} from '../../store/actions/todosActions';
+import {ITodo} from '../../store/types/todosTypes';
 
 export const AddTodoScreen = () => {
   const {colors} = useTheme();
   const navigation = useNavigation();
+  const dispatch = useDispatch();
   const [placeholder, setPlaceholder] = useState('');
   const [value, setValue] = useState('');
 
@@ -22,13 +26,15 @@ export const AddTodoScreen = () => {
     );
   }, []);
 
-  const addTodo = () => {
-    const timestamp = Date.now();
-
+  const handleAddTodo = () => {
     if (value === '') {
       // Error handle ...
     } else {
-      console.log('@addTodo', value, timestamp);
+      const todo = {
+        title: value,
+      } as ITodo;
+
+      dispatch(addTodo(todo));
       navigation.goBack();
     }
   };
@@ -63,7 +69,7 @@ export const AddTodoScreen = () => {
         />
       </View>
       <View style={styles.submitContainer}>
-        <DefaultButton text={'Add'} onPress={addTodo} />
+        <DefaultButton text={'Add'} onPress={handleAddTodo} />
       </View>
     </SafeAreaView>
   );

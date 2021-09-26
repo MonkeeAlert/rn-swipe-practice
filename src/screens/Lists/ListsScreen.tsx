@@ -1,14 +1,14 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {SafeAreaView, StyleSheet} from 'react-native';
 import {List} from './Components/List';
-import data from '../../assets/todoList.json';
-
-const DATA = data;
+import {useSelector} from 'react-redux';
 
 const TodosScreen = () => {
+  const {list} = useSelector(state => state.todos);
+
   return (
     <SafeAreaView style={styles.container}>
-      <List data={DATA.todos} />
+      <List data={list} />
     </SafeAreaView>
   );
 };
