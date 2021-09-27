@@ -24,12 +24,16 @@ export const List = (props: IList) => {
   useEffect(() => {
     if (props.data?.length > 0) {
       if (activeCategory === 'all') {
-        setData(props.data);
+        const filter = props.data.filter(i => i.category !== 'deleted');
+
+        setData(filter);
       } else {
         const filtered = props.data.filter(i => i.category === activeCategory);
 
         setData(filtered);
       }
+    } else {
+      setData([]);
     }
   }, [activeCategory, props.data]);
 

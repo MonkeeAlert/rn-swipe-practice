@@ -1,22 +1,24 @@
 import {ITodo} from '../types/todosTypes';
-
-export const ADD_TODO = 'ADD_TODO';
-export const EDIT_TODO = 'EDIT_TODO';
-export const DELETE_TODO = 'DELETE_TODO';
+import {TodosActions} from '../types/todosTypes';
 
 export const addTodo = (todo: ITodo) => {
   return {
-    type: ADD_TODO,
+    type: TodosActions.ADD_TODO,
     payload: todo,
   };
 };
 
 export const editTodo = (todo: ITodo) => ({
-  type: EDIT_TODO,
+  type: TodosActions.EDIT_TODO,
   payload: {todo},
 });
 
 export const deleteTodo = (id: string) => ({
-  type: DELETE_TODO,
+  type: TodosActions.DELETE_TODO,
+  payload: {id},
+});
+
+export const restoreTodo = (id: string) => ({
+  type: TodosActions.RESTORE_TODO,
   payload: {id},
 });

@@ -9,6 +9,9 @@ export const todosReducer = (
   state = initialState,
   action: TodosActionsTypes,
 ) => {
+  let filtered: ITodo[] = [];
+  let needle = {} as ITodo;
+
   switch (action.type) {
     case TodosActions.ADD_TODO:
       const now = Date.now();
@@ -28,14 +31,27 @@ export const todosReducer = (
       };
 
     case TodosActions.DELETE_TODO:
-      const filtered =
-        state.list.length > 1
-          ? state.list.filter((i: ITodo) => i.id !== action.payload.id)
-          : [];
+      if (state.list.length >= 1) {
+        filtered = state.list.filter((i: ITodo) => i.id !== action.payload.id);
+        needle = state.list.find((i: ITodo) => i.id === action.payload.id);
+        needle.category = 'deleted';
+      }
 
       return {
-        list: filtered,
+        list: [...filtered, needle],
       };
+
+    case TodosActions.RESTORE_TODO:
+      if (state.list.length >= 1) {
+        filtered = state.list.filter((i: ITodo) => i.id !== action.payload.id);
+        needle = state.list.find((i: ITodo) => i.id === action.payload.id);
+        needle.category = 'default';
+      }
+
+      return {
+        list: [...filtered, needle],
+      };
+
     default:
       return state;
   }
