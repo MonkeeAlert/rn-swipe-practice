@@ -10,7 +10,7 @@ export const addTodo = (todo: ITodo) => {
 
 export const editTodo = (todo: ITodo) => ({
   type: TodosActions.EDIT_TODO,
-  payload: {todo},
+  payload: {...todo},
 });
 
 export const deleteTodo = (id: string) => ({

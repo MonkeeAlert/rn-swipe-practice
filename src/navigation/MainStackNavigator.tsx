@@ -14,8 +14,11 @@ import {HeaderIcon} from '../components/HeaderIcon';
 
 import CircleOverBordersScreen from '../screens/CircleOverBorders/CircleOverBordersScreen';
 import TodosScreen from '../screens/Lists/ListsScreen';
-import {AddTodoScreen} from '../screens/Lists/AddTodoScreen';
 import {navigate, navigationRef} from '../navigation/RootNavigation';
+import {DataInputScreen} from '../screens/HighOrderScreens/DataInputScreen';
+import {addTodo} from '../store/actions/todosActions';
+import {ITodo} from '../store/types/todosTypes';
+import {useDispatch} from 'react-redux';
 
 const RootStack = createStackNavigator();
 
@@ -42,6 +45,8 @@ const Dashboard = () => {
 };
 
 const MainStackScreen = () => {
+  const dispatch = useDispatch();
+
   return (
     <NavigationContainer ref={navigationRef}>
       <RootStack.Navigator
@@ -70,7 +75,15 @@ const MainStackScreen = () => {
                 <HeaderIcon
                   name={'add'}
                   type={'material'}
-                  onPress={() => navigate('Modal')}
+                  onPress={() =>
+                    navigate('Modal_Data', {
+                      title: 'Add todo',
+                      button: {
+                        text: 'Add',
+                        action: (todo: ITodo) => dispatch(addTodo(todo)),
+                      },
+                    })
+                  }
                 />
               ),
             }}
@@ -78,8 +91,8 @@ const MainStackScreen = () => {
         </RootStack.Group>
         <RootStack.Group screenOptions={{presentation: 'modal'}}>
           <RootStack.Screen
-            name={'Modal'}
-            component={AddTodoScreen}
+            name={'Modal_Data'}
+            component={DataInputScreen}
             options={{
               headerShown: false,
               cardStyleInterpolator:

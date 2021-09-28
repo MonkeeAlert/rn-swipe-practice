@@ -11,6 +11,7 @@ export const todosReducer = (
 ) => {
   let filtered: ITodo[] = [];
   let needle = {} as ITodo;
+  let index = 0;
 
   switch (action.type) {
     case TodosActions.ADD_TODO:
@@ -51,6 +52,14 @@ export const todosReducer = (
       return {
         list: [...filtered, needle],
       };
+
+    case TodosActions.EDIT_TODO:
+      if (state.list.length >= 1) {
+        index = state.list.findIndex((i: ITodo) => i.id === action.payload.id);
+        state.list[index].title = action.payload.title;
+      }
+
+      return {list: state.list};
 
     default:
       return state;

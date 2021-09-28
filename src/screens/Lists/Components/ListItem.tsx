@@ -7,7 +7,12 @@ import {RectButton} from 'react-native-gesture-handler';
 import {Icon} from 'react-native-elements';
 import {useDispatch} from 'react-redux';
 import {ITodo} from '../../../store/types/todosTypes';
-import {deleteTodo, restoreTodo} from '../../../store/actions/todosActions';
+import {
+  editTodo,
+  deleteTodo,
+  restoreTodo,
+} from '../../../store/actions/todosActions';
+import {useNavigation} from '@react-navigation/native';
 
 interface ITodoStatus {
   status: 'Not started' | 'In progress' | 'Completed';
@@ -16,6 +21,7 @@ interface ITodoStatus {
 export const ListItem = (props: ITodo) => {
   const {colors} = useTheme();
   const dispatch = useDispatch();
+  const {navigate} = useNavigation();
   const [createdAt, setCreatedAt] = useState('');
   const [status, setStatus] = useState<ITodoStatus['status']>('Not started');
   const [isDeleted, setIsDeleted] = useState(false);
@@ -122,22 +128,39 @@ export const ListItem = (props: ITodo) => {
       console.log('@changeTodoState');
     };
 
-    const editTodo = () => {
-      console.log('@editTodo');
+    const handleEditTodo = () => {
+      navigate('Modal_Data', {
+        title: `Edit todo: ${
+          props.title.length > 10 ? props.title.slice(0, 10) : props.title
+        }`,
+        button: {
+          text: 'Edit',
+          action: (o: ITodo) => {
+            const todo = {
+              id: props.id,
+              title: o.title,
+            } as ITodo;
+
+            dispatch(editTodo(todo));
+          },
+        },
+      });
     };
 
     const completeTodo = () => {
       console.log('@completeTodo');
     };
 
-    return (
+    return isDeleted ? (
+      <View />
+    ) : (
       <View style={styles.inline}>
         <RectButton style={theme.button} onPress={completeTodo}>
           <Animated.View style={[theme.rightButtonsBorder, {opacity: third}]}>
             <Icon type={'material'} name={'done'} color={colors.darkGrey} />
           </Animated.View>
         </RectButton>
-        <RectButton style={theme.button} onPress={editTodo}>
+        <RectButton style={theme.button} onPress={handleEditTodo}>
           <Animated.View style={[theme.rightButtonsBorder, {opacity: second}]}>
             <Icon type={'material'} name={'edit'} color={colors.darkGrey} />
           </Animated.View>
