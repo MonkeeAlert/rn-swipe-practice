@@ -13,12 +13,10 @@ export const editTodo = (todo: ITodo) => ({
   payload: {...todo},
 });
 
-export const deleteTodo = (id: string) => ({
-  type: TodosActions.DELETE_TODO,
-  payload: {id},
-});
-
-export const restoreTodo = (id: string) => ({
-  type: TodosActions.RESTORE_TODO,
-  payload: {id},
+export const moveTodoToCategory = (
+  id: string,
+  category: ITodo['category'],
+) => ({
+  type: TodosActions.MOVE_TODO,
+  payload: {id, category},
 });

@@ -6,11 +6,10 @@ import {useTheme} from '../../../utils/hooks';
 import {RectButton} from 'react-native-gesture-handler';
 import {Icon} from 'react-native-elements';
 import {useDispatch} from 'react-redux';
-import {ITodo} from '../../../store/types/todosTypes';
+import {ITodo, TodosActions} from '../../../store/types/todosTypes';
 import {
   editTodo,
-  deleteTodo,
-  restoreTodo,
+  moveTodoToCategory,
 } from '../../../store/actions/todosActions';
 import {useNavigation} from '@react-navigation/native';
 
@@ -81,11 +80,7 @@ export const ListItem = (props: ITodo) => {
     });
 
     const handleAction = () => {
-      if (isDeleted) {
-        dispatch(restoreTodo(props.id));
-      } else {
-        dispatch(deleteTodo(props.id));
-      }
+      dispatch(moveTodoToCategory(props.id, isDeleted ? 'default' : 'deleted'));
     };
 
     return (
@@ -124,40 +119,45 @@ export const ListItem = (props: ITodo) => {
       outputRange: [1, 1, 0],
     });
 
-    const changeTodoState = () => {
-      console.log('@changeTodoState');
-    };
-
     const handleEditTodo = () => {
       navigate('Modal_Data', {
         title: `Edit todo: ${
-          props.title.length > 10 ? props.title.slice(0, 10) : props.title
+          props.title.length > 18
+            ? `${props.title.slice(0, 15)}...`
+            : props.title
         }`,
-        button: {
-          text: 'Edit',
-          action: (o: ITodo) => {
-            const todo = {
-              id: props.id,
-              title: o.title,
-            } as ITodo;
-
-            dispatch(editTodo(todo));
-          },
+        buttonConfig: {
+          title: 'Edit',
+          action: TodosActions.EDIT_TODO,
+          todoId: props.id,
         },
       });
     };
 
-    const completeTodo = () => {
-      console.log('@completeTodo');
+    const handleCompleteTodo = () => {
+      dispatch(
+        moveTodoToCategory(
+          props.id,
+          props.category === 'done' ? 'default' : 'done',
+        ),
+      );
+    };
+
+    const changeTodoState = () => {
+      console.log('@changeTodoState');
     };
 
     return isDeleted ? (
       <View />
     ) : (
       <View style={styles.inline}>
-        <RectButton style={theme.button} onPress={completeTodo}>
+        <RectButton style={theme.button} onPress={handleCompleteTodo}>
           <Animated.View style={[theme.rightButtonsBorder, {opacity: third}]}>
-            <Icon type={'material'} name={'done'} color={colors.darkGrey} />
+            <Icon
+              type={'material'}
+              name={props.category === 'done' ? 'clear' : 'done'}
+              color={colors.darkGrey}
+            />
           </Animated.View>
         </RectButton>
         <RectButton style={theme.button} onPress={handleEditTodo}>

@@ -8,7 +8,6 @@ import {useTheme} from '../../utils/hooks';
 import DefaultButton from '../../components/DefaultButton';
 import DefaultInput from '../../components/DefaultInput';
 import Title from '../../components/Title';
-import {addTodo} from '../../store/actions/todosActions';
 import {ITodo} from '../../store/types/todosTypes';
 
 // TODO: could be more than 1 input
@@ -20,7 +19,7 @@ export const DataInputScreen = ({route}) => {
   const [placeholder, setPlaceholder] = useState('');
   const [value, setValue] = useState('');
 
-  const {title, button} = route.params;
+  const {title, buttonConfig} = route.params;
 
   useEffect(() => {
     const placeholders = defaultTodoPlaceholders;
@@ -30,15 +29,23 @@ export const DataInputScreen = ({route}) => {
     );
   }, []);
 
-  const handleTodoAction = () => {
+  const handleSubmit = () => {
     if (value === '') {
       // Error handle ...
     } else {
+      // TODO: could be not a todo
       const todo = {
         title: value,
       } as ITodo;
 
-      button?.action(todo);
+      if (buttonConfig?.todoId) {
+        todo.id = buttonConfig?.todoId;
+      }
+
+      dispatch({
+        type: buttonConfig.action,
+        payload: todo,
+      });
       navigation.goBack();
     }
   };
@@ -73,7 +80,7 @@ export const DataInputScreen = ({route}) => {
         />
       </View>
       <View style={styles.submitContainer}>
-        <DefaultButton text={button?.text} onPress={handleTodoAction} />
+        <DefaultButton text={buttonConfig?.title} onPress={handleSubmit} />
       </View>
     </SafeAreaView>
   );

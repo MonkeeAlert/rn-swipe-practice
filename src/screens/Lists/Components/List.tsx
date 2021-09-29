@@ -24,9 +24,7 @@ export const List = (props: IList) => {
   useEffect(() => {
     if (props.data?.length > 0) {
       if (activeCategory === 'all') {
-        const filter = props.data.filter(i => i.category !== 'deleted');
-
-        setData(filter);
+        setData(props.data);
       } else {
         const filtered = props.data.filter(i => i.category === activeCategory);
 

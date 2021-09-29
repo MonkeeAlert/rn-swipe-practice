@@ -14,6 +14,7 @@ export const colors = {
   successLight: '#4caf50',
   successDark: '#1b5e20',
   error: '#b00020',
+  completed: '#aed581',
 };
 
 export const borders = Dimensions.get('screen').width - 100;

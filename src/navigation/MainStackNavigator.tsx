@@ -17,7 +17,7 @@ import TodosScreen from '../screens/Lists/ListsScreen';
 import {navigate, navigationRef} from '../navigation/RootNavigation';
 import {DataInputScreen} from '../screens/HighOrderScreens/DataInputScreen';
 import {addTodo} from '../store/actions/todosActions';
-import {ITodo} from '../store/types/todosTypes';
+import {ITodo, TodosActions} from '../store/types/todosTypes';
 import {useDispatch} from 'react-redux';
 
 const RootStack = createStackNavigator();
@@ -78,9 +78,9 @@ const MainStackScreen = () => {
                   onPress={() =>
                     navigate('Modal_Data', {
                       title: 'Add todo',
-                      button: {
-                        text: 'Add',
-                        action: (todo: ITodo) => dispatch(addTodo(todo)),
+                      buttonConfig: {
+                        title: 'Add',
+                        action: TodosActions.ADD_TODO,
                       },
                     })
                   }

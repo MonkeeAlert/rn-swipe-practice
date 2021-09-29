@@ -12,6 +12,7 @@ export const todosReducer = (
   let filtered: ITodo[] = [];
   let needle = {} as ITodo;
   let index = 0;
+  let isDoneOrDeleted = false;
 
   switch (action.type) {
     case TodosActions.ADD_TODO:
@@ -31,28 +32,6 @@ export const todosReducer = (
         list: [...state.list, todo],
       };
 
-    case TodosActions.DELETE_TODO:
-      if (state.list.length >= 1) {
-        filtered = state.list.filter((i: ITodo) => i.id !== action.payload.id);
-        needle = state.list.find((i: ITodo) => i.id === action.payload.id);
-        needle.category = 'deleted';
-      }
-
-      return {
-        list: [...filtered, needle],
-      };
-
-    case TodosActions.RESTORE_TODO:
-      if (state.list.length >= 1) {
-        filtered = state.list.filter((i: ITodo) => i.id !== action.payload.id);
-        needle = state.list.find((i: ITodo) => i.id === action.payload.id);
-        needle.category = 'default';
-      }
-
-      return {
-        list: [...filtered, needle],
-      };
-
     case TodosActions.EDIT_TODO:
       if (state.list.length >= 1) {
         index = state.list.findIndex((i: ITodo) => i.id === action.payload.id);
@@ -60,6 +39,28 @@ export const todosReducer = (
       }
 
       return {list: state.list};
+
+    case TodosActions.MOVE_TODO: {
+      if (state.list.length >= 1) {
+        filtered = state.list.filter((i: ITodo) => i.id !== action.payload.id);
+        needle = state.list.find((i: ITodo) => i.id === action.payload.id);
+
+        isDoneOrDeleted =
+          action.payload.category === 'done' ||
+          action.payload.category === 'deleted';
+
+        needle.category = action.payload.category;
+        needle.completed = isDoneOrDeleted;
+
+        if (isDoneOrDeleted) {
+          needle.finished_at = Date.now();
+        }
+      }
+
+      return {
+        list: [...filtered, needle],
+      };
+    }
 
     default:
       return state;
