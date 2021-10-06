@@ -24,7 +24,7 @@ export const todosReducer = (
         started_at: 0,
         finished_at: 0,
         category: 'default',
-        completed: false,
+        wasCompleted: false,
         title: action.payload.title,
       };
 
@@ -50,7 +50,7 @@ export const todosReducer = (
           action.payload.category === 'deleted';
 
         needle.category = action.payload.category;
-        needle.completed = isDoneOrDeleted;
+        needle.wasCompleted = isDoneOrDeleted;
 
         if (isDoneOrDeleted) {
           needle.finished_at = Date.now();

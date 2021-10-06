@@ -1,3 +1,4 @@
+import {Swipeable} from 'react-native-gesture-handler';
 import {ActionType} from '../../utils/types';
 
 export interface ITodo {
@@ -7,7 +8,8 @@ export interface ITodo {
   finished_at: number;
   category: 'default' | 'active' | 'paused' | 'deleted' | 'done';
   title: string;
-  completed: boolean;
+  wasCompleted: boolean;
+  // ref: Swipeable;
 }
 
 export enum TodosActions {

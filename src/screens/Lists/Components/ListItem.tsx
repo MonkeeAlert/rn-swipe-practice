@@ -1,5 +1,5 @@
 import Swipeable from 'react-native-gesture-handler/Swipeable';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {View, Text, StyleSheet, Animated, Dimensions} from 'react-native';
 import {getDate} from '../../../utils/functions';
 import {useTheme} from '../../../utils/hooks';
@@ -11,19 +11,22 @@ import {
   editTodo,
   moveTodoToCategory,
 } from '../../../store/actions/todosActions';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useNavigationState} from '@react-navigation/native';
 
 interface ITodoStatus {
   status: 'Not started' | 'In progress' | 'Completed';
 }
 
-export const ListItem = (props: ITodo) => {
+export const ListItem = React.forwardRef((props: ITodo, previousRef) => {
   const {colors} = useTheme();
+  const navState = useNavigationState(state => state);
   const dispatch = useDispatch();
   const {navigate} = useNavigation();
   const [createdAt, setCreatedAt] = useState('');
   const [status, setStatus] = useState<ITodoStatus['status']>('Not started');
   const [isDeleted, setIsDeleted] = useState(false);
+
+  const swipeRef = useRef<Swipeable>(null);
 
   const theme = StyleSheet.create({
     row: {
@@ -55,11 +58,15 @@ export const ListItem = (props: ITodo) => {
   });
 
   useEffect(() => {
+    swipeRef.current?.close();
+  }, [navState]);
+
+  useEffect(() => {
     if (props.created_at) {
       const d = getDate(props.created_at).toString();
       const s: ITodoStatus['status'] =
         props.started_at !== props.finished_at
-          ? props.completed
+          ? props.wasCompleted
             ? 'Completed'
             : 'In progress'
           : 'Not started';
@@ -67,7 +74,12 @@ export const ListItem = (props: ITodo) => {
       setCreatedAt(d);
       setStatus(s);
     }
-  }, [props.started_at, props.finished_at, props.created_at, props.completed]);
+  }, [
+    props.started_at,
+    props.finished_at,
+    props.created_at,
+    props.wasCompleted,
+  ]);
 
   useEffect(() => {
     setIsDeleted(props.category === 'deleted');
@@ -80,6 +92,7 @@ export const ListItem = (props: ITodo) => {
     });
 
     const handleAction = () => {
+      swipeRef.current?.close();
       dispatch(moveTodoToCategory(props.id, isDeleted ? 'default' : 'deleted'));
     };
 
@@ -135,6 +148,7 @@ export const ListItem = (props: ITodo) => {
     };
 
     const handleCompleteTodo = () => {
+      swipeRef.current?.close();
       dispatch(
         moveTodoToCategory(
           props.id,
@@ -178,10 +192,26 @@ export const ListItem = (props: ITodo) => {
     );
   };
 
+  // Compare to refs
+  const handleSwipeableWillOpen = () => {
+    if (previousRef && previousRef.current !== null) {
+      if (previousRef.current !== swipeRef.current) {
+        previousRef.current?.close();
+      }
+    }
+  };
+
+  const handleSwipeableOpen = () => {
+    previousRef.current = swipeRef.current;
+  };
+
   return (
     <Swipeable
+      ref={swipeRef}
       renderLeftActions={renderLeftActions}
-      renderRightActions={renderRightActions}>
+      renderRightActions={renderRightActions}
+      onSwipeableOpen={handleSwipeableOpen}
+      onSwipeableWillOpen={handleSwipeableWillOpen}>
       <View style={[styles.row, theme.row]}>
         <View>
           <Text style={theme.title}>{props.title}</Text>
@@ -190,7 +220,7 @@ export const ListItem = (props: ITodo) => {
       </View>
     </Swipeable>
   );
-};
+});
 
 const styles = StyleSheet.create({
   row: {

@@ -1,10 +1,11 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {StyleSheet, FlatList, View, ScrollView} from 'react-native';
 import {ListCategory} from './ListCategory';
 import {EmptyList} from './EmptyList';
 import {ListItem} from './ListItem';
 import {useTheme} from '../../../utils/hooks';
 import {ITodo} from '../../../store/types/todosTypes';
+import {Swipeable} from 'react-native-gesture-handler';
 
 interface IList {
   data: ITodo[];
@@ -12,14 +13,22 @@ interface IList {
 
 const CATEGORIES = ['All', 'Active', 'Done', 'Deleted'];
 
-export const List = (props: IList) => {
+export const List = <ITodo, ItemProps>(props: IList) => {
   const {colors} = useTheme();
   const [data, setData] = useState<ITodo[]>([]);
   const [activeCategory, setActiveCategory] = useState<string>('all');
+  const ref = useRef<Swipeable>(null);
 
-  const renderItem = (itemData: {item: ITodo}) => (
-    <ListItem {...itemData.item} />
-  );
+  const theme = StyleSheet.create({
+    container: {
+      alignItems: data.length === 0 ? 'center' : 'flex-start',
+      justifyContent: data.length === 0 ? 'center' : 'flex-start',
+      backgroundColor: colors.white,
+    },
+    empty: {
+      flex: 1,
+    },
+  });
 
   useEffect(() => {
     if (props.data?.length > 0) {
@@ -34,6 +43,10 @@ export const List = (props: IList) => {
       setData([]);
     }
   }, [activeCategory, props.data]);
+
+  const renderItem = (itemData: {item: ITodo}) => (
+    <ListItem ref={ref} {...itemData.item} />
+  );
 
   const Categories = () => {
     return (
@@ -51,17 +64,6 @@ export const List = (props: IList) => {
       </ScrollView>
     );
   };
-
-  const theme = StyleSheet.create({
-    container: {
-      alignItems: data.length === 0 ? 'center' : 'flex-start',
-      justifyContent: data.length === 0 ? 'center' : 'flex-start',
-      backgroundColor: colors.white,
-    },
-    empty: {
-      flex: 1,
-    },
-  });
 
   return (
     <View style={styles.container}>
