@@ -35,7 +35,7 @@ export const todosReducer = (
     case TodosActions.EDIT_TODO:
       if (state.list.length >= 1) {
         index = state.list.findIndex((i: ITodo) => i.id === action.payload.id);
-        state.list[index].title = action.payload.title;
+        state.list[index] = action.payload;
       }
 
       return {list: state.list};
