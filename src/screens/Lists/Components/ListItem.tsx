@@ -1,14 +1,7 @@
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import React, {useEffect, useRef, useState} from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Animated,
-  Dimensions,
-  TimerMixin,
-} from 'react-native';
-import {getDate} from '../../../utils/functions';
+import {View, Text, StyleSheet, Animated, Dimensions} from 'react-native';
+import {getDate, getFormattedTimer} from '../../../utils/functions';
 import {useTheme} from '../../../utils/hooks';
 import {RectButton} from 'react-native-gesture-handler';
 import {Icon} from 'react-native-elements';
@@ -30,12 +23,13 @@ export const ListItem = React.forwardRef((props: ITodo, previousRef) => {
   const dispatch = useDispatch();
   const {navigate} = useNavigation();
   const [createdAt, setCreatedAt] = useState('');
-  const [timer, setTimer] = useState(0);
+  const [timer, setTimer] = useState('00:00:00');
   const [status, setStatus] = useState<ITodoStatus['status']>('Not started');
   const [isDeleted, setIsDeleted] = useState(false);
 
   const swipeRef = useRef<Swipeable>(null);
   const timerRef = useRef<any>(null);
+  const secondsRef = useRef<number>(0);
 
   const theme = StyleSheet.create({
     row: {
@@ -159,12 +153,13 @@ export const ListItem = React.forwardRef((props: ITodo, previousRef) => {
 
     const handleCompleteTodo = () => {
       swipeRef.current?.close();
+
       const timestamp = Date.now();
       dispatch(
         editTodo({
           ...props,
           category: props.category === 'done' ? 'default' : 'done',
-          // started_at: timestamp,
+          started_at: timestamp,
           finished_at: timestamp,
           wasCompleted: props.category === 'done',
         }),
@@ -173,30 +168,29 @@ export const ListItem = React.forwardRef((props: ITodo, previousRef) => {
 
     const changeTodoState = () => {
       if (status === 'Not started') {
-        const now = props.started_at > 0 ? props.started_at : Date.now();
+        const now = Date.now();
 
         dispatch(
           editTodo({
             ...props,
             category: 'active',
-            started_at: Date.now(),
+            started_at: now,
           }),
         );
 
-        // timerRef.current = setInterval(() => {
-        //   const seconds = (Date.now() - now) / 1000;
+        timerRef.current = setInterval(() => {
+          secondsRef.current += 1;
 
-        //   console.log('@', seconds);
-        //   // setTimer()
-        // }, 1000);
+          setTimer(getFormattedTimer(secondsRef.current));
+        }, 1000);
       } else {
-        // clearInterval(timerRef.current);
         const now = Date.now();
+        clearInterval(timerRef.current);
         dispatch(
           editTodo({
             ...props,
             category: 'default',
-            // started_at: now,
+            started_at: now,
             finished_at: now,
           }),
         );
@@ -260,7 +254,7 @@ export const ListItem = React.forwardRef((props: ITodo, previousRef) => {
           <Text style={theme.date}>{createdAt}</Text>
         </View>
         <View>
-          <Text style={theme.date}>00:00</Text>
+          <Text style={theme.date}>{timer}</Text>
         </View>
       </View>
     </Swipeable>
@@ -276,9 +270,6 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width,
     flexDirection: 'row',
   },
-  // time: {
-  //   alignSelf: 'center',
-  // },
   inline: {
     flexDirection: 'row',
   },

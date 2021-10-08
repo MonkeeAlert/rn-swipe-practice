@@ -88,3 +88,19 @@ export const generateID = () => {
 
   return `${gen()}${gen()}-${gen()}${gen()}-${gen()}${gen()}`;
 };
+
+/**
+ * Function that formats seconds to HH:MM:SS
+ *
+ * @param {number} s raw seconds
+ * @returns {string} formatted date (HH:MM:SS)
+ */
+export const getFormattedTimer = (s: number) => {
+  const seconds = parseInt(s % 60);
+  const minutes = parseInt((s / 60) % 60);
+  const hours = parseInt((s / 3600) % 60);
+
+  return `${hours < 10 ? '0' + hours : hours}:${
+    minutes < 10 ? '0' + minutes : minutes
+  }:${seconds < 10 ? '0' + seconds : seconds}`;
+};
