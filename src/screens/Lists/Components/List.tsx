@@ -1,22 +1,24 @@
 import React, {useState, useEffect, useRef} from 'react';
-import {StyleSheet, FlatList, View, ScrollView} from 'react-native';
-import {ListCategory} from './ListCategory';
+import {StyleSheet, FlatList, View} from 'react-native';
 import {EmptyList} from './EmptyList';
 import {ListItem} from './ListItem';
 import {useTheme} from '../../../utils/hooks';
 import {ITodo} from '../../../store/types/todosTypes';
 import {Swipeable} from 'react-native-gesture-handler';
+import {ButtonGroup} from 'react-native-elements/dist/buttons/ButtonGroup';
+import {getModerateScale} from '../../../utils/Scaling';
 
 interface IList {
   data: ITodo[];
 }
 
-const CATEGORIES = ['All', 'Active', 'Done', 'Deleted'];
+const CATEGORIES = ['All', 'Active', 'Done'];
 
 export const List = <ITodo, ItemProps>(props: IList) => {
-  const {colors} = useTheme();
+  const {colors, fonts} = useTheme();
   const [data, setData] = useState<ITodo[]>([]);
-  const [activeCategory, setActiveCategory] = useState<string>('all');
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [selectedIndex, setSelectedIndex] = useState<number>(0);
   const ref = useRef<Swipeable>(null);
 
   const theme = StyleSheet.create({
@@ -28,48 +30,52 @@ export const List = <ITodo, ItemProps>(props: IList) => {
     empty: {
       flex: 1,
     },
+    buttonTextStyle: {
+      fontSize: fonts.regular,
+      color: colors.darkGrey,
+    },
+    buttonStyle: {},
+    selectedButtonText: {
+      color: colors.error,
+    },
   });
 
   useEffect(() => {
     if (props.data?.length > 0) {
-      if (activeCategory === 'all') {
+      if (selectedCategory === 'all') {
         setData(props.data);
       } else {
-        const filtered = props.data.filter(i => i.category === activeCategory);
+        const filtered = props.data.filter(
+          i => i.category === selectedCategory,
+        );
 
         setData(filtered);
       }
     } else {
       setData([]);
     }
-  }, [activeCategory, props.data]);
+  }, [selectedCategory, props.data]);
 
   const renderItem = (itemData: {item: ITodo}) => (
     <ListItem ref={ref} {...itemData.item} />
   );
 
-  const Categories = () => {
-    return (
-      <ScrollView
-        horizontal={true}
-        showsHorizontalScrollIndicator={false}
-        style={styles.categories}>
-        {CATEGORIES.map(c => (
-          <ListCategory
-            key={`TodoListCategory_${c}`}
-            title={c}
-            onPress={() => setActiveCategory(c.toLowerCase())}
-          />
-        ))}
-      </ScrollView>
-    );
+  const handleCategory = (c: number) => {
+    setSelectedIndex(c);
+    setSelectedCategory(CATEGORIES[c].toLowerCase());
   };
 
   return (
     <View style={styles.container}>
-      <View>
-        <Categories />
-      </View>
+      <ButtonGroup
+        buttons={CATEGORIES}
+        onPress={handleCategory}
+        selectedIndex={selectedIndex}
+        innerBorderStyle={styles.buttonGroupBorder}
+        containerStyle={styles.buttonContainer}
+        selectedTextStyle={theme.selectedButtonText}
+        textStyle={theme.buttonTextStyle}
+      />
       <FlatList
         data={data}
         renderItem={item => renderItem(item)}
@@ -87,8 +93,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  categories: {
-    marginVertical: 10,
-    paddingHorizontal: 12,
+  buttonContainer: {
+    borderRadius: 7,
+    height: getModerateScale(45),
+  },
+  buttonGroupBorder: {
+    width: 0,
   },
 });

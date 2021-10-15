@@ -7,11 +7,9 @@ import {RectButton} from 'react-native-gesture-handler';
 import {Icon} from 'react-native-elements';
 import {useDispatch} from 'react-redux';
 import {ITodo, TodosActions} from '../../../store/types/todosTypes';
-import {
-  editTodo,
-  moveTodoToCategory,
-} from '../../../store/actions/todosActions';
+import {deleteTodo, editTodo} from '../../../store/actions/todosActions';
 import {useNavigation, useNavigationState} from '@react-navigation/native';
+import {getModerateScale} from '../../../utils/Scaling';
 
 interface ITodoStatus {
   status: 'Not started' | 'In progress' | 'Completed';
@@ -25,7 +23,6 @@ export const ListItem = React.forwardRef((props: ITodo, previousRef) => {
   const [createdAt, setCreatedAt] = useState('');
   const [timer, setTimer] = useState('00:00:00');
   const [status, setStatus] = useState<ITodoStatus['status']>('Not started');
-  const [isDeleted, setIsDeleted] = useState(false);
 
   const swipeRef = useRef<Swipeable>(null);
   const timerRef = useRef<any>(null);
@@ -52,7 +49,7 @@ export const ListItem = React.forwardRef((props: ITodo, previousRef) => {
       color: colors.darkGrey,
     },
     buttonDelete: {
-      backgroundColor: isDeleted ? colors.successMain : colors.error,
+      backgroundColor: colors.error,
     },
     rightButtonsBorder: {
       borderColor: colors.grey,
@@ -70,11 +67,10 @@ export const ListItem = React.forwardRef((props: ITodo, previousRef) => {
       const s: ITodoStatus['status'] =
         props.started_at !== props.finished_at
           ? !props.wasCompleted
-            ? 'Completed'
-            : 'In progress'
+            ? 'In progress'
+            : 'Completed'
           : 'Not started';
 
-      console.log('@s', s);
       setCreatedAt(d);
       setStatus(s);
     }
@@ -84,20 +80,17 @@ export const ListItem = React.forwardRef((props: ITodo, previousRef) => {
     props.created_at,
     props.wasCompleted,
   ]);
-
-  useEffect(() => {
-    setIsDeleted(props.category === 'deleted');
-  }, [props.category]);
-
   const renderLeftActions = (_, dragX: any) => {
+    const interpolations = [0, getModerateScale(60), getModerateScale(61)];
+
     const transition = dragX.interpolate({
-      inputRange: [0, 60, 61],
+      inputRange: interpolations,
       outputRange: [0, 1, 1],
     });
 
     const handleAction = () => {
-      swipeRef.current?.close();
-      dispatch(moveTodoToCategory(props.id, isDeleted ? 'default' : 'deleted'));
+      clearInterval(timerRef.current);
+      dispatch(deleteTodo(props.id));
     };
 
     return (
@@ -106,11 +99,7 @@ export const ListItem = React.forwardRef((props: ITodo, previousRef) => {
           style={[theme.button, theme.buttonDelete]}
           onPress={handleAction}>
           <Animated.View style={{opacity: transition}}>
-            <Icon
-              type={'material'}
-              name={isDeleted ? 'restore-from-trash' : 'delete'}
-              color={colors.white}
-            />
+            <Icon type={'material'} name={'delete'} color={colors.white} />
           </Animated.View>
         </RectButton>
       </View>
@@ -118,21 +107,36 @@ export const ListItem = React.forwardRef((props: ITodo, previousRef) => {
   };
 
   const renderRightActions = (_, dragX: any) => {
-    // TODO: must depend from screen size
+    const firstInputInterpolations = [
+      getModerateScale(-61),
+      getModerateScale(-60),
+      getModerateScale(-30),
+    ];
+
+    const secondInputInterpolations = [
+      getModerateScale(-131),
+      getModerateScale(-130),
+      getModerateScale(-100),
+    ];
+
+    const thirdInputInterpolations = [
+      getModerateScale(-181),
+      getModerateScale(-180),
+      getModerateScale(-150),
+    ];
+
     const first = dragX.interpolate({
-      inputRange: [-61, -60, -30],
+      inputRange: firstInputInterpolations,
       outputRange: [1, 1, 0],
     });
 
-    // TODO: must depend from screen size
     const second = dragX.interpolate({
-      inputRange: [-131, -130, -100],
+      inputRange: secondInputInterpolations,
       outputRange: [1, 1, 0],
     });
 
-    // TODO: must depend from screen size
     const third = dragX.interpolate({
-      inputRange: [-181, -180, -150],
+      inputRange: thirdInputInterpolations,
       outputRange: [1, 1, 0],
     });
 
@@ -152,8 +156,6 @@ export const ListItem = React.forwardRef((props: ITodo, previousRef) => {
     };
 
     const handleCompleteTodo = () => {
-      swipeRef.current?.close();
-
       const timestamp = Date.now();
       dispatch(
         editTodo({
@@ -164,12 +166,14 @@ export const ListItem = React.forwardRef((props: ITodo, previousRef) => {
           wasCompleted: props.category === 'done',
         }),
       );
+
+      swipeRef.current?.close();
     };
 
     const changeTodoState = () => {
-      if (status === 'Not started') {
-        const now = Date.now();
+      const now = Date.now();
 
+      if (status === 'Not started') {
         dispatch(
           editTodo({
             ...props,
@@ -184,8 +188,6 @@ export const ListItem = React.forwardRef((props: ITodo, previousRef) => {
           setTimer(getFormattedTimer(secondsRef.current));
         }, 1000);
       } else {
-        const now = Date.now();
-        clearInterval(timerRef.current);
         dispatch(
           editTodo({
             ...props,
@@ -194,12 +196,14 @@ export const ListItem = React.forwardRef((props: ITodo, previousRef) => {
             finished_at: now,
           }),
         );
+
+        clearInterval(timerRef.current);
       }
+
+      swipeRef.current?.close();
     };
 
-    return isDeleted ? (
-      <View />
-    ) : (
+    return (
       <View style={styles.inline}>
         <RectButton style={theme.button} onPress={handleCompleteTodo}>
           <Animated.View style={[theme.rightButtonsBorder, {opacity: third}]}>
@@ -265,8 +269,8 @@ const styles = StyleSheet.create({
   row: {
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingVertical: 10,
-    paddingHorizontal: 12,
+    paddingVertical: getModerateScale(10),
+    paddingHorizontal: getModerateScale(12),
     width: Dimensions.get('window').width,
     flexDirection: 'row',
   },

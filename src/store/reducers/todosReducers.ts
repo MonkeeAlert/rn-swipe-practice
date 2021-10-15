@@ -40,26 +40,14 @@ export const todosReducer = (
 
       return {list: state.list};
 
-    case TodosActions.MOVE_TODO: {
+    case TodosActions.DELETE_TODO: {
       if (state.list.length >= 1) {
         filtered = state.list.filter((i: ITodo) => i.id !== action.payload.id);
-        needle = state.list.find((i: ITodo) => i.id === action.payload.id);
 
-        isDoneOrDeleted =
-          action.payload.category === 'done' ||
-          action.payload.category === 'deleted';
-
-        needle.category = action.payload.category;
-        needle.wasCompleted = isDoneOrDeleted;
-
-        if (isDoneOrDeleted) {
-          needle.finished_at = Date.now();
-        }
+        return {
+          list: filtered,
+        };
       }
-
-      return {
-        list: [...filtered, needle],
-      };
     }
 
     default:
