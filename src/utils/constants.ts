@@ -19,6 +19,7 @@ export const colors = {
 
 export const borders = Dimensions.get('screen').width - 100;
 
+// Placeholers for todos
 export const defaultTodoPlaceholders = [
   'Wash the dishes',
   'Make the bed',
@@ -27,8 +28,10 @@ export const defaultTodoPlaceholders = [
   'Watch Netflix',
 ];
 
+// Days
 export const days = ['Sun', 'Mon', 'Tue', 'Wen', 'Thu', 'Fri', 'Sat'];
 
+// Months
 export const months = [
   'Jan',
   'Feb',

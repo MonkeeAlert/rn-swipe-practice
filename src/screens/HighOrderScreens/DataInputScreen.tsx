@@ -1,4 +1,4 @@
-import {useNavigation, useRoute} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
 import {Dimensions} from 'react-native';
 import {useDispatch} from 'react-redux';
@@ -58,12 +58,6 @@ export const DataInputScreen = ({route}) => {
     container: {
       backgroundColor: colors.white,
       flex: 1,
-    },
-    input: {
-      borderWidth: 1,
-      borderRadius: 3,
-      height: 54,
-      paddingHorizontal: 12,
     },
   });
 

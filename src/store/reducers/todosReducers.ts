@@ -10,9 +10,7 @@ export const todosReducer = (
   action: TodosActionsTypes,
 ) => {
   let filtered: ITodo[] = [];
-  let needle = {} as ITodo;
   let index = 0;
-  let isDoneOrDeleted = false;
 
   switch (action.type) {
     case TodosActions.ADD_TODO:
@@ -26,6 +24,7 @@ export const todosReducer = (
         category: 'default',
         wasCompleted: false,
         title: action.payload.title,
+        seconds: 0,
       };
 
       return {

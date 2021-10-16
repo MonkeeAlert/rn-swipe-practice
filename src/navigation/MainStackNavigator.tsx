@@ -7,7 +7,6 @@ import {
 import {ScrollView, StatusBar, View} from 'react-native';
 import {StyleSheet} from 'react-native';
 import {useTheme} from '../utils/hooks';
-import {routes} from '../assets/routes';
 import NavigationLink from '../components/NavigationLink';
 import Title from '../components/Title';
 import {HeaderIcon} from '../components/HeaderIcon';
@@ -16,9 +15,8 @@ import CircleOverBordersScreen from '../screens/CircleOverBorders/CircleOverBord
 import TodosScreen from '../screens/Lists/ListsScreen';
 import {navigate, navigationRef} from '../navigation/RootNavigation';
 import {DataInputScreen} from '../screens/HighOrderScreens/DataInputScreen';
-import {addTodo} from '../store/actions/todosActions';
-import {ITodo, TodosActions} from '../store/types/todosTypes';
-import {useDispatch} from 'react-redux';
+import {TodosActions} from '../store/types/todosTypes';
+import {routes} from '../assets/routes';
 
 const RootStack = createStackNavigator();
 
@@ -38,15 +36,18 @@ const Dashboard = () => {
       </View>
 
       {routes.map(s => (
-        <NavigationLink key={s.key} title={s.title} route={s.route} />
+        <NavigationLink
+          key={s.key}
+          title={s.title}
+          route={s.route}
+          color={s.color}
+        />
       ))}
     </ScrollView>
   );
 };
 
 const MainStackScreen = () => {
-  const dispatch = useDispatch();
-
   return (
     <NavigationContainer ref={navigationRef}>
       <RootStack.Navigator

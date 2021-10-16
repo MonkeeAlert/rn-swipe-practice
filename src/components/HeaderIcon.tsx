@@ -1,6 +1,7 @@
 import React from 'react';
 import {StyleSheet} from 'react-native';
 import {Icon} from 'react-native-elements/dist/icons/Icon';
+import {useTheme} from '../utils/hooks';
 
 interface IHeaderIcon {
   name: string;
@@ -9,12 +10,15 @@ interface IHeaderIcon {
 }
 
 export const HeaderIcon = (props: IHeaderIcon) => {
+  const {colors} = useTheme();
+
   return (
     <Icon
       name={props.name}
       type={props.type}
       onPress={props.onPress}
       containerStyle={style.container}
+      color={colors.black}
       size={26}
     />
   );

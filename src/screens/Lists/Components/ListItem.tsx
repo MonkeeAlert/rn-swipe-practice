@@ -11,38 +11,46 @@ import {deleteTodo, editTodo} from '../../../store/actions/todosActions';
 import {useNavigation, useNavigationState} from '@react-navigation/native';
 import {getModerateScale} from '../../../utils/Scaling';
 
-interface ITodoStatus {
-  status: 'Not started' | 'In progress' | 'Completed';
-}
-
 export const ListItem = React.forwardRef((props: ITodo, previousRef) => {
-  const {colors} = useTheme();
+  const {colors, fonts} = useTheme();
   const navState = useNavigationState(state => state);
   const dispatch = useDispatch();
   const {navigate} = useNavigation();
-  const [createdAt, setCreatedAt] = useState('');
-  const [timer, setTimer] = useState('00:00:00');
-  const [status, setStatus] = useState<ITodoStatus['status']>('Not started');
 
   const swipeRef = useRef<Swipeable>(null);
   const timerRef = useRef<any>(null);
   const secondsRef = useRef<number>(0);
+  const statusRef = useRef<ITodo['category']>(props.category);
+
+  const [createdAt, setCreatedAt] = useState('');
+  const [status, setStatus] = useState<ITodo['category']>(checkStatus());
+  const [timer, setTimer] = useState(
+    getFormattedTimer(
+      checkStatus() === 'active'
+        ? 1 + (Date.now() - props.started_at) / 1000 + props.seconds
+        : 0,
+    ),
+  );
 
   const theme = StyleSheet.create({
     row: {
       backgroundColor: colors.white,
     },
     title: {
-      fontSize: 16,
+      fontSize: fonts.medium,
+      color: colors.black,
       fontWeight: 'bold',
       paddingTop: 4,
+      marginBottom: 4,
     },
     date: {
       fontWeight: '100',
+      fontSize: fonts.small,
+      color: colors.infoLight,
     },
     button: {
       backgroundColor: colors.white,
-      width: 60,
+      width: getModerateScale(60),
       justifyContent: 'center',
     },
     buttonText: {
@@ -61,25 +69,46 @@ export const ListItem = React.forwardRef((props: ITodo, previousRef) => {
     swipeRef.current?.close();
   }, [navState]);
 
-  useEffect(() => {
-    if (props.created_at) {
-      const d = getDate(props.created_at).toString();
-      const s: ITodoStatus['status'] =
-        props.started_at !== props.finished_at
-          ? !props.wasCompleted
-            ? 'In progress'
-            : 'Completed'
-          : 'Not started';
+  function checkStatus() {
+    return props.wasCompleted ? 'done' : statusRef.current;
+  }
 
-      setCreatedAt(d);
-      setStatus(s);
+  useEffect(() => {
+    // Set date of todo creation
+    const d = getDate(props.created_at).toString();
+    setCreatedAt(d);
+
+    // Set seconds after todo was started
+    const difference =
+      props.category === 'active' ? (Date.now() - props.started_at) / 1000 : 0;
+    secondsRef.current = difference + props.seconds;
+    setTimer(getFormattedTimer(secondsRef.current));
+
+    // If todo was running before unmount, this will trigger seconds incrementation
+    if (props.category === 'active') {
+      timerRef.current = setInterval(() => {
+        secondsRef.current += 1;
+
+        setTimer(getFormattedTimer(secondsRef.current));
+      }, 1000);
     }
-  }, [
-    props.started_at,
-    props.finished_at,
-    props.created_at,
-    props.wasCompleted,
-  ]);
+
+    return () => {
+      const now = Date.now();
+      const statusOnUnmount = statusRef.current;
+
+      const savedTodo: ITodo = {
+        ...props,
+        category: statusOnUnmount,
+        started_at: statusOnUnmount === 'active' ? now : props.started_at,
+        seconds: secondsRef.current,
+      };
+
+      clearInterval(timerRef.current);
+      dispatch(editTodo(savedTodo));
+    };
+  }, []);
+
   const renderLeftActions = (_, dragX: any) => {
     const interpolations = [0, getModerateScale(60), getModerateScale(61)];
 
@@ -156,78 +185,83 @@ export const ListItem = React.forwardRef((props: ITodo, previousRef) => {
     };
 
     const handleCompleteTodo = () => {
-      const timestamp = Date.now();
+      const now = Date.now();
+      const s = props.category === 'done' ? 'default' : 'done';
+
       dispatch(
         editTodo({
           ...props,
-          category: props.category === 'done' ? 'default' : 'done',
-          started_at: timestamp,
-          finished_at: timestamp,
+          category: s,
+          started_at: now,
+          finished_at: now,
           wasCompleted: props.category === 'done',
         }),
       );
 
+      setStatus(s);
       swipeRef.current?.close();
     };
 
     const changeTodoState = () => {
+      statusRef.current = status === 'active' ? 'paused' : 'active';
+
       const now = Date.now();
+      const todo: ITodo = {
+        ...props,
+        category: statusRef.current,
+        started_at: now,
+        finished_at: statusRef.current === 'paused' ? now : props.finished_at,
+      };
 
-      if (status === 'Not started') {
-        dispatch(
-          editTodo({
-            ...props,
-            category: 'active',
-            started_at: now,
-          }),
-        );
-
+      if (statusRef.current === 'active') {
         timerRef.current = setInterval(() => {
           secondsRef.current += 1;
 
           setTimer(getFormattedTimer(secondsRef.current));
         }, 1000);
       } else {
-        dispatch(
-          editTodo({
-            ...props,
-            category: 'default',
-            started_at: now,
-            finished_at: now,
-          }),
-        );
-
         clearInterval(timerRef.current);
       }
 
+      dispatch(editTodo(todo));
+      setStatus(statusRef.current);
       swipeRef.current?.close();
     };
 
     return (
       <View style={styles.inline}>
-        <RectButton style={theme.button} onPress={handleCompleteTodo}>
-          <Animated.View style={[theme.rightButtonsBorder, {opacity: third}]}>
-            <Icon
-              type={'material'}
-              name={props.category === 'done' ? 'clear' : 'done'}
-              color={colors.darkGrey}
-            />
-          </Animated.View>
-        </RectButton>
-        <RectButton style={theme.button} onPress={handleEditTodo}>
-          <Animated.View style={[theme.rightButtonsBorder, {opacity: second}]}>
-            <Icon type={'material'} name={'edit'} color={colors.darkGrey} />
-          </Animated.View>
-        </RectButton>
-        <RectButton style={theme.button} onPress={changeTodoState}>
-          <Animated.View style={[theme.rightButtonsBorder, {opacity: first}]}>
-            <Icon
-              type={'material'}
-              name={status === 'In progress' ? 'pause' : 'play-arrow'}
-              color={colors.darkGrey}
-            />
-          </Animated.View>
-        </RectButton>
+        {props.category !== 'done' ? (
+          <>
+            <RectButton style={theme.button} onPress={handleCompleteTodo}>
+              <Animated.View
+                style={[theme.rightButtonsBorder, {opacity: third}]}>
+                <Icon type={'material'} name={'done'} color={colors.darkGrey} />
+              </Animated.View>
+            </RectButton>
+            <RectButton style={theme.button} onPress={handleEditTodo}>
+              <Animated.View
+                style={[theme.rightButtonsBorder, {opacity: second}]}>
+                <Icon type={'material'} name={'edit'} color={colors.darkGrey} />
+              </Animated.View>
+            </RectButton>
+            <RectButton style={theme.button} onPress={changeTodoState}>
+              <Animated.View
+                style={[theme.rightButtonsBorder, {opacity: first}]}>
+                <Icon
+                  type={'material'}
+                  name={status === 'active' ? 'pause' : 'play-arrow'}
+                  color={colors.darkGrey}
+                />
+              </Animated.View>
+            </RectButton>
+          </>
+        ) : (
+          <RectButton style={theme.button} onPress={handleCompleteTodo}>
+            <Animated.View style={[theme.rightButtonsBorder, {opacity: first}]}>
+              <Icon type={'material'} name={'clear'} color={colors.darkGrey} />
+            </Animated.View>
+          </RectButton>
+        )}
       </View>
     );
   };

@@ -33,10 +33,11 @@ export const List = <ITodo, ItemProps>(props: IList) => {
     buttonTextStyle: {
       fontSize: fonts.regular,
       color: colors.darkGrey,
+      fontWeight: 'bold',
     },
     buttonStyle: {},
     selectedButtonText: {
-      color: colors.error,
+      color: colors.black,
     },
   });
 
