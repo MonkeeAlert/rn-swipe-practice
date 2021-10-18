@@ -1,26 +1,34 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {Dimensions, StyleSheet, Text, View} from 'react-native';
 import {Icon} from 'react-native-elements';
 import {useTheme} from '../../../utils/hooks';
+import {getModerateScale} from '../../../utils/Scaling';
+import {useHeaderHeight} from '@react-navigation/elements';
 
 export const EmptyList = () => {
-  const {colors} = useTheme();
+  const headerHeight = useHeaderHeight();
+  const {colors, fonts} = useTheme();
 
   const theme = StyleSheet.create({
     text: {
       color: colors.darkGrey,
-      fontSize: 21,
+      fontSize: fonts.medium,
+    },
+    container: {
+      width: Dimensions.get('window').width,
+      height:
+        Dimensions.get('window').height - getModerateScale(45) - headerHeight,
     },
   });
 
   return (
-    <View>
+    <View style={[styles.container, theme.container]}>
       <View style={styles.icon}>
         <Icon
           name={'done-all'}
           type={'material'}
           color={colors.darkGrey}
-          size={48}
+          size={getModerateScale(48)}
         />
       </View>
       <Text style={[styles.text, theme.text]}>List is empty</Text>
@@ -34,5 +42,8 @@ const styles = StyleSheet.create({
   },
   text: {
     textAlign: 'center',
+  },
+  container: {
+    justifyContent: 'center',
   },
 });

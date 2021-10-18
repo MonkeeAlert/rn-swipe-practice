@@ -17,3 +17,8 @@ export const deleteTodo = (id: string) => ({
   type: TodosActions.DELETE_TODO,
   payload: {id},
 });
+
+// export const setActiveCategory = (category: string) => ({
+//   type: TodosActions.SET_ACTIVE_CATEGORY,
+//   payload: {category},
+// });

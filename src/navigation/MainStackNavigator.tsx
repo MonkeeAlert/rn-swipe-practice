@@ -12,7 +12,7 @@ import Title from '../components/Title';
 import {HeaderIcon} from '../components/HeaderIcon';
 
 import CircleOverBordersScreen from '../screens/CircleOverBorders/CircleOverBordersScreen';
-import TodosScreen from '../screens/Lists/ListsScreen';
+import TodosScreen from '../screens/Lists/TodosScreen';
 import {navigate, navigationRef} from '../navigation/RootNavigation';
 import {DataInputScreen} from '../screens/HighOrderScreens/DataInputScreen';
 import {TodosActions} from '../store/types/todosTypes';

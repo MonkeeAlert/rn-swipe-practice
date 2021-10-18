@@ -1,14 +1,10 @@
 // import createSagaMiddleware from '@redux-saga/core';
-import {createStore, combineReducers, applyMiddleware, compose} from 'redux';
-import {todosReducer} from './reducers/todosReducers';
+import {createStore} from 'redux';
+import {rootReducer} from './reducers/rootReducer';
 
 // const composeEnhancers = compose;
 
 // const sagaMiddleware = createSagaMiddleware();
-
-const rootReducer = combineReducers({
-  todos: todosReducer,
-});
 
 export const store = createStore(
   rootReducer,

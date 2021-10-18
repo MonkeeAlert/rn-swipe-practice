@@ -10,8 +10,13 @@ import {ITodo, TodosActions} from '../../../store/types/todosTypes';
 import {deleteTodo, editTodo} from '../../../store/actions/todosActions';
 import {useNavigation, useNavigationState} from '@react-navigation/native';
 import {getModerateScale} from '../../../utils/Scaling';
+import {getTodosState} from '../../../store/rootSelectors';
 
-export const ListItem = React.forwardRef((props: ITodo, previousRef) => {
+interface ITodoProps extends ITodo {
+  selectedCategory: ITodo['category'];
+}
+
+export const ListItem = React.forwardRef((props: ITodoProps, previousRef) => {
   const {colors, fonts} = useTheme();
   const navState = useNavigationState(state => state);
   const dispatch = useDispatch();
@@ -65,13 +70,13 @@ export const ListItem = React.forwardRef((props: ITodo, previousRef) => {
     },
   });
 
-  useEffect(() => {
-    swipeRef.current?.close();
-  }, [navState]);
-
   function checkStatus() {
     return props.wasCompleted ? 'done' : statusRef.current;
   }
+
+  useEffect(() => {
+    swipeRef.current?.close();
+  }, [navState]);
 
   useEffect(() => {
     // Set date of todo creation
@@ -84,7 +89,7 @@ export const ListItem = React.forwardRef((props: ITodo, previousRef) => {
     secondsRef.current = difference + props.seconds;
     setTimer(getFormattedTimer(secondsRef.current));
 
-    // If todo was running before unmount, this will trigger seconds incrementation
+    // If todo was running before unmount, this will start to increment seconds
     if (props.category === 'active') {
       timerRef.current = setInterval(() => {
         secondsRef.current += 1;
@@ -169,6 +174,7 @@ export const ListItem = React.forwardRef((props: ITodo, previousRef) => {
       outputRange: [1, 1, 0],
     });
 
+    // Edit todo in modal screen
     const handleEditTodo = () => {
       navigate('Modal_Data', {
         title: `Edit todo: ${
@@ -184,24 +190,26 @@ export const ListItem = React.forwardRef((props: ITodo, previousRef) => {
       });
     };
 
+    // Complete todo
     const handleCompleteTodo = () => {
+      statusRef.current = props.category === 'done' ? 'default' : 'done';
+
       const now = Date.now();
-      const s = props.category === 'done' ? 'default' : 'done';
+      const todo = {
+        ...props,
+        category: statusRef.current,
+        started_at: now,
+        finished_at: now,
+        wasCompleted: props.category === 'done',
+      };
 
-      dispatch(
-        editTodo({
-          ...props,
-          category: s,
-          started_at: now,
-          finished_at: now,
-          wasCompleted: props.category === 'done',
-        }),
-      );
-
-      setStatus(s);
+      clearInterval(timerRef.current);
+      setStatus(statusRef.current);
+      dispatch(editTodo(todo));
       swipeRef.current?.close();
     };
 
+    // Change state to active or paused
     const changeTodoState = () => {
       statusRef.current = status === 'active' ? 'paused' : 'active';
 
@@ -223,8 +231,8 @@ export const ListItem = React.forwardRef((props: ITodo, previousRef) => {
         clearInterval(timerRef.current);
       }
 
-      dispatch(editTodo(todo));
       setStatus(statusRef.current);
+      dispatch(editTodo(todo));
       swipeRef.current?.close();
     };
 
@@ -279,24 +287,30 @@ export const ListItem = React.forwardRef((props: ITodo, previousRef) => {
     previousRef.current = swipeRef.current;
   };
 
-  return (
-    <Swipeable
-      ref={swipeRef}
-      renderLeftActions={renderLeftActions}
-      renderRightActions={renderRightActions}
-      onSwipeableOpen={handleSwipeableOpen}
-      onSwipeableWillOpen={handleSwipeableWillOpen}>
-      <View style={[styles.row, theme.row]}>
-        <View>
-          <Text style={theme.title}>{props.title}</Text>
-          <Text style={theme.date}>{createdAt}</Text>
+  if (props.selectedCategory === 'all' || props.selectedCategory === status) {
+    return (
+      <Swipeable
+        ref={swipeRef}
+        renderLeftActions={renderLeftActions}
+        renderRightActions={renderRightActions}
+        onSwipeableOpen={handleSwipeableOpen}
+        onSwipeableWillOpen={handleSwipeableWillOpen}
+        containerStyle={theme.row}>
+        <View style={[styles.row, theme.row]}>
+          <View>
+            <Text style={theme.title}>{props.title}</Text>
+            <Text style={theme.date}>{createdAt}</Text>
+          </View>
+          <View>
+            <Text style={theme.date}>{timer}</Text>
+          </View>
         </View>
-        <View>
-          <Text style={theme.date}>{timer}</Text>
-        </View>
-      </View>
-    </Swipeable>
-  );
+      </Swipeable>
+    );
+  } else {
+    // "Unmount" component if selected category is not compare to status
+    return null;
+  }
 });
 
 const styles = StyleSheet.create({

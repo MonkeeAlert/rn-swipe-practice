@@ -3,13 +3,14 @@ import {ITodo, TodosActions, TodosActionsTypes} from '../types/todosTypes';
 
 const initialState = {
   list: [],
+  // activeCategory: 'all',
 };
 
 export const todosReducer = (
   state = initialState,
   action: TodosActionsTypes,
 ) => {
-  let filtered: ITodo[] = [];
+  let list: ITodo[] = [];
   let index = 0;
 
   switch (action.type) {
@@ -39,15 +40,19 @@ export const todosReducer = (
 
       return {list: state.list};
 
-    case TodosActions.DELETE_TODO: {
+    case TodosActions.DELETE_TODO:
       if (state.list.length >= 1) {
-        filtered = state.list.filter((i: ITodo) => i.id !== action.payload.id);
-
-        return {
-          list: filtered,
-        };
+        list = state.list.filter((i: ITodo) => i.id !== action.payload.id);
       }
-    }
+
+      return {list};
+
+    // case TodosActions.SET_ACTIVE_CATEGORY:
+    //   console.log('@payload', action.payload);
+    //   return {
+    //     ...state,
+    //     activeCategory: action.payload.category,
+    //   };
 
     default:
       return state;
