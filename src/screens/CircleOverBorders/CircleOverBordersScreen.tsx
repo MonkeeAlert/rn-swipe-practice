@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, View, Text} from 'react-native';
-import {useTheme} from '../assets/hooks';
+import {useTheme} from '../../utils/hooks';
 import {Borders} from './Components/Borders';
 import {Circle} from './Components/Circle';
 

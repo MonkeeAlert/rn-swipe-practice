@@ -1,15 +1,13 @@
-import {CardStyleInterpolators} from '@react-navigation/stack';
-import CircleOverBordersScreen from '../screens/CircleOverBordersScreen';
-
 export const routes = [
   {
-    key: 'DragCircle',
-    title: 'Drag circle',
+    key: 'Circle',
+    title: 'Circle',
     route: 'CircleOverBorders',
-    component: CircleOverBordersScreen,
-    options: {
-      cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-      headerShown: false,
-    },
+  },
+  {
+    key: 'Todos',
+    title: 'Todos',
+    route: 'Todos',
+    color: '#4caf50',
   },
 ];

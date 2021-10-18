@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
-import {useTheme} from '../assets/hooks';
+import {useTheme} from '../utils/hooks';
 
 interface ITitle {
   text?: string;

@@ -1,7 +1,7 @@
 import {useNavigation} from '@react-navigation/native';
 import React from 'react';
-import {StyleSheet, Text, TouchableWithoutFeedback, View} from 'react-native';
-import {useTheme} from '../assets/hooks';
+import {StyleSheet, TouchableWithoutFeedback, View} from 'react-native';
+import {useTheme} from '../utils/hooks';
 import Title from './Title';
 
 interface INavigationLink {
@@ -17,7 +17,7 @@ const NavigationLink = (props: INavigationLink) => {
 
   const theme = StyleSheet.create({
     container: {
-      backgroundColor: props.color ?? colors.lightBlue,
+      backgroundColor: props.color ?? colors.infoLight,
     },
   });
 

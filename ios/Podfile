@@ -14,6 +14,7 @@ target 'RNSwipePractice' do
 
   pod 'react-native-splash-screen', :path => '../node_modules/react-native-splash-screen'
 
+
   target 'RNSwipePracticeTests' do
     inherit! :complete
     # Pods for testing
