@@ -2,8 +2,7 @@ import {generateID} from '../../utils/functions';
 import {ITodo, TodosActions, TodosActionsTypes} from '../types/todosTypes';
 
 const initialState = {
-  list: [],
-  // activeCategory: 'all',
+  list: [] as ITodo[],
 };
 
 export const todosReducer = (
@@ -47,12 +46,8 @@ export const todosReducer = (
 
       return {list};
 
-    // case TodosActions.SET_ACTIVE_CATEGORY:
-    //   console.log('@payload', action.payload);
-    //   return {
-    //     ...state,
-    //     activeCategory: action.payload.category,
-    //   };
+    case TodosActions.UPDATE_TODO_LIST:
+      return {list: action.payload.list};
 
     default:
       return state;

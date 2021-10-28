@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react';
-import {StyleSheet, FlatList, View, Dimensions} from 'react-native';
+import {StyleSheet, FlatList} from 'react-native';
 import {EmptyList} from './Components/EmptyList';
 import {ListItem} from './Components/ListItem';
 import {useTheme} from '../../utils/hooks';
@@ -9,16 +9,31 @@ import {ButtonGroup} from 'react-native-elements/dist/buttons/ButtonGroup';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useSelector} from 'react-redux';
 import {getTodosState} from '../../store/rootSelectors';
+import {ITodo} from '../../store/types/todosTypes';
 
-const CATEGORIES = ['All', 'Active', 'Done'];
+const CATEGORIES = [
+  {
+    title: 'All',
+    key: 'default',
+  },
+  {
+    title: 'Active',
+    key: 'active',
+  },
+  {
+    title: 'Done',
+    key: 'done',
+  },
+];
 
-const TodosScreen = <ITodo, ItemProps>() => {
+const TodosScreen = () => {
   const {colors, fonts} = useTheme();
   const ref = useRef<Swipeable>(null);
   const {list} = useSelector(getTodosState);
 
   const [data, setData] = useState<ITodo[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [selectedCategory, setSelectedCategory] =
+    useState<ITodo['category']>('default');
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
 
   const theme = StyleSheet.create({
@@ -42,7 +57,7 @@ const TodosScreen = <ITodo, ItemProps>() => {
 
   useEffect(() => {
     if (list?.length > 0) {
-      if (selectedCategory === 'all') {
+      if (selectedCategory === 'default') {
         setData(list);
       } else {
         const filtered = list.filter(i => i.category === selectedCategory);
@@ -52,6 +67,10 @@ const TodosScreen = <ITodo, ItemProps>() => {
     } else {
       setData([]);
     }
+
+    return () => {
+      ref.current = null;
+    };
   }, [selectedCategory, list]);
 
   const renderItem = (itemData: {item: ITodo}) => {
@@ -65,7 +84,7 @@ const TodosScreen = <ITodo, ItemProps>() => {
   };
 
   const handleCategory = (c: number) => {
-    const category = CATEGORIES[c].toLowerCase();
+    const category = CATEGORIES[c].key as ITodo['category'];
 
     setSelectedIndex(c);
     setSelectedCategory(category);
@@ -74,7 +93,7 @@ const TodosScreen = <ITodo, ItemProps>() => {
   return (
     <SafeAreaView style={styles.container}>
       <ButtonGroup
-        buttons={CATEGORIES}
+        buttons={CATEGORIES.map(i => i.title)}
         onPress={handleCategory}
         selectedIndex={selectedIndex}
         innerBorderStyle={styles.buttonGroupBorder}
@@ -85,23 +104,19 @@ const TodosScreen = <ITodo, ItemProps>() => {
       <FlatList
         data={data}
         ListHeaderComponent={() => {
-          return (
-            <>
-              {selectedCategory !== 'all' &&
-              list.filter(i => i.category === selectedCategory).length === 0 ? (
-                <EmptyList />
-              ) : null}
-            </>
-          );
+          const isEmpty =
+            list.filter(i => i.category === selectedCategory).length === 0;
+
+          return selectedCategory === 'default' ? (
+            list.length === 0 ? (
+              <EmptyList />
+            ) : null
+          ) : isEmpty ? (
+            <EmptyList />
+          ) : null;
         }}
         renderItem={renderItem}
-        contentContainerStyle={[
-          theme.container,
-          // {
-          //   position: 'relative',
-          // },
-          // data.length === 0 ? theme.empty : null,
-        ]}
+        contentContainerStyle={theme.container}
       />
     </SafeAreaView>
   );

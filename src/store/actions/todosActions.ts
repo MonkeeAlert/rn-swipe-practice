@@ -18,7 +18,7 @@ export const deleteTodo = (id: string) => ({
   payload: {id},
 });
 
-// export const setActiveCategory = (category: string) => ({
-//   type: TodosActions.SET_ACTIVE_CATEGORY,
-//   payload: {category},
-// });
+export const updateTodoList = (list: ITodo[]) => ({
+  type: TodosActions.UPDATE_TODO_LIST,
+  payload: {list},
+});
