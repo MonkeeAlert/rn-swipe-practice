@@ -56,6 +56,10 @@ const TodosScreen = () => {
   });
 
   useEffect(() => {
+    console.log('@list', list);
+  }, []);
+
+  useEffect(() => {
     if (list?.length > 0) {
       if (selectedCategory === 'default') {
         setData(list);
@@ -103,7 +107,9 @@ const TodosScreen = () => {
       />
       <FlatList
         data={data}
-        ListHeaderComponent={() => {
+        renderItem={renderItem}
+        contentContainerStyle={theme.container}
+        ListEmptyComponent={() => {
           const isEmpty =
             list.filter(i => i.category === selectedCategory).length === 0;
 
@@ -115,8 +121,6 @@ const TodosScreen = () => {
             <EmptyList />
           ) : null;
         }}
-        renderItem={renderItem}
-        contentContainerStyle={theme.container}
       />
     </SafeAreaView>
   );

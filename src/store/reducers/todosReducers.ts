@@ -28,16 +28,18 @@ export const todosReducer = (
       };
 
       return {
-        list: [...state.list, todo],
+        list: [todo, ...state.list],
       };
 
     case TodosActions.EDIT_TODO:
+      list = JSON.parse(JSON.stringify(state.list));
+
       if (state.list.length >= 1) {
         index = state.list.findIndex((i: ITodo) => i.id === action.payload.id);
-        state.list[index] = action.payload;
+        list[index] = action.payload;
       }
 
-      return {list: state.list};
+      return {list};
 
     case TodosActions.DELETE_TODO:
       if (state.list.length >= 1) {

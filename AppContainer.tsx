@@ -1,10 +1,12 @@
 import React, {useEffect, useRef} from 'react';
 import {AppState, AppStateStatus} from 'react-native';
+import {useAppState} from '@react-native-community/hooks';
 import {useDispatch, useSelector} from 'react-redux';
 import MainStackScreen from './src/navigation/MainStackNavigator';
 import {updateTodoList} from './src/store/actions/todosActions';
 import {getTodosState} from './src/store/rootSelectors';
 import {ITodo} from './src/store/types/todosTypes';
+import {getFormattedTimer} from './src/utils/functions';
 
 const AppContainer = () => {
   const dispatch = useDispatch();
@@ -23,7 +25,9 @@ const AppContainer = () => {
           nextAppState === 'active'
         ) {
           const now = Date.now();
-          const seconds = (now - dateWentToForeground.current) / 1000;
+          const seconds = Math.floor(
+            (now - dateWentToForeground.current) / 1000,
+          );
 
           const updated = list.map(i => {
             if (i.category !== 'active') {
@@ -47,7 +51,7 @@ const AppContainer = () => {
     return () => {
       subscription.remove();
     };
-  }, [list]);
+  }, [dispatch, list]);
 
   return <MainStackScreen />;
 };

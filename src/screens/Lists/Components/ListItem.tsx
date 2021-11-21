@@ -17,7 +17,8 @@ interface ITodoProps extends ITodo {
 
 export const ListItem = React.forwardRef(
   (props: ITodoProps, previousRef: any) => {
-    const {colors, fonts} = useTheme();
+    const {colors} = useTheme();
+    const {styles} = useStyles();
     const navState = useNavigationState(state => state);
     const dispatch = useDispatch();
     const {navigate} = useNavigation();
@@ -30,45 +31,8 @@ export const ListItem = React.forwardRef(
     const [createdAt, setCreatedAt] = useState('');
     const [status, setStatus] = useState<ITodo['category']>(checkStatus());
     const [timer, setTimer] = useState(
-      getFormattedTimer(
-        checkStatus() === 'active'
-          ? 1 + (Date.now() - props.started_at) / 1000 + props.seconds
-          : 0,
-      ),
+      getFormattedTimer(checkStatus() === 'active' ? props.seconds : 0),
     );
-
-    const theme = StyleSheet.create({
-      row: {
-        backgroundColor: colors.white,
-      },
-      title: {
-        fontSize: fonts.medium,
-        color: colors.black,
-        fontWeight: 'bold',
-        paddingTop: 4,
-        marginBottom: 4,
-      },
-      date: {
-        fontWeight: '100',
-        fontSize: fonts.small,
-        color: colors.infoLight,
-      },
-      button: {
-        backgroundColor: colors.white,
-        width: getModerateScale(60),
-        justifyContent: 'center',
-      },
-      buttonText: {
-        color: colors.darkGrey,
-      },
-      buttonDelete: {
-        backgroundColor: colors.error,
-      },
-      rightButtonsBorder: {
-        borderColor: colors.grey,
-        borderLeftWidth: 1,
-      },
-    });
 
     function checkStatus() {
       return props.wasCompleted ? 'done' : statusRef.current;
@@ -85,6 +49,10 @@ export const ListItem = React.forwardRef(
 
       // If todo was running before unmount, this will start to increment seconds
       if (props.category === 'active') {
+        if (timerRef.current) {
+          clearInterval(timerRef.current);
+        }
+
         timerRef.current = setInterval(() => {
           secondsRef.current += 1;
 
@@ -145,7 +113,7 @@ export const ListItem = React.forwardRef(
       return (
         <View style={styles.inline}>
           <RectButton
-            style={[theme.button, theme.buttonDelete]}
+            style={[styles.button, styles.buttonDelete]}
             onPress={handleAction}>
             <Animated.View style={{opacity: transition}}>
               <Icon type={'material'} name={'delete'} color={colors.white} />
@@ -255,9 +223,9 @@ export const ListItem = React.forwardRef(
         <View style={styles.inline}>
           {props.category !== 'done' ? (
             <>
-              <RectButton style={theme.button} onPress={handleCompleteTodo}>
+              <RectButton style={styles.button} onPress={handleCompleteTodo}>
                 <Animated.View
-                  style={[theme.rightButtonsBorder, {opacity: third}]}>
+                  style={[styles.rightButtonsBorder, {opacity: third}]}>
                   <Icon
                     type={'material'}
                     name={'done'}
@@ -265,9 +233,9 @@ export const ListItem = React.forwardRef(
                   />
                 </Animated.View>
               </RectButton>
-              <RectButton style={theme.button} onPress={handleEditTodo}>
+              <RectButton style={styles.button} onPress={handleEditTodo}>
                 <Animated.View
-                  style={[theme.rightButtonsBorder, {opacity: second}]}>
+                  style={[styles.rightButtonsBorder, {opacity: second}]}>
                   <Icon
                     type={'material'}
                     name={'edit'}
@@ -275,9 +243,9 @@ export const ListItem = React.forwardRef(
                   />
                 </Animated.View>
               </RectButton>
-              <RectButton style={theme.button} onPress={changeTodoState}>
+              <RectButton style={styles.button} onPress={changeTodoState}>
                 <Animated.View
-                  style={[theme.rightButtonsBorder, {opacity: first}]}>
+                  style={[styles.rightButtonsBorder, {opacity: first}]}>
                   <Icon
                     type={'material'}
                     name={status === 'active' ? 'pause' : 'play-arrow'}
@@ -287,9 +255,9 @@ export const ListItem = React.forwardRef(
               </RectButton>
             </>
           ) : (
-            <RectButton style={theme.button} onPress={handleCompleteTodo}>
+            <RectButton style={styles.button} onPress={handleCompleteTodo}>
               <Animated.View
-                style={[theme.rightButtonsBorder, {opacity: first}]}>
+                style={[styles.rightButtonsBorder, {opacity: first}]}>
                 <Icon
                   type={'material'}
                   name={'clear'}
@@ -315,46 +283,74 @@ export const ListItem = React.forwardRef(
       previousRef.current = swipeRef.current;
     };
 
-    if (
-      props.selectedCategory === 'default' ||
-      props.selectedCategory === status
-    ) {
-      return (
-        <Swipeable
-          ref={swipeRef}
-          renderLeftActions={renderLeftActions}
-          renderRightActions={renderRightActions}
-          onSwipeableOpen={handleSwipeableOpen}
-          onSwipeableWillOpen={handleSwipeableWillOpen}
-          containerStyle={theme.row}>
-          <View style={[styles.row, theme.row]}>
-            <View>
-              <Text style={theme.title}>{props.title}</Text>
-              <Text style={theme.date}>{createdAt}</Text>
-            </View>
-            <View>
-              <Text style={theme.date}>{timer}</Text>
-            </View>
+    return (
+      <Swipeable
+        ref={swipeRef}
+        renderLeftActions={renderLeftActions}
+        renderRightActions={renderRightActions}
+        onSwipeableOpen={handleSwipeableOpen}
+        onSwipeableWillOpen={handleSwipeableWillOpen}
+        containerStyle={styles.wrapper}>
+        <View style={[styles.row, styles.wrapper]}>
+          <View>
+            <Text style={styles.title}>{props.title}</Text>
+            <Text style={styles.date}>{createdAt}</Text>
           </View>
-        </Swipeable>
-      );
-    } else {
-      // "Unmount" component if selected category is not compare to status
-      return null;
-    }
+          <View>
+            <Text style={styles.date}>{timer}</Text>
+          </View>
+        </View>
+      </Swipeable>
+    );
   },
 );
 
-const styles = StyleSheet.create({
-  row: {
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingVertical: getModerateScale(10),
-    paddingHorizontal: getModerateScale(12),
-    width: Dimensions.get('window').width,
-    flexDirection: 'row',
-  },
-  inline: {
-    flexDirection: 'row',
-  },
-});
+const useStyles = () => {
+  const {colors, fonts} = useTheme();
+
+  const styles = StyleSheet.create({
+    row: {
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      paddingVertical: getModerateScale(10),
+      paddingHorizontal: getModerateScale(12),
+      width: Dimensions.get('window').width,
+      flexDirection: 'row',
+    },
+    wrapper: {
+      backgroundColor: colors.white,
+    },
+    inline: {
+      flexDirection: 'row',
+    },
+    title: {
+      fontSize: fonts.medium,
+      color: colors.black,
+      fontWeight: 'bold',
+      paddingTop: 4,
+      marginBottom: 4,
+    },
+    date: {
+      fontWeight: '100',
+      fontSize: fonts.small,
+      color: colors.infoLight,
+    },
+    button: {
+      backgroundColor: colors.white,
+      width: getModerateScale(60),
+      justifyContent: 'center',
+    },
+    buttonText: {
+      color: colors.darkGrey,
+    },
+    buttonDelete: {
+      backgroundColor: colors.error,
+    },
+    rightButtonsBorder: {
+      borderColor: colors.grey,
+      borderLeftWidth: 1,
+    },
+  });
+
+  return {styles};
+};
