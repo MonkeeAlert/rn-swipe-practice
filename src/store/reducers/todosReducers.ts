@@ -2,8 +2,7 @@ import {generateID} from '../../utils/functions';
 import {ITodo, TodosActions, TodosActionsTypes} from '../types/todosTypes';
 
 const initialState = {
-  list: [],
-  // activeCategory: 'all',
+  list: [] as ITodo[],
 };
 
 export const todosReducer = (
@@ -22,37 +21,38 @@ export const todosReducer = (
         created_at: now,
         started_at: 0,
         finished_at: 0,
-        category: 'default',
+        status: 'default',
         wasCompleted: false,
         title: action.payload.title,
         seconds: 0,
       };
 
       return {
-        list: [...state.list, todo],
+        list: [todo, ...state.list],
       };
 
     case TodosActions.EDIT_TODO:
+      list = JSON.parse(JSON.stringify(state.list));
+
       if (state.list.length >= 1) {
         index = state.list.findIndex((i: ITodo) => i.id === action.payload.id);
-        state.list[index] = action.payload;
-      }
-
-      return {list: state.list};
-
-    case TodosActions.DELETE_TODO:
-      if (state.list.length >= 1) {
-        list = state.list.filter((i: ITodo) => i.id !== action.payload.id);
+        list[index] = {...list[index], ...action.payload};
       }
 
       return {list};
 
-    // case TodosActions.SET_ACTIVE_CATEGORY:
-    //   console.log('@payload', action.payload);
-    //   return {
-    //     ...state,
-    //     activeCategory: action.payload.category,
-    //   };
+    case TodosActions.DELETE_TODO:
+      list = JSON.parse(JSON.stringify(state.list));
+
+      if (state.list.length >= 1) {
+        index = state.list.findIndex((i: ITodo) => i.id === action.payload.id);
+        list.splice(index, 1);
+      }
+
+      return {list};
+
+    case TodosActions.UPDATE_TODO_LIST:
+      return {list: action.payload.list};
 
     default:
       return state;

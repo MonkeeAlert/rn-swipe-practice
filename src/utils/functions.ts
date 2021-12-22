@@ -104,3 +104,13 @@ export const getFormattedTimer = (s: number) => {
     minutes < 10 ? '0' + minutes : minutes
   }:${seconds < 10 ? '0' + seconds : seconds}`;
 };
+
+/**
+ * Get seconds from passed Date parameter
+ *
+ */
+export const getSecondsFrom = (date: number) => {
+  const now = Date.now();
+
+  return (now - date) / 1000;
+};

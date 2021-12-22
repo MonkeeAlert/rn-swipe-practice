@@ -14,6 +14,7 @@ import java.lang.reflect.InvocationTargetException;
 import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.ReactRootView;
 import com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView;
+import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
 import java.util.List;
 
 public class MainApplication extends Application implements ReactApplication {
