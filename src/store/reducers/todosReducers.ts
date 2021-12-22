@@ -21,7 +21,7 @@ export const todosReducer = (
         created_at: now,
         started_at: 0,
         finished_at: 0,
-        category: 'default',
+        status: 'default',
         wasCompleted: false,
         title: action.payload.title,
         seconds: 0,
@@ -42,8 +42,11 @@ export const todosReducer = (
       return {list};
 
     case TodosActions.DELETE_TODO:
+      list = JSON.parse(JSON.stringify(state.list));
+
       if (state.list.length >= 1) {
-        list = state.list.filter((i: ITodo) => i.id !== action.payload.id);
+        index = state.list.findIndex((i: ITodo) => i.id === action.payload.id);
+        list.splice(index, 1);
       }
 
       return {list};

@@ -1,5 +1,5 @@
 import {useNavigation} from '@react-navigation/native';
-import React, {useEffect, useState} from 'react';
+import React, {useState, useRef} from 'react';
 import {Dimensions} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {StyleSheet, View, SafeAreaView} from 'react-native';
@@ -16,18 +16,15 @@ export const DataInputScreen = ({route}) => {
   const {colors} = useTheme();
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const [placeholder, setPlaceholder] = useState('');
+  const placeholderRef = useRef(
+    defaultTodoPlaceholders[
+      Math.floor(Math.random() * defaultTodoPlaceholders.length - 1) + 1
+    ],
+  ).current;
+
   const [value, setValue] = useState('');
 
   const {title, buttonConfig} = route.params;
-
-  useEffect(() => {
-    const placeholders = defaultTodoPlaceholders;
-
-    setPlaceholder(
-      placeholders[Math.floor(Math.random() * placeholders.length - 1) + 1],
-    );
-  }, []);
 
   const handleSubmit = () => {
     if (value === '') {
@@ -69,7 +66,7 @@ export const DataInputScreen = ({route}) => {
         </View>
         <DefaultInput
           value={value}
-          placeholder={placeholder}
+          placeholder={placeholderRef}
           onChangeText={handleInput}
         />
       </View>

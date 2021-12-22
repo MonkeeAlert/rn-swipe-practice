@@ -16,11 +16,17 @@ import {useNavigation, useNavigationState} from '@react-navigation/native';
 import {getModerateScale} from '../../../utils/Scaling';
 
 interface ITodoProps extends ITodo {
-  selectedCategory: ITodo['category'];
+  selectedCategory: ITodo['status'];
 }
 
-export const ListItem = React.forwardRef(
-  (props: ITodoProps, previousRef: any) => {
+const areItemsEqual = (prev: ITodoProps, next: ITodoProps) => {
+  return (
+    prev.started_at === next.started_at && prev.finished_at === next.finished_at
+  );
+};
+
+export const ListItem = React.memo(
+  React.forwardRef((props: ITodoProps, previousRef: any) => {
     const {colors} = useTheme();
     const {styles} = useStyles();
     const navState = useNavigationState(state => state);
@@ -30,27 +36,11 @@ export const ListItem = React.forwardRef(
     const swipeRef = useRef<Swipeable>(null);
     const timerRef = useRef<any>(null);
     const secondsRef = useRef<number>(props.seconds);
-    const statusRef = useRef<ITodo['category']>(props.category);
+    const statusRef = useRef<ITodo['status']>(props.status);
 
     const [createdAt, setCreatedAt] = useState('');
-    const [status, setStatus] = useState<ITodo['category']>(checkStatus());
+    const [status, setStatus] = useState<ITodo['status']>(checkStatus());
     const [timer, setTimer] = useState(getFormattedTimer(props.seconds));
-
-    useAppStateCallbacks(undefined, date => {
-      const past = getSecondsFrom(date);
-
-      if (statusRef.current === 'active') {
-        const todo: ITodo = {
-          ...props,
-          category: 'active',
-          started_at: Date.now(),
-          finished_at: props.finished_at,
-          seconds: secondsRef.current + past,
-        };
-
-        dispatch(editTodo(todo));
-      }
-    });
 
     function checkStatus() {
       return props.wasCompleted ? 'done' : statusRef.current;
@@ -59,13 +49,13 @@ export const ListItem = React.forwardRef(
     const setDifference = () => {
       const past =
         props.seconds +
-        (props.category === 'active' ? getSecondsFrom(props.started_at) : 0);
+        (props.status === 'active' ? getSecondsFrom(props.started_at) : 0);
 
       secondsRef.current = past;
       setTimer(getFormattedTimer(secondsRef.current));
 
       // If todo was running before unmount, this will start to increment seconds
-      if (props.category === 'active') {
+      if (props.status === 'active') {
         clearInterval(timerRef.current);
 
         timerRef.current = setInterval(() => {
@@ -75,40 +65,6 @@ export const ListItem = React.forwardRef(
         }, 1000);
       }
     };
-
-    useEffect(() => {
-      swipeRef.current?.close();
-    }, [navState]);
-
-    useEffect(() => {
-      // Set date of todo creation
-      const d = getDate(props.created_at).toString();
-      setCreatedAt(d);
-
-      // Triggers when user leaves screen
-      return () => {
-        const now = Date.now();
-        const statusOnUnmount = statusRef.current;
-
-        const savedTodo: ITodo = {
-          ...props,
-          category: statusOnUnmount,
-          started_at: statusOnUnmount === 'active' ? now : props.started_at,
-          seconds: secondsRef.current,
-        };
-
-        clearInterval(timerRef.current);
-        dispatch(editTodo(savedTodo));
-      };
-    }, []);
-
-    useEffect(() => {
-      setDifference();
-
-      return () => {
-        clearInterval(timerRef.current);
-      };
-    }, [props.seconds]);
 
     const renderLeftActions = (_: any, dragX: any) => {
       const interpolations = [0, getModerateScale(60), getModerateScale(61)];
@@ -188,7 +144,7 @@ export const ListItem = React.forwardRef(
 
       // Complete todo
       const handleCompleteTodo = () => {
-        statusRef.current = props.category === 'done' ? 'default' : 'done';
+        statusRef.current = props.status === 'done' ? 'default' : 'done';
 
         const now = Date.now();
         const todo = {
@@ -196,7 +152,7 @@ export const ListItem = React.forwardRef(
           category: statusRef.current,
           started_at: now,
           finished_at: now,
-          wasCompleted: props.category === 'done',
+          wasCompleted: props.status === 'done',
         };
 
         clearInterval(timerRef.current);
@@ -213,7 +169,7 @@ export const ListItem = React.forwardRef(
 
         const todo: ITodo = {
           ...props,
-          category: statusRef.current,
+          status: statusRef.current,
           started_at: now,
           finished_at: statusRef.current === 'paused' ? now : props.finished_at,
           seconds: secondsRef.current,
@@ -236,7 +192,7 @@ export const ListItem = React.forwardRef(
 
       return (
         <View style={styles.inline}>
-          {props.category !== 'done' ? (
+          {props.status !== 'done' ? (
             <>
               <RectButton style={styles.button} onPress={handleCompleteTodo}>
                 <Animated.View
@@ -287,16 +243,68 @@ export const ListItem = React.forwardRef(
 
     // Compare to refs
     const handleSwipeableWillOpen = () => {
-      if (previousRef?.current !== null) {
-        if (previousRef?.current !== swipeRef.current) {
-          previousRef?.current?.close();
-        }
+      if (
+        previousRef?.current !== null &&
+        previousRef?.current !== swipeRef.current
+      ) {
+        previousRef?.current?.close();
       }
     };
 
     const handleSwipeableOpen = () => {
       previousRef.current = swipeRef.current;
     };
+
+    // Change seconds
+    useAppStateCallbacks(undefined, date => {
+      const past = getSecondsFrom(date);
+
+      if (statusRef.current === 'active') {
+        const todo: ITodo = {
+          ...props,
+          status: 'active',
+          started_at: Date.now(),
+          finished_at: props.finished_at,
+          seconds: secondsRef.current + past,
+        };
+
+        dispatch(editTodo(todo));
+      }
+    });
+
+    useEffect(() => {
+      swipeRef.current?.close();
+    }, [navState]);
+
+    useEffect(() => {
+      // Set date of todo creation
+      const d = getDate(props.created_at).toString();
+      setCreatedAt(d);
+
+      // Triggers when user leaves screen
+      return () => {
+        const now = Date.now();
+        const statusOnUnmount = statusRef.current;
+
+        const savedTodo: ITodo = {
+          ...props,
+          status: statusOnUnmount,
+          started_at: statusOnUnmount === 'active' ? now : props.started_at,
+          seconds: secondsRef.current,
+        };
+
+        clearInterval(timerRef.current);
+        dispatch(editTodo(savedTodo));
+      };
+    }, []);
+
+    useEffect(() => {
+      setDifference();
+
+      return () => {
+        clearInterval(timerRef.current);
+      };
+    }, [props.seconds]);
 
     return (
       <Swipeable
@@ -317,7 +325,8 @@ export const ListItem = React.forwardRef(
         </View>
       </Swipeable>
     );
-  },
+  }),
+  areItemsEqual,
 );
 
 const useStyles = () => {

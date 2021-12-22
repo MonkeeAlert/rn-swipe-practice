@@ -5,7 +5,7 @@ export interface ITodo {
   created_at: number;
   started_at: number;
   finished_at: number;
-  category: 'default' | 'active' | 'paused' | 'done';
+  status: 'default' | 'active' | 'paused' | 'done';
   title: string;
   wasCompleted: boolean;
   seconds: number;

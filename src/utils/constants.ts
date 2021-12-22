@@ -46,3 +46,5 @@ export const months = [
   'Nov',
   'Dec',
 ];
+
+export const defaultAnimationTiming = 500;

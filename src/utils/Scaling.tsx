@@ -1,6 +1,7 @@
 /**
+ * Scale fonts and blocks
  *
- * https://medium.com/soluto-engineering/size-matters-5aeeb462900a
+ * @see https://medium.com/soluto-engineering/size-matters-5aeeb462900a
  */
 
 import {Dimensions} from 'react-native';

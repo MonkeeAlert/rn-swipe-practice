@@ -1,28 +1,43 @@
-import React from 'react';
-import {Dimensions, StyleSheet, Text, View} from 'react-native';
+import React, {useEffect, useRef} from 'react';
+import {StyleSheet, Text, View, Animated} from 'react-native';
 import {Icon} from 'react-native-elements';
+import {defaultAnimationTiming} from '../../../utils/constants';
 import {useTheme} from '../../../utils/hooks';
 import {getModerateScale} from '../../../utils/Scaling';
-import {useHeaderHeight} from '@react-navigation/elements';
 
 export const EmptyList = () => {
-  const headerHeight = useHeaderHeight();
-  const {colors, fonts} = useTheme();
+  const {styles, colors} = useStyles();
 
-  const theme = StyleSheet.create({
-    text: {
-      color: colors.darkGrey,
-      fontSize: fonts.medium,
-    },
-    container: {
-      width: Dimensions.get('window').width,
-      height:
-        Dimensions.get('window').height - getModerateScale(45) - headerHeight,
-    },
-  });
+  const animationRef = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    Animated.timing(animationRef, {
+      toValue: 1,
+      duration: defaultAnimationTiming,
+      useNativeDriver: false,
+    }).start();
+  }, [animationRef]);
 
   return (
-    <View style={[styles.container, theme.container]}>
+    <Animated.View
+      style={[
+        {
+          opacity: animationRef.interpolate({
+            inputRange: [0, 1],
+            outputRange: [0, 1],
+            extrapolate: 'clamp',
+          }),
+          transform: [
+            {
+              translateY: animationRef.interpolate({
+                inputRange: [0, 1],
+                outputRange: [20, 0],
+                extrapolate: 'clamp',
+              }),
+            },
+          ],
+        },
+      ]}>
       <View style={styles.icon}>
         <Icon
           name={'done-all'}
@@ -31,19 +46,23 @@ export const EmptyList = () => {
           size={getModerateScale(48)}
         />
       </View>
-      <Text style={[styles.text, theme.text]}>List is empty</Text>
-    </View>
+      <Text style={styles.text}>List is empty</Text>
+    </Animated.View>
   );
 };
 
-const styles = StyleSheet.create({
-  icon: {
-    marginBottom: 18,
-  },
-  text: {
-    textAlign: 'center',
-  },
-  container: {
-    justifyContent: 'center',
-  },
-});
+const useStyles = () => {
+  const {colors, fonts} = useTheme();
+  const styles = StyleSheet.create({
+    icon: {
+      marginBottom: 18,
+    },
+    text: {
+      textAlign: 'center',
+      color: colors.darkGrey,
+      fontSize: fonts.medium,
+    },
+  });
+
+  return {styles, colors};
+};

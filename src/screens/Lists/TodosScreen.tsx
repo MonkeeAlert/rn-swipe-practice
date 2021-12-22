@@ -27,40 +27,43 @@ const CATEGORIES = [
 ];
 
 const TodosScreen = () => {
-  const {colors, fonts} = useTheme();
+  const {styles} = useStyles();
   const ref = useRef<Swipeable>(null);
   const {list} = useSelector(getTodosState);
 
   const [data, setData] = useState<ITodo[]>([]);
-  const [selectedCategory, setSelectedCategory] =
-    useState<ITodo['category']>('default');
+  const [status, setStatus] = useState<ITodo['status']>('default');
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
 
-  const theme = StyleSheet.create({
-    container: {
-      alignItems: data.length === 0 ? 'center' : 'flex-start',
-      justifyContent: data.length === 0 ? 'center' : 'flex-start',
-    },
-    empty: {
-      flex: 1,
-    },
-    buttonTextStyle: {
-      fontSize: fonts.regular,
-      color: colors.darkGrey,
-      fontWeight: 'bold',
-    },
-    buttonStyle: {},
-    selectedButtonText: {
-      color: colors.black,
-    },
-  });
+  const renderEmptyComponent = () => {
+    const isEmpty = list.filter(i => i.status === status).length === 0;
+
+    return status === 'default' ? (
+      list.length === 0 ? (
+        <EmptyList />
+      ) : null
+    ) : isEmpty ? (
+      <EmptyList />
+    ) : null;
+  };
+
+  const renderItem = (itemData: {item: ITodo}) => {
+    return <ListItem ref={ref} {...itemData.item} selectedCategory={status} />;
+  };
+
+  const handleCategory = (c: number) => {
+    const category = CATEGORIES[c].key as ITodo['status'];
+
+    setSelectedIndex(c);
+    setStatus(category);
+  };
 
   useEffect(() => {
     if (list?.length > 0) {
-      if (selectedCategory === 'default') {
+      if (status === 'default') {
         setData(list);
       } else {
-        const filtered = list.filter(i => i.category === selectedCategory);
+        const filtered = list.filter(i => i.status === status);
 
         setData(filtered);
       }
@@ -71,24 +74,7 @@ const TodosScreen = () => {
     return () => {
       ref.current = null;
     };
-  }, [selectedCategory, list]);
-
-  const renderItem = (itemData: {item: ITodo}) => {
-    return (
-      <ListItem
-        ref={ref}
-        {...itemData.item}
-        selectedCategory={selectedCategory}
-      />
-    );
-  };
-
-  const handleCategory = (c: number) => {
-    const category = CATEGORIES[c].key as ITodo['category'];
-
-    setSelectedIndex(c);
-    setSelectedCategory(category);
-  };
+  }, [status, list]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -98,25 +84,19 @@ const TodosScreen = () => {
         selectedIndex={selectedIndex}
         innerBorderStyle={styles.buttonGroupBorder}
         containerStyle={styles.buttonContainer}
-        selectedTextStyle={theme.selectedButtonText}
-        textStyle={theme.buttonTextStyle}
+        selectedTextStyle={styles.selectedButtonText}
+        textStyle={styles.buttonTextStyle}
       />
       <FlatList
         data={data}
         renderItem={renderItem}
-        contentContainerStyle={theme.container}
-        ListEmptyComponent={() => {
-          const isEmpty =
-            list.filter(i => i.category === selectedCategory).length === 0;
-
-          return selectedCategory === 'default' ? (
-            list.length === 0 ? (
-              <EmptyList />
-            ) : null
-          ) : isEmpty ? (
-            <EmptyList />
-          ) : null;
-        }}
+        contentContainerStyle={[
+          styles.contentContainer,
+          {
+            justifyContent: data.length === 0 ? 'center' : 'flex-start',
+          },
+        ]}
+        ListEmptyComponent={renderEmptyComponent}
       />
     </SafeAreaView>
   );
@@ -124,15 +104,32 @@ const TodosScreen = () => {
 
 export default TodosScreen;
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  buttonContainer: {
-    borderRadius: 7,
-    height: getModerateScale(45),
-  },
-  buttonGroupBorder: {
-    width: 0,
-  },
-});
+const useStyles = () => {
+  const {colors, fonts} = useTheme();
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+    },
+    contentContainer: {
+      flexGrow: 1,
+      alignItems: 'center',
+    },
+    buttonContainer: {
+      borderRadius: 7,
+      height: getModerateScale(45),
+    },
+    buttonGroupBorder: {
+      width: 0,
+    },
+    buttonTextStyle: {
+      fontSize: fonts.regular,
+      color: colors.darkGrey,
+      fontWeight: 'bold',
+    },
+    selectedButtonText: {
+      color: colors.black,
+    },
+  });
+
+  return {styles};
+};
