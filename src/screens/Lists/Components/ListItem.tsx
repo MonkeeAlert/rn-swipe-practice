@@ -1,8 +1,12 @@
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import React, {useEffect, useRef, useState} from 'react';
 import {View, Text, StyleSheet, Animated, Dimensions} from 'react-native';
-import {getDate, getFormattedTimer} from '../../../utils/functions';
-import {useTheme} from '../../../utils/hooks';
+import {
+  getDate,
+  getFormattedTimer,
+  getSecondsFrom,
+} from '../../../utils/functions';
+import {useAppStateCallbacks, useTheme} from '../../../utils/hooks';
 import {RectButton} from 'react-native-gesture-handler';
 import {Icon} from 'react-native-elements';
 import {useDispatch} from 'react-redux';
@@ -25,33 +29,44 @@ export const ListItem = React.forwardRef(
 
     const swipeRef = useRef<Swipeable>(null);
     const timerRef = useRef<any>(null);
-    const secondsRef = useRef<number>(0);
+    const secondsRef = useRef<number>(props.seconds);
     const statusRef = useRef<ITodo['category']>(props.category);
 
     const [createdAt, setCreatedAt] = useState('');
     const [status, setStatus] = useState<ITodo['category']>(checkStatus());
-    const [timer, setTimer] = useState(
-      getFormattedTimer(checkStatus() === 'active' ? props.seconds : 0),
-    );
+    const [timer, setTimer] = useState(getFormattedTimer(props.seconds));
+
+    useAppStateCallbacks(undefined, date => {
+      const past = getSecondsFrom(date);
+
+      if (statusRef.current === 'active') {
+        const todo: ITodo = {
+          ...props,
+          category: 'active',
+          started_at: Date.now(),
+          finished_at: props.finished_at,
+          seconds: secondsRef.current + past,
+        };
+
+        dispatch(editTodo(todo));
+      }
+    });
 
     function checkStatus() {
       return props.wasCompleted ? 'done' : statusRef.current;
     }
 
     const setDifference = () => {
-      const difference =
-        props.category === 'active'
-          ? (Date.now() - props.started_at) / 1000
-          : 0;
+      const past =
+        props.seconds +
+        (props.category === 'active' ? getSecondsFrom(props.started_at) : 0);
 
-      secondsRef.current = difference + props.seconds;
+      secondsRef.current = past;
       setTimer(getFormattedTimer(secondsRef.current));
 
       // If todo was running before unmount, this will start to increment seconds
       if (props.category === 'active') {
-        if (timerRef.current) {
-          clearInterval(timerRef.current);
-        }
+        clearInterval(timerRef.current);
 
         timerRef.current = setInterval(() => {
           secondsRef.current += 1;
@@ -70,9 +85,7 @@ export const ListItem = React.forwardRef(
       const d = getDate(props.created_at).toString();
       setCreatedAt(d);
 
-      // Set seconds after todo was started
-      setDifference();
-
+      // Triggers when user leaves screen
       return () => {
         const now = Date.now();
         const statusOnUnmount = statusRef.current;
@@ -197,11 +210,13 @@ export const ListItem = React.forwardRef(
         statusRef.current = status === 'active' ? 'paused' : 'active';
 
         const now = Date.now();
+
         const todo: ITodo = {
           ...props,
           category: statusRef.current,
           started_at: now,
           finished_at: statusRef.current === 'paused' ? now : props.finished_at,
+          seconds: secondsRef.current,
         };
 
         if (statusRef.current === 'active') {

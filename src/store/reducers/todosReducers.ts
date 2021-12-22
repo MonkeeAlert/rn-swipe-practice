@@ -36,7 +36,7 @@ export const todosReducer = (
 
       if (state.list.length >= 1) {
         index = state.list.findIndex((i: ITodo) => i.id === action.payload.id);
-        list[index] = action.payload;
+        list[index] = {...list[index], ...action.payload};
       }
 
       return {list};

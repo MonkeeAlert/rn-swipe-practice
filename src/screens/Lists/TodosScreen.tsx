@@ -56,10 +56,6 @@ const TodosScreen = () => {
   });
 
   useEffect(() => {
-    console.log('@list', list);
-  }, []);
-
-  useEffect(() => {
     if (list?.length > 0) {
       if (selectedCategory === 'default') {
         setData(list);
