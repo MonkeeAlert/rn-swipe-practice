@@ -37,6 +37,7 @@ export const ListItem = React.memo(
     const timerRef = useRef<any>(null);
     const secondsRef = useRef<number>(props.seconds);
     const statusRef = useRef<ITodo['status']>(props.status);
+    // const borderOpacityRef = useRef(new Animated.Value(0)).current;
 
     const [createdAt, setCreatedAt] = useState('');
     const [status, setStatus] = useState<ITodo['status']>(checkStatus());
@@ -144,7 +145,7 @@ export const ListItem = React.memo(
 
       // Complete todo
       const handleCompleteTodo = () => {
-        statusRef.current = props.status === 'done' ? 'default' : 'done';
+        statusRef.current = status === 'done' ? 'default' : 'done';
 
         const now = Date.now();
         const todo = {
@@ -152,7 +153,7 @@ export const ListItem = React.memo(
           category: statusRef.current,
           started_at: now,
           finished_at: now,
-          wasCompleted: props.status === 'done',
+          wasCompleted: status === 'done',
         };
 
         clearInterval(timerRef.current);
@@ -192,7 +193,7 @@ export const ListItem = React.memo(
 
       return (
         <View style={styles.inline}>
-          {props.status !== 'done' ? (
+          {status !== 'done' ? (
             <>
               <RectButton style={styles.button} onPress={handleCompleteTodo}>
                 <Animated.View
@@ -226,14 +227,11 @@ export const ListItem = React.memo(
               </RectButton>
             </>
           ) : (
-            <RectButton style={styles.button} onPress={handleCompleteTodo}>
-              <Animated.View
-                style={[styles.rightButtonsBorder, {opacity: first}]}>
-                <Icon
-                  type={'material'}
-                  name={'clear'}
-                  color={colors.darkGrey}
-                />
+            <RectButton
+              style={[styles.button, {backgroundColor: colors.successLight}]}
+              onPress={handleCompleteTodo}>
+              <Animated.View style={{opacity: first}}>
+                <Icon type={'material'} name={'clear'} color={colors.white} />
               </Animated.View>
             </RectButton>
           )}
@@ -316,7 +314,13 @@ export const ListItem = React.memo(
         containerStyle={styles.wrapper}>
         <View style={[styles.row, styles.wrapper]}>
           <View>
-            <Text style={styles.title}>{props.title}</Text>
+            <Text
+              style={[
+                styles.title,
+                status === 'done' ? {textDecorationLine: 'line-through'} : null,
+              ]}>
+              {props.title}
+            </Text>
             <Text style={styles.date}>{createdAt}</Text>
           </View>
           <View>
@@ -337,7 +341,7 @@ const useStyles = () => {
       alignItems: 'center',
       justifyContent: 'space-between',
       paddingVertical: getModerateScale(10),
-      paddingHorizontal: getModerateScale(12),
+      paddingHorizontal: getModerateScale(14),
       width: Dimensions.get('window').width,
       flexDirection: 'row',
     },
