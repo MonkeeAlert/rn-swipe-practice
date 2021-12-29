@@ -23,6 +23,7 @@ import {useNavigation} from '@react-navigation/native';
 import {getModerateScale} from '../../../utils/Scaling';
 import {RootStackParamList} from '../../../utils/stackNavgation';
 import {StackNavigationProp} from '@react-navigation/stack';
+import {Timer} from './Timer';
 
 interface ITodoProps extends ITodo {
   selectedCategory: ITodo['status'];
@@ -42,37 +43,12 @@ export const ListItem = memo(
     const {navigate} = useNavigation<StackNavigationProp<RootStackParamList>>();
 
     const swipeRef = useRef<Swipeable>(null);
-    const timerRef = useRef<any>(null);
-    const secondsRef = useRef<number>(props.seconds);
-    const statusRef = useRef<ITodo['status']>(props.status);
 
-    const [createdAt, setCreatedAt] = useState('');
     const [status, setStatus] = useState<ITodo['status']>(checkStatus());
-    const [timer, setTimer] = useState(getFormattedTimer(props.seconds));
 
     function checkStatus() {
-      return props.wasCompleted ? 'done' : statusRef.current;
+      return props.wasCompleted ? 'done' : props.status;
     }
-
-    const setDifference = useCallback(() => {
-      const past =
-        props.seconds +
-        (props.status === 'active' ? getSecondsFrom(props.started_at) : 0);
-
-      secondsRef.current = past;
-      setTimer(getFormattedTimer(secondsRef.current));
-
-      // If todo was running before unmount, this will start to increment seconds
-      if (props.status === 'active') {
-        clearInterval(timerRef.current);
-
-        timerRef.current = setInterval(() => {
-          secondsRef.current += 1;
-
-          setTimer(getFormattedTimer(secondsRef.current));
-        }, 1000);
-      }
-    }, [props.seconds, props.started_at, props.status]);
 
     const renderLeftActions = (_: any, dragX: any) => {
       const interpolations = [0, getModerateScale(60), getModerateScale(61)];
@@ -82,10 +58,7 @@ export const ListItem = memo(
         outputRange: [0, 1, 1],
       });
 
-      const handleAction = () => {
-        clearInterval(timerRef.current);
-        dispatch(deleteTodo(props.id));
-      };
+      const handleAction = () => dispatch(deleteTodo(props.id));
 
       return (
         <View style={styles.inline}>
@@ -152,49 +125,13 @@ export const ListItem = memo(
 
       // Complete todo
       const handleCompleteTodo = () => {
-        statusRef.current = status === 'done' ? 'default' : 'done';
-
-        const now = Date.now();
-        const todo = {
-          ...props,
-          category: statusRef.current,
-          started_at: now,
-          finished_at: now,
-          wasCompleted: status === 'done',
-        };
-
-        clearInterval(timerRef.current);
-        setStatus(statusRef.current);
-        dispatch(editTodo(todo));
+        setStatus(prev => (prev === 'done' ? 'default' : 'done'));
         swipeRef.current?.close();
       };
 
       // Change state to active or paused
       const changeTodoState = () => {
-        statusRef.current = status === 'active' ? 'paused' : 'active';
-
-        const now = Date.now();
-
-        const todo: ITodo = {
-          ...props,
-          status: statusRef.current,
-          started_at: now,
-          finished_at: statusRef.current === 'paused' ? now : props.finished_at,
-          seconds: secondsRef.current,
-        };
-
-        if (statusRef.current === 'active') {
-          timerRef.current = setInterval(() => {
-            secondsRef.current += 1;
-
-            setTimer(getFormattedTimer(secondsRef.current));
-          }, 1000);
-        } else {
-          clearInterval(timerRef.current);
-        }
-
-        setStatus(statusRef.current);
-        dispatch(editTodo(todo));
+        setStatus(prev => (prev === 'active' ? 'paused' : 'active'));
         swipeRef.current?.close();
       };
 
@@ -261,52 +198,21 @@ export const ListItem = memo(
     };
 
     // Change seconds
-    useAppStateCallbacks(undefined, date => {
-      const past = getSecondsFrom(date);
+    // useAppStateCallbacks(undefined, date => {
+    //   const past = getSecondsFrom(date);
 
-      if (statusRef.current === 'active') {
-        const todo: ITodo = {
-          ...props,
-          status: 'active',
-          started_at: Date.now(),
-          finished_at: props.finished_at,
-          seconds: secondsRef.current + past,
-        };
+    //   if (statusRef.current === 'active') {
+    //     const todo: ITodo = {
+    //       ...props,
+    //       status: 'active',
+    //       started_at: Date.now(),
+    //       finished_at: props.finished_at,
+    //       seconds: secondsRef.current + past,
+    //     };
 
-        dispatch(editTodo(todo));
-      }
-    });
-
-    useEffect(() => {
-      // Set date of todo creation
-      const d = getDate(props.created_at).toString();
-      setCreatedAt(d);
-
-      // Triggers when user leaves screen
-      return () => {
-        const now = Date.now();
-        const statusOnUnmount = statusRef.current;
-
-        const savedTodo: ITodo = {
-          ...props,
-          status: statusOnUnmount,
-          started_at: statusOnUnmount === 'active' ? now : props.started_at,
-          seconds: secondsRef.current,
-        };
-
-        clearInterval(timerRef.current);
-        dispatch(editTodo(savedTodo));
-      };
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [dispatch]);
-
-    useEffect(() => {
-      setDifference();
-
-      return () => {
-        clearInterval(timerRef.current);
-      };
-    }, [setDifference]);
+    //     dispatch(editTodo(todo));
+    //   }
+    // });
 
     return (
       <Swipeable
@@ -325,11 +231,12 @@ export const ListItem = memo(
               ]}>
               {props.title}
             </Text>
-            <Text style={styles.date}>{createdAt}</Text>
+            <Text style={styles.date}>
+              {getDate(props.created_at).toString()}
+            </Text>
           </View>
-          <View>
-            <Text style={styles.date}>{timer}</Text>
-          </View>
+
+          <Timer item={props} status={status} />
         </View>
       </Swipeable>
     );
