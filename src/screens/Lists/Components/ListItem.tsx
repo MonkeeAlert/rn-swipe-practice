@@ -1,5 +1,12 @@
 import Swipeable from 'react-native-gesture-handler/Swipeable';
-import React, {useEffect, useRef, useState} from 'react';
+import React, {
+  useEffect,
+  useRef,
+  useState,
+  memo,
+  forwardRef,
+  useCallback,
+} from 'react';
 import {View, Text, StyleSheet, Animated, Dimensions} from 'react-native';
 import {
   getDate,
@@ -12,8 +19,10 @@ import {Icon} from 'react-native-elements';
 import {useDispatch} from 'react-redux';
 import {ITodo, TodosActions} from '../../../store/types/todosTypes';
 import {deleteTodo, editTodo} from '../../../store/actions/todosActions';
-import {useNavigation, useNavigationState} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import {getModerateScale} from '../../../utils/Scaling';
+import {RootStackParamList} from '../../../utils/stackNavgation';
+import {StackNavigationProp} from '@react-navigation/stack';
 
 interface ITodoProps extends ITodo {
   selectedCategory: ITodo['status'];
@@ -25,13 +34,12 @@ const areItemsEqual = (prev: ITodoProps, next: ITodoProps) => {
   );
 };
 
-export const ListItem = React.memo(
-  React.forwardRef((props: ITodoProps, previousRef: any) => {
+export const ListItem = memo(
+  forwardRef((props: ITodoProps, previousRef: any) => {
     const {colors} = useTheme();
     const {styles} = useStyles();
-    const navState = useNavigationState(state => state);
     const dispatch = useDispatch();
-    const {navigate} = useNavigation();
+    const {navigate} = useNavigation<StackNavigationProp<RootStackParamList>>();
 
     const swipeRef = useRef<Swipeable>(null);
     const timerRef = useRef<any>(null);
@@ -46,7 +54,7 @@ export const ListItem = React.memo(
       return props.wasCompleted ? 'done' : statusRef.current;
     }
 
-    const setDifference = () => {
+    const setDifference = useCallback(() => {
       const past =
         props.seconds +
         (props.status === 'active' ? getSecondsFrom(props.started_at) : 0);
@@ -64,7 +72,7 @@ export const ListItem = React.memo(
           setTimer(getFormattedTimer(secondsRef.current));
         }, 1000);
       }
-    };
+    }, [props.seconds, props.started_at, props.status]);
 
     const renderLeftActions = (_: any, dragX: any) => {
       const interpolations = [0, getModerateScale(60), getModerateScale(61)];
@@ -144,7 +152,7 @@ export const ListItem = React.memo(
 
       // Complete todo
       const handleCompleteTodo = () => {
-        statusRef.current = props.status === 'done' ? 'default' : 'done';
+        statusRef.current = status === 'done' ? 'default' : 'done';
 
         const now = Date.now();
         const todo = {
@@ -152,7 +160,7 @@ export const ListItem = React.memo(
           category: statusRef.current,
           started_at: now,
           finished_at: now,
-          wasCompleted: props.status === 'done',
+          wasCompleted: status === 'done',
         };
 
         clearInterval(timerRef.current);
@@ -192,7 +200,7 @@ export const ListItem = React.memo(
 
       return (
         <View style={styles.inline}>
-          {props.status !== 'done' ? (
+          {status !== 'done' ? (
             <>
               <RectButton style={styles.button} onPress={handleCompleteTodo}>
                 <Animated.View
@@ -226,14 +234,11 @@ export const ListItem = React.memo(
               </RectButton>
             </>
           ) : (
-            <RectButton style={styles.button} onPress={handleCompleteTodo}>
-              <Animated.View
-                style={[styles.rightButtonsBorder, {opacity: first}]}>
-                <Icon
-                  type={'material'}
-                  name={'clear'}
-                  color={colors.darkGrey}
-                />
+            <RectButton
+              style={[styles.button, {backgroundColor: colors.successLight}]}
+              onPress={handleCompleteTodo}>
+              <Animated.View style={{opacity: first}}>
+                <Icon type={'material'} name={'clear'} color={colors.white} />
               </Animated.View>
             </RectButton>
           )}
@@ -273,10 +278,6 @@ export const ListItem = React.memo(
     });
 
     useEffect(() => {
-      swipeRef.current?.close();
-    }, [navState]);
-
-    useEffect(() => {
       // Set date of todo creation
       const d = getDate(props.created_at).toString();
       setCreatedAt(d);
@@ -296,7 +297,8 @@ export const ListItem = React.memo(
         clearInterval(timerRef.current);
         dispatch(editTodo(savedTodo));
       };
-    }, []);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [dispatch]);
 
     useEffect(() => {
       setDifference();
@@ -304,7 +306,7 @@ export const ListItem = React.memo(
       return () => {
         clearInterval(timerRef.current);
       };
-    }, [props.seconds]);
+    }, [setDifference]);
 
     return (
       <Swipeable
@@ -316,7 +318,13 @@ export const ListItem = React.memo(
         containerStyle={styles.wrapper}>
         <View style={[styles.row, styles.wrapper]}>
           <View>
-            <Text style={styles.title}>{props.title}</Text>
+            <Text
+              style={[
+                styles.title,
+                status === 'done' ? styles.todoSuccess : null,
+              ]}>
+              {props.title}
+            </Text>
             <Text style={styles.date}>{createdAt}</Text>
           </View>
           <View>
@@ -337,7 +345,7 @@ const useStyles = () => {
       alignItems: 'center',
       justifyContent: 'space-between',
       paddingVertical: getModerateScale(10),
-      paddingHorizontal: getModerateScale(12),
+      paddingHorizontal: getModerateScale(14),
       width: Dimensions.get('window').width,
       flexDirection: 'row',
     },
@@ -373,6 +381,9 @@ const useStyles = () => {
     rightButtonsBorder: {
       borderColor: colors.grey,
       borderLeftWidth: 1,
+    },
+    todoSuccess: {
+      textDecorationLine: 'line-through',
     },
   });
 
