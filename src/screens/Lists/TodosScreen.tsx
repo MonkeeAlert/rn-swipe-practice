@@ -1,10 +1,9 @@
 import React, {useState, useEffect, useRef} from 'react';
-import {StyleSheet, FlatList} from 'react-native';
+import {StyleSheet, FlatList, View} from 'react-native';
 import {EmptyList} from './Components/EmptyList';
 import {ListItem} from './Components/ListItem';
 import {useTheme} from '../../utils/hooks';
 import {getModerateScale} from '../../utils/Scaling';
-import {Swipeable} from 'react-native-gesture-handler';
 import {ButtonGroup} from 'react-native-elements/dist/buttons/ButtonGroup';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useSelector} from 'react-redux';
@@ -28,37 +27,27 @@ const CATEGORIES = [
 
 const TodosScreen = () => {
   const {styles} = useStyles();
-  const ref = useRef<Swipeable>(null);
+  const itemRef = useRef<any>(null);
   const {list} = useSelector(getTodosState);
 
   const [data, setData] = useState<ITodo[]>([]);
-  const [status, setStatus] = useState<ITodo['status']>('default');
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
 
-  const renderEmptyComponent = () => {
-    const isEmpty = list.filter(i => i.status === status).length === 0;
-
-    return status === 'default' ? (
-      list.length === 0 ? (
-        <EmptyList />
-      ) : null
-    ) : isEmpty ? (
-      <EmptyList />
-    ) : null;
-  };
-
   const renderItem = (itemData: {item: ITodo}) => {
-    return <ListItem ref={ref} {...itemData.item} selectedCategory={status} />;
+    return (
+      <ListItem
+        ref={itemRef}
+        {...itemData.item}
+        selectedCategory={CATEGORIES[selectedIndex].key as ITodo['status']}
+      />
+    );
   };
 
-  const handleCategory = (c: number) => {
-    const category = CATEGORIES[c].key as ITodo['status'];
-
-    setSelectedIndex(c);
-    setStatus(category);
-  };
+  const handleCategory = (c: number) => setSelectedIndex(c);
 
   useEffect(() => {
+    const status = CATEGORIES[selectedIndex].key;
+
     if (list?.length > 0) {
       if (status === 'default') {
         setData(list);
@@ -72,9 +61,9 @@ const TodosScreen = () => {
     }
 
     return () => {
-      ref.current = null;
+      itemRef.current = null;
     };
-  }, [status, list]);
+  }, [selectedIndex, list]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -87,17 +76,18 @@ const TodosScreen = () => {
         selectedTextStyle={styles.selectedButtonText}
         textStyle={styles.buttonTextStyle}
       />
-      <FlatList
-        data={data}
-        renderItem={renderItem}
-        contentContainerStyle={[
-          styles.contentContainer,
-          {
-            justifyContent: data.length === 0 ? 'center' : 'flex-start',
-          },
-        ]}
-        ListEmptyComponent={renderEmptyComponent}
-      />
+      {data.length === 0 ? (
+        <View style={[styles.contentContainer, styles.emptyListContainer]}>
+          <EmptyList />
+        </View>
+      ) : (
+        <FlatList
+          data={data}
+          renderItem={renderItem}
+          keyExtractor={item => item.id}
+          contentContainerStyle={styles.contentContainer}
+        />
+      )}
     </SafeAreaView>
   );
 };
@@ -128,6 +118,9 @@ const useStyles = () => {
     },
     selectedButtonText: {
       color: colors.black,
+    },
+    emptyListContainer: {
+      justifyContent: 'center',
     },
   });
 
