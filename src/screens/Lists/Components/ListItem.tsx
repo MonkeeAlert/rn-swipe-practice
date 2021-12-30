@@ -1,24 +1,13 @@
 import Swipeable from 'react-native-gesture-handler/Swipeable';
-import React, {
-  useEffect,
-  useRef,
-  useState,
-  memo,
-  forwardRef,
-  useCallback,
-} from 'react';
+import React, {useRef, useState, memo, forwardRef} from 'react';
 import {View, Text, StyleSheet, Animated, Dimensions} from 'react-native';
-import {
-  getDate,
-  getFormattedTimer,
-  getSecondsFrom,
-} from '../../../utils/functions';
-import {useAppStateCallbacks, useTheme} from '../../../utils/hooks';
+import {getDate} from '../../../utils/functions';
+import {useTheme} from '../../../utils/hooks';
 import {RectButton} from 'react-native-gesture-handler';
 import {Icon} from 'react-native-elements';
 import {useDispatch} from 'react-redux';
 import {ITodo, TodosActions} from '../../../store/types/todosTypes';
-import {deleteTodo, editTodo} from '../../../store/actions/todosActions';
+import {deleteTodo} from '../../../store/actions/todosActions';
 import {useNavigation} from '@react-navigation/native';
 import {getModerateScale} from '../../../utils/Scaling';
 import {RootStackParamList} from '../../../utils/stackNavgation';
@@ -196,23 +185,6 @@ export const ListItem = memo(
     const handleSwipeableOpen = () => {
       previousRef.current = swipeRef.current;
     };
-
-    // Change seconds
-    // useAppStateCallbacks(undefined, date => {
-    //   const past = getSecondsFrom(date);
-
-    //   if (statusRef.current === 'active') {
-    //     const todo: ITodo = {
-    //       ...props,
-    //       status: 'active',
-    //       started_at: Date.now(),
-    //       finished_at: props.finished_at,
-    //       seconds: secondsRef.current + past,
-    //     };
-
-    //     dispatch(editTodo(todo));
-    //   }
-    // });
 
     return (
       <Swipeable

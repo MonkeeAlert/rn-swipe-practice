@@ -9,6 +9,8 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {useSelector} from 'react-redux';
 import {getTodosState} from '../../store/rootSelectors';
 import {ITodo} from '../../store/types/todosTypes';
+import {SearchBar} from './Components/SearchBar';
+import {defaultBorderRadius} from '../../utils/constants';
 
 const CATEGORIES = [
   {
@@ -31,6 +33,7 @@ const TodosScreen = () => {
   const {list} = useSelector(getTodosState);
 
   const [data, setData] = useState<ITodo[]>([]);
+  const [search, setSearch] = useState('');
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
 
   const renderItem = (itemData: {item: ITodo}) => {
@@ -45,14 +48,21 @@ const TodosScreen = () => {
 
   const handleCategory = (c: number) => setSelectedIndex(c);
 
+  const filterListByTitle = (l: ITodo[]) =>
+    l.filter(i => i.title.toLowerCase().indexOf(search.toLowerCase()) >= 0);
+
   useEffect(() => {
     const status = CATEGORIES[selectedIndex].key;
 
     if (list?.length > 0) {
       if (status === 'default') {
-        setData(list);
+        const filtered = filterListByTitle(list);
+
+        setData(filtered);
       } else {
-        const filtered = list.filter(i => i.status === status);
+        const filtered = filterListByTitle(list).filter(
+          i => i.status === status,
+        );
 
         setData(filtered);
       }
@@ -63,10 +73,11 @@ const TodosScreen = () => {
     return () => {
       itemRef.current = null;
     };
-  }, [selectedIndex, list]);
+  }, [selectedIndex, list, search]);
 
   return (
     <SafeAreaView style={styles.container}>
+      <SearchBar onSearch={setSearch} />
       <ButtonGroup
         buttons={CATEGORIES.map(i => i.title)}
         onPress={handleCategory}
@@ -105,7 +116,7 @@ const useStyles = () => {
       alignItems: 'center',
     },
     buttonContainer: {
-      borderRadius: 7,
+      borderRadius: defaultBorderRadius,
       height: getModerateScale(45),
     },
     buttonGroupBorder: {
