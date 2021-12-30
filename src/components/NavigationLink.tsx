@@ -1,6 +1,7 @@
 import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {StyleSheet, TouchableWithoutFeedback, View} from 'react-native';
+import {defaultBorderRadius} from '../utils/constants';
 import {useTheme} from '../utils/hooks';
 import Title from './Title';
 
@@ -47,7 +48,7 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
     height: 125,
-    borderRadius: 6,
+    borderRadius: defaultBorderRadius,
     paddingVertical: 10,
     paddingHorizontal: 15,
     marginVertical: 8,

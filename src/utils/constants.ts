@@ -18,6 +18,7 @@ export const colors = {
 };
 
 export const borders = Dimensions.get('screen').width - 100;
+export const defaultBorderRadius = 6;
 
 // Placeholers for todos
 export const defaultTodoPlaceholders = [
