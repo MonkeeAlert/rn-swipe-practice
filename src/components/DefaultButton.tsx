@@ -59,6 +59,7 @@ const useStyles = () => {
     },
     text: {
       fontSize: fonts.medium,
+      textTransform: 'uppercase',
     },
   });
 

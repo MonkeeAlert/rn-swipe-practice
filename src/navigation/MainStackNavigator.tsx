@@ -15,8 +15,9 @@ import CircleOverBordersScreen from '../screens/CircleOverBorders/CircleOverBord
 import TodosScreen from '../screens/Lists/TodosScreen';
 import {navigate, navigationRef} from '../navigation/RootNavigation';
 import {DataInputScreen} from '../screens/HighOrderScreens/DataInputScreen';
-import {TodosActions} from '../store/types/todosTypes';
 import {routes} from '../assets/routes';
+import {AddTodoScreen} from '../screens/Lists/AddTodoScreen';
+import {EditTodoScreen} from '../screens/Lists/EditTodoScreen';
 
 const RootStack = createStackNavigator();
 
@@ -76,20 +77,27 @@ const MainStackScreen = () => {
                 <HeaderIcon
                   name={'add'}
                   type={'material'}
-                  onPress={() =>
-                    navigate('Modal_Data', {
-                      title: 'Add todo',
-                      buttonConfig: {
-                        title: 'Add',
-                        action: TodosActions.ADD_TODO,
-                      },
-                    })
-                  }
+                  onPress={() => navigate('AddTodo')}
                 />
               ),
             }}
           />
+          <RootStack.Screen
+            name={'AddTodo'}
+            component={AddTodoScreen}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <RootStack.Screen
+            name={'EditTodo'}
+            component={EditTodoScreen}
+            options={{
+              headerShown: false,
+            }}
+          />
         </RootStack.Group>
+
         <RootStack.Group screenOptions={{presentation: 'modal'}}>
           <RootStack.Screen
             name={'Modal_Data'}

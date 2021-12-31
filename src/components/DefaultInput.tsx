@@ -25,7 +25,7 @@ const DefaultInput = (props: IProps) => {
       height: getModerateScale(HEIGHT),
       paddingBottom: 6,
       paddingLeft: 0,
-      paddingRight: props.icon?.size ? props.icon?.size + 4 : 20,
+      paddingRight: props.icon ? props.icon?.size + 4 : 0,
       borderColor: colors.darkGrey,
       fontSize: fonts.regular,
       color: colors.black,
@@ -45,6 +45,7 @@ const DefaultInput = (props: IProps) => {
         {...props}
         placeholderTextColor={colors.darkGrey}
         style={theme.input}
+        numberOfLines={1}
       />
       {props.icon ? (
         <Icon
