@@ -1,13 +1,13 @@
 import Swipeable from 'react-native-gesture-handler/Swipeable';
-import React, {useRef, useState, memo, forwardRef} from 'react';
+import React, {useRef, useState, memo, forwardRef, useEffect} from 'react';
 import {View, Text, StyleSheet, Animated, Dimensions} from 'react-native';
 import {getDate} from '../../../utils/functions';
 import {useTheme} from '../../../utils/hooks';
 import {RectButton} from 'react-native-gesture-handler';
 import {Icon} from 'react-native-elements';
 import {useDispatch} from 'react-redux';
-import {ITodo, TodosActions} from '../../../store/types/todosTypes';
-import {deleteTodo} from '../../../store/actions/todosActions';
+import {ITodo} from '../../../store/types/todosTypes';
+import {deleteTodo, editTodo} from '../../../store/actions/todosActions';
 import {useNavigation} from '@react-navigation/native';
 import {getModerateScale} from '../../../utils/Scaling';
 import {RootStackParamList} from '../../../utils/stackNavigation';
@@ -20,8 +20,8 @@ interface ITodoProps extends ITodo {
 
 const areItemsEqual = (prev: ITodoProps, next: ITodoProps) => {
   return (
-    prev.started_at === next.started_at &&
-    prev.finished_at === next.finished_at &&
+    prev.startedAt === next.startedAt &&
+    prev.pausedAt === next.pausedAt &&
     prev.title === next.title
   );
 };
@@ -178,6 +178,21 @@ export const ListItem = memo(
       previousRef.current = swipeRef.current;
     };
 
+    useEffect(() => {
+      if (!props.isTimerEnabled) {
+        const now = Date.now();
+
+        const todo: ITodo = {
+          ...props,
+          status,
+          startedAt: now,
+          pausedAt: now,
+        };
+
+        dispatch(editTodo(todo));
+      }
+    }, [status]);
+
     return (
       <Swipeable
         ref={swipeRef}
@@ -198,11 +213,11 @@ export const ListItem = memo(
               {props.title}
             </Text>
             <Text style={styles.date}>
-              {getDate(props.created_at).toString()}
+              {getDate(props.createdAt).toString()}
             </Text>
           </View>
 
-          <Timer item={props} status={status} />
+          {props.isTimerEnabled ? <Timer item={props} status={status} /> : null}
         </View>
       </Swipeable>
     );

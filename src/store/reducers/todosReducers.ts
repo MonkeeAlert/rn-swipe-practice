@@ -16,15 +16,18 @@ export const todosReducer = (
     case TodosActions.ADD_TODO:
       const now = Date.now();
 
+      const willStartOnCreate = action.payload.status === 'active';
+
       const todo: ITodo = {
         id: generateID(),
-        created_at: now,
-        started_at: 0,
-        finished_at: 0,
-        status: 'default',
+        createdAt: now,
+        startedAt: willStartOnCreate ? now : 0,
+        pausedAt: willStartOnCreate ? now : 0,
+        status: action.payload.status ?? 'default',
         wasCompleted: false,
         title: action.payload.title,
         seconds: 0,
+        isTimerEnabled: action.payload.isTimerEnabled ?? false,
       };
 
       return {
