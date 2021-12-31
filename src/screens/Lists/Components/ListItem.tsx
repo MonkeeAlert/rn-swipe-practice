@@ -10,7 +10,7 @@ import {ITodo, TodosActions} from '../../../store/types/todosTypes';
 import {deleteTodo} from '../../../store/actions/todosActions';
 import {useNavigation} from '@react-navigation/native';
 import {getModerateScale} from '../../../utils/Scaling';
-import {RootStackParamList} from '../../../utils/stackNavgation';
+import {RootStackParamList} from '../../../utils/stackNavigation';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {Timer} from './Timer';
 
@@ -20,7 +20,9 @@ interface ITodoProps extends ITodo {
 
 const areItemsEqual = (prev: ITodoProps, next: ITodoProps) => {
   return (
-    prev.started_at === next.started_at && prev.finished_at === next.finished_at
+    prev.started_at === next.started_at &&
+    prev.finished_at === next.finished_at &&
+    prev.title === next.title
   );
 };
 
@@ -33,11 +35,9 @@ export const ListItem = memo(
 
     const swipeRef = useRef<Swipeable>(null);
 
-    const [status, setStatus] = useState<ITodo['status']>(checkStatus());
-
-    function checkStatus() {
-      return props.wasCompleted ? 'done' : props.status;
-    }
+    const [status, setStatus] = useState<ITodo['status']>(
+      props.wasCompleted ? 'done' : props.status,
+    );
 
     const renderLeftActions = (_: any, dragX: any) => {
       const interpolations = [0, getModerateScale(60), getModerateScale(61)];
@@ -98,17 +98,9 @@ export const ListItem = memo(
 
       // Edit todo in modal screen
       const handleEditTodo = () => {
-        navigate('Modal_Data', {
-          title: `Edit todo: ${
-            props.title.length > 18
-              ? `${props.title.slice(0, 15)}...`
-              : props.title
-          }`,
-          buttonConfig: {
-            title: 'Edit',
-            action: TodosActions.EDIT_TODO,
-            todoId: props.id,
-          },
+        navigate('EditTodo', {
+          id: props.id,
+          title: props.title,
         });
       };
 
@@ -197,6 +189,8 @@ export const ListItem = memo(
         <View style={[styles.row, styles.wrapper]}>
           <View>
             <Text
+              numberOfLines={1}
+              lineBreakMode={'clip'}
               style={[
                 styles.title,
                 status === 'done' ? styles.todoSuccess : null,
@@ -240,6 +234,7 @@ const useStyles = () => {
       fontWeight: 'bold',
       paddingTop: 4,
       marginBottom: 4,
+      maxWidth: '90%',
     },
     date: {
       fontWeight: '100',
