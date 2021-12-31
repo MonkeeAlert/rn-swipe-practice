@@ -1,3 +1,4 @@
+import {ITodo} from '../store/types/todosTypes';
 import {days, months} from './constants';
 
 interface IParsedDate {
@@ -113,4 +114,45 @@ export const getSecondsFrom = (date: number) => {
   const now = Date.now();
 
   return (now - date) / 1000;
+};
+
+export const parseTodosForSectionList = (list: ITodo[]) => {
+  if (list.length === 0) {
+    return [];
+  } else {
+    const titles = [
+      ...new Set(
+        list.map(i => {
+          const {year, month, day} = getDate(i.createdAt).date;
+
+          return new Date(year, month - 1, day).getTime();
+        }),
+      ),
+    ];
+
+    const items = titles.map(t => {
+      const {
+        day: tDay,
+        monthLiteral: tMonthLiteral,
+        year: tYear,
+      } = getDate(t).date;
+
+      return {
+        title: `${tDay} ${tMonthLiteral} ${tYear}`,
+        data: list.filter((i: ITodo) => {
+          const {
+            year: iYear,
+            month: iMonth,
+            day: iDay,
+          } = getDate(i.createdAt).date;
+
+          const timestamp = new Date(iYear, iMonth - 1, iDay).getTime();
+
+          return t === timestamp;
+        }),
+      };
+    });
+
+    return items;
+  }
 };

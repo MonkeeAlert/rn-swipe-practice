@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react';
-import {StyleSheet, FlatList, View} from 'react-native';
+import {StyleSheet, View, SectionList, FlatList} from 'react-native';
 import {EmptyList} from './Components/EmptyList';
 import {ListItem} from './Components/ListItem';
 import {useTheme} from '../../utils/hooks';
@@ -11,6 +11,7 @@ import {getTodosState} from '../../store/rootSelectors';
 import {ITodo} from '../../store/types/todosTypes';
 import {SearchBar} from './Components/SearchBar';
 import {defaultBorderRadius} from '../../utils/constants';
+import {getDate, parseTodosForSectionList} from '../../utils/functions';
 
 const CATEGORIES = [
   {
@@ -72,6 +73,13 @@ const TodosScreen = () => {
       itemRef.current = null;
     };
   }, [selectedIndex, list, search]);
+
+  useEffect(() => {
+    if (list) {
+      const sections = parseTodosForSectionList(list);
+      console.log('@SectionList', sections);
+    }
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
