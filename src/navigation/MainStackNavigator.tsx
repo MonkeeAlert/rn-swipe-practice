@@ -14,7 +14,6 @@ import {HeaderIcon} from '../components/HeaderIcon';
 import CircleOverBordersScreen from '../screens/CircleOverBorders/CircleOverBordersScreen';
 import TodosScreen from '../screens/Lists/TodosScreen';
 import {navigate, navigationRef} from '../navigation/RootNavigation';
-import {DataInputScreen} from '../screens/HighOrderScreens/DataInputScreen';
 import {routes} from '../assets/routes';
 import {AddTodoScreen} from '../screens/Lists/AddTodoScreen';
 import {EditTodoScreen} from '../screens/Lists/EditTodoScreen';
@@ -82,6 +81,15 @@ const MainStackScreen = () => {
               ),
             }}
           />
+        </RootStack.Group>
+
+        <RootStack.Group
+          screenOptions={{
+            presentation: 'modal',
+            headerShown: false,
+            cardStyleInterpolator:
+              CardStyleInterpolators.forRevealFromBottomAndroid,
+          }}>
           <RootStack.Screen
             name={'AddTodo'}
             component={AddTodoScreen}
@@ -94,18 +102,6 @@ const MainStackScreen = () => {
             component={EditTodoScreen}
             options={{
               headerShown: false,
-            }}
-          />
-        </RootStack.Group>
-
-        <RootStack.Group screenOptions={{presentation: 'modal'}}>
-          <RootStack.Screen
-            name={'Modal_Data'}
-            component={DataInputScreen}
-            options={{
-              headerShown: false,
-              cardStyleInterpolator:
-                CardStyleInterpolators.forRevealFromBottomAndroid,
             }}
           />
         </RootStack.Group>

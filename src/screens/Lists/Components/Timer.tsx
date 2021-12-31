@@ -31,8 +31,8 @@ export const Timer = (props: IProps) => {
       const todo: ITodo = {
         ...props.item,
         status: 'active',
-        started_at: Date.now(),
-        finished_at: props.item.finished_at,
+        startedAt: Date.now(),
+        pausedAt: props.item.pausedAt,
         seconds: secondsRef.current,
       };
 
@@ -43,7 +43,7 @@ export const Timer = (props: IProps) => {
   useEffect(() => {
     const past =
       props.item.seconds +
-      (props.status === 'active' ? getSecondsFrom(props.item.started_at) : 0);
+      (props.status === 'active' ? getSecondsFrom(props.item.startedAt) : 0);
 
     secondsRef.current = past;
     setTimer(getFormattedTimer(secondsRef.current));
@@ -55,8 +55,8 @@ export const Timer = (props: IProps) => {
       const savedTodo: ITodo = {
         ...props.item,
         status: statusOnUnmount,
-        started_at: statusOnUnmount === 'active' ? now : props.item.started_at,
-        finished_at: now,
+        startedAt: statusOnUnmount === 'active' ? now : props.item.startedAt,
+        pausedAt: now,
         seconds: secondsRef.current,
       };
 
@@ -74,15 +74,15 @@ export const Timer = (props: IProps) => {
     const modified: ITodo = {
       ...props.item,
       status,
-      started_at: now,
-      finished_at: now,
+      startedAt: now,
+      pausedAt: now,
       wasCompleted: false,
       seconds: secondsRef.current,
     };
 
     switch (status) {
       case 'active':
-        modified.finished_at = props.item.finished_at;
+        modified.pausedAt = props.item.pausedAt;
 
         timerRef.current = setInterval(() => {
           secondsRef.current += 1;
