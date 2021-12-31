@@ -34,7 +34,7 @@ const TodosScreen = () => {
 
   const [data, setData] = useState<ITodo[]>([]);
   const [search, setSearch] = useState('');
-  const [selectedIndex, setSelectedIndex] = useState<number>(0);
+  const [selectedIndex, selectIndex] = useState<number>(0);
 
   const renderItem = (itemData: {item: ITodo}) => {
     return (
@@ -45,8 +45,6 @@ const TodosScreen = () => {
       />
     );
   };
-
-  const handleCategory = (c: number) => setSelectedIndex(c);
 
   const filterListByTitle = (l: ITodo[]) =>
     l.filter(i => i.title.toLowerCase().indexOf(search.toLowerCase()) >= 0);
@@ -80,7 +78,7 @@ const TodosScreen = () => {
       <SearchBar onSearch={setSearch} />
       <ButtonGroup
         buttons={CATEGORIES.map(i => i.title)}
-        onPress={handleCategory}
+        onPress={selectIndex}
         selectedIndex={selectedIndex}
         innerBorderStyle={styles.buttonGroupBorder}
         containerStyle={styles.buttonContainer}
