@@ -34,6 +34,7 @@ export const ListItem = memo(
     const {navigate} = useNavigation<StackNavigationProp<RootStackParamList>>();
 
     const swipeRef = useRef<Swipeable>(null);
+    const dateRef = useRef(getDate(props.createdAt).date).current;
 
     const [status, setStatus] = useState<ITodo['status']>(
       props.wasCompleted ? 'done' : props.status,
@@ -213,7 +214,9 @@ export const ListItem = memo(
               {props.title}
             </Text>
             <Text style={styles.date}>
-              {getDate(props.createdAt).toString()}
+              created at{' '}
+              {dateRef.hours < 10 ? `0${dateRef.hours}` : dateRef.hours}:
+              {dateRef.minutes < 10 ? `0${dateRef.minutes}` : dateRef.minutes}
             </Text>
           </View>
 
