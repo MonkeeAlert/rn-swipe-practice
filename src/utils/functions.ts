@@ -64,8 +64,8 @@ const parseDate = (date: number): IParsedDate | object => {
 
 const getFormattedDate = (o: IParsedDate) => {
   const now = new Date(Date.now());
-  const time = `${o.hours < 10 ? '0' + o.hours : o.hours}:${
-    o.minutes < 10 ? '0' + o.minutes : o.minutes
+  const time = `${o.hours < 10 ? `0${o.hours}` : o.hours}:${
+    o.minutes < 10 ? `0${o.minutes}` : o.minutes
   }`;
 
   const date = `on ${o.monthLiteral} ${o.day}${
@@ -138,7 +138,7 @@ export const parseTodosForSectionList = (list: ITodo[]) => {
       } = getDate(t).date;
 
       return {
-        title: `${tDay} ${tMonthLiteral} ${tYear}`,
+        title: `${tDay < 10 ? `0${tDay}` : tDay} ${tMonthLiteral} ${tYear}`,
         data: list.filter((i: ITodo) => {
           const {
             year: iYear,

@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react';
-import {StyleSheet, View, SectionList, FlatList} from 'react-native';
+import {StyleSheet, View, SectionList, FlatList, Text} from 'react-native';
 import {EmptyList} from './Components/EmptyList';
 import {ListItem} from './Components/ListItem';
 import {useTheme} from '../../utils/hooks';
@@ -11,7 +11,7 @@ import {getTodosState} from '../../store/rootSelectors';
 import {ITodo} from '../../store/types/todosTypes';
 import {SearchBar} from './Components/SearchBar';
 import {defaultBorderRadius} from '../../utils/constants';
-import {getDate, parseTodosForSectionList} from '../../utils/functions';
+import {parseTodosForSectionList} from '../../utils/functions';
 
 const CATEGORIES = [
   {
@@ -33,7 +33,7 @@ const TodosScreen = () => {
   const itemRef = useRef<any>(null);
   const {list} = useSelector(getTodosState);
 
-  const [data, setData] = useState<ITodo[]>([]);
+  const [data, setData] = useState<any[]>([]);
   const [search, setSearch] = useState('');
   const [selectedIndex, selectIndex] = useState<number>(0);
 
@@ -47,6 +47,14 @@ const TodosScreen = () => {
     );
   };
 
+  const renderSectionHeader = (itemData: {section: any}) => {
+    return (
+      <View style={styles.headerContainer}>
+        <Text style={styles.headerText}>{itemData.section.title}</Text>
+      </View>
+    );
+  };
+
   const filterListByTitle = (l: ITodo[]) =>
     l.filter(i => i.title.toLowerCase().indexOf(search.toLowerCase()) >= 0);
 
@@ -57,13 +65,13 @@ const TodosScreen = () => {
       if (status === 'default') {
         const filtered = filterListByTitle(list);
 
-        setData(filtered);
+        setData(parseTodosForSectionList(filtered));
       } else {
         const filtered = filterListByTitle(list).filter(
           i => i.status === status,
         );
 
-        setData(filtered);
+        setData(parseTodosForSectionList(filtered));
       }
     } else {
       setData([]);
@@ -73,13 +81,6 @@ const TodosScreen = () => {
       itemRef.current = null;
     };
   }, [selectedIndex, list, search]);
-
-  useEffect(() => {
-    if (list) {
-      const sections = parseTodosForSectionList(list);
-      console.log('@SectionList', sections);
-    }
-  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -98,11 +99,12 @@ const TodosScreen = () => {
           <EmptyList />
         </View>
       ) : (
-        <FlatList
-          data={data}
+        <SectionList
+          sections={data}
           renderItem={renderItem}
+          renderSectionHeader={renderSectionHeader}
           keyExtractor={item => item.id}
-          contentContainerStyle={styles.contentContainer}
+          stickySectionHeadersEnabled={true}
         />
       )}
     </SafeAreaView>
@@ -138,6 +140,16 @@ const useStyles = () => {
     },
     emptyListContainer: {
       justifyContent: 'center',
+    },
+    headerContainer: {
+      backgroundColor: colors.infoLight,
+      paddingVertical: getModerateScale(6),
+      alignItems: 'center',
+    },
+    headerText: {
+      color: colors.white,
+      fontWeight: '500',
+      fontSize: fonts.regular,
     },
   });
 
