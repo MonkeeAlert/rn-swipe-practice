@@ -9,6 +9,7 @@ export interface ITodo {
   title: string;
   wasCompleted: boolean;
   seconds: number;
+  color: string;
   isTimerEnabled?: boolean;
 }
 

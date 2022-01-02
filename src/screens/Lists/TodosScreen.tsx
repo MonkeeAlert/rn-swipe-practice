@@ -30,21 +30,6 @@ const CATEGORIES = [
   },
 ];
 
-const DATA = [
-  {
-    title: 'first',
-    color: 'red',
-  },
-  {
-    title: 'second',
-    color: 'green',
-  },
-  {
-    title: 'third',
-    color: 'blue',
-  },
-];
-
 const ICON_SIZE = 20;
 
 const TodosScreen = () => {
@@ -120,10 +105,10 @@ const TodosScreen = () => {
             />
           </Pressable>
         </View>
-        {areCatetoriesVisible ? (
+        {areCatetoriesVisible && list.length > 0 ? (
           <View style={styles.categoriesBar}>
             <View style={styles.cut} />
-            <CategoriesBar data={DATA} />
+            <CategoriesBar data={[...new Set(list.map(i => i.color))]} />
           </View>
         ) : null}
       </View>

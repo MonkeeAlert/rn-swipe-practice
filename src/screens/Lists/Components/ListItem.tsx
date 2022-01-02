@@ -13,10 +13,13 @@ import {getModerateScale} from '../../../utils/Scaling';
 import {RootStackParamList} from '../../../utils/stackNavigation';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {Timer} from './Timer';
+import Circle from '../../../components/Circle';
 
 interface ITodoProps extends ITodo {
   selectedCategory: ITodo['status'];
 }
+
+const CIRCLE_SIZE = 16;
 
 const areItemsEqual = (prev: ITodoProps, next: ITodoProps) => {
   return (
@@ -204,15 +207,20 @@ export const ListItem = memo(
         containerStyle={styles.wrapper}>
         <View style={[styles.row, styles.wrapper]}>
           <View style={styles.infoWrapper}>
-            <Text
-              numberOfLines={1}
-              lineBreakMode={'clip'}
-              style={[
-                styles.title,
-                status === 'done' ? styles.todoSuccess : null,
-              ]}>
-              {props.title}
-            </Text>
+            <View style={[styles.inline, styles.titleWrapper]}>
+              <View style={styles.circleWrapper}>
+                <Circle size={CIRCLE_SIZE} color={props.color} />
+              </View>
+              <Text
+                numberOfLines={1}
+                lineBreakMode={'clip'}
+                style={[
+                  styles.title,
+                  status === 'done' ? styles.todoSuccess : null,
+                ]}>
+                {props.title}
+              </Text>
+            </View>
             <Text style={styles.date}>
               created at{' '}
               {dateRef.hours < 10 ? `0${dateRef.hours}` : dateRef.hours}:
@@ -248,7 +256,7 @@ const useStyles = () => {
     },
     infoWrapper: {
       flex: 1,
-      maxWidth: '85%',
+      maxWidth: '75%',
     },
     title: {
       fontSize: fonts.medium,
@@ -256,6 +264,10 @@ const useStyles = () => {
       fontWeight: '500',
       paddingTop: 4,
       marginBottom: 4,
+      width: '100%',
+    },
+    titleWrapper: {
+      alignItems: 'center',
     },
     date: {
       fontWeight: '100',
@@ -279,6 +291,9 @@ const useStyles = () => {
     },
     todoSuccess: {
       textDecorationLine: 'line-through',
+    },
+    circleWrapper: {
+      marginRight: 6,
     },
   });
 

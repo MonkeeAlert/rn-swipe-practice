@@ -3,11 +3,7 @@ import React, {useState, useRef, useEffect} from 'react';
 import {Dimensions, Pressable, Text} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {StyleSheet, View, SafeAreaView} from 'react-native';
-import {
-  colors,
-  defaultTodoPlaceholders,
-  todoColors,
-} from '../../utils/constants';
+import {defaultTodoPlaceholders, todoColors} from '../../utils/constants';
 import {useTheme} from '../../utils/hooks';
 import DefaultButton from '../../components/DefaultButton';
 import DefaultInput from '../../components/DefaultInput';
@@ -15,7 +11,7 @@ import Title from '../../components/Title';
 import {ITodo, TodosActions} from '../../store/types/todosTypes';
 import DefaultCheckbox from '../../components/DefaultCheckbox';
 import {ModalWrapper} from '../../components/ModalWrapper';
-import {ScrollView, TouchableHighlight} from 'react-native-gesture-handler';
+import Circle from '../../components/Circle';
 
 const CIRCLE_SIZE = 26;
 
@@ -41,6 +37,7 @@ export const AddTodoScreen = () => {
       const todo = {
         title: value,
         status: willStartOnCreate ? 'active' : 'default',
+        color: color.color,
         isTimerEnabled,
       } as ITodo;
 
@@ -83,13 +80,7 @@ export const AddTodoScreen = () => {
         <Pressable onPress={handleModalVisibility}>
           <View style={[styles.row, styles.inline]}>
             <Text style={styles.text}>{color.title}</Text>
-            <View
-              style={[
-                styles.color,
-                color.color === 'transparent' ? styles.transparentCircle : null,
-                {backgroundColor: color.color},
-              ]}
-            />
+            <Circle size={CIRCLE_SIZE} color={color.color} />
           </View>
         </Pressable>
         <View style={styles.row}>
@@ -120,13 +111,7 @@ export const AddTodoScreen = () => {
               key={`Color_${k}`}
               onPress={() => handleSetColor(todoColors[k])}
               style={styles.colorButton}>
-              <View
-                style={[
-                  styles.color,
-                  i.color === 'transparent' ? styles.transparentCircle : null,
-                  {backgroundColor: i.color},
-                ]}
-              />
+              <Circle size={CIRCLE_SIZE} color={i.color} />
               <Text style={[styles.text, styles.colorText]}>{i.title}</Text>
             </Pressable>
           ))}

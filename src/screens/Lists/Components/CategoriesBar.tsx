@@ -1,18 +1,12 @@
 import React from 'react';
-import {
-  FlatList,
-  StyleSheet,
-  Text,
-  TouchableHighlight,
-  View,
-} from 'react-native';
+import {StyleSheet, Text, TouchableHighlight, View} from 'react-native';
+import Circle from '../../../components/Circle';
 import {defaultBorderRadius} from '../../../utils/constants';
 import {useTheme} from '../../../utils/hooks';
 import {getModerateScale} from '../../../utils/Scaling';
-import {ITodoCategory} from '../../../utils/types';
 
 interface IProps {
-  data: ITodoCategory[];
+  data: string[];
 }
 
 export const CategoriesBar = (props: IProps) => {
@@ -21,11 +15,11 @@ export const CategoriesBar = (props: IProps) => {
   return (
     <View style={styles.container}>
       {props.data.map((i, k) => (
-        <TouchableHighlight key={`Category_${i.title}_${k}`}>
-          <View style={[styles.category, {borderColor: i.color}]}>
-            <Text style={[styles.text, {color: i.color}]}>{i.title}</Text>
-          </View>
-        </TouchableHighlight>
+        <View style={styles.wrapper} key={`Category_${i}_${k}`}>
+          <TouchableHighlight>
+            <Circle size={28} color={i} />
+          </TouchableHighlight>
+        </View>
       ))}
     </View>
   );
@@ -38,6 +32,7 @@ const useStyles = () => {
     container: {
       flexDirection: 'row',
       flexWrap: 'wrap',
+      justifyContent: 'center',
     },
     category: {
       borderWidth: 1,
@@ -46,6 +41,9 @@ const useStyles = () => {
       paddingVertical: getModerateScale(6),
       marginRight: getModerateScale(10),
       marginVertical: getModerateScale(6),
+    },
+    wrapper: {
+      marginHorizontal: 5,
     },
     text: {
       fontSize: fonts.regular,
