@@ -203,7 +203,7 @@ export const ListItem = memo(
         onSwipeableWillOpen={handleSwipeableWillOpen}
         containerStyle={styles.wrapper}>
         <View style={[styles.row, styles.wrapper]}>
-          <View>
+          <View style={styles.infoWrapper}>
             <Text
               numberOfLines={1}
               lineBreakMode={'clip'}
@@ -246,13 +246,16 @@ const useStyles = () => {
     inline: {
       flexDirection: 'row',
     },
+    infoWrapper: {
+      flex: 1,
+      maxWidth: '85%',
+    },
     title: {
       fontSize: fonts.medium,
       color: colors.black,
-      fontWeight: 'bold',
+      fontWeight: '500',
       paddingTop: 4,
       marginBottom: 4,
-      maxWidth: '90%',
     },
     date: {
       fontWeight: '100',

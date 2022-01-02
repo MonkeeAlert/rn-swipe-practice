@@ -9,8 +9,8 @@ interface IProps {
   onToggle: () => void;
 }
 
-const CIRCLE_SIZE = 38;
-const ELEMENT_HEIGHT = 42;
+const CIRCLE_SIZE = 26;
+const ELEMENT_HEIGHT = CIRCLE_SIZE + 4;
 
 export default function DefaultCheckbox(props: IProps) {
   const {styles, colors} = useStyles();
@@ -88,7 +88,7 @@ const useStyles = () => {
     },
     title: {
       fontWeight: '500',
-      fontSize: fonts.regular,
+      fontSize: fonts.medium,
       color: colors.black,
     },
     togglerWrapper: {

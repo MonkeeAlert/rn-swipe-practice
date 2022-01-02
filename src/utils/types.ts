@@ -9,3 +9,8 @@ export interface IIcon {
   size?: number;
   color?: string;
 }
+
+export interface ITodoCategory {
+  title: string;
+  color: string;
+}

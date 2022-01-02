@@ -39,8 +39,8 @@ export const SearchBar = (props: IProps) => {
 const useStyles = () => {
   const styles = StyleSheet.create({
     container: {
-      marginVertical: 5,
-      paddingHorizontal: 12,
+      // marginVertical: 5,
+      flex: 1,
     },
   });
 
