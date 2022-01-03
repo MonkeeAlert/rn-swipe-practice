@@ -14,6 +14,7 @@ import {defaultBorderRadius} from '../../utils/constants';
 import {parseTodosForSectionList} from '../../utils/functions';
 import {CategoriesBar} from './Components/CategoriesBar';
 import {Icon} from 'react-native-elements';
+import {useNavigationState} from '@react-navigation/core';
 
 const ICON_SIZE = 20;
 const CATEGORIES = [
@@ -35,6 +36,7 @@ const TodosScreen = () => {
   const {styles, colors} = useStyles();
   const itemRef = useRef<any>(null);
   const {list} = useSelector(getTodosState);
+  const navState = useNavigationState(state => state);
 
   const [data, setData] = useState<any[]>([]);
   const [search, setSearch] = useState('');
@@ -90,6 +92,13 @@ const TodosScreen = () => {
       itemRef.current = null;
     };
   }, [selectedIndex, list, search, categories]);
+
+  useEffect(() => {
+    showCategories(false);
+    if (itemRef.current) {
+      itemRef.current.close();
+    }
+  }, [navState]);
 
   return (
     <SafeAreaView style={styles.container}>
