@@ -27,6 +27,7 @@ export const todosReducer = (
         wasCompleted: false,
         title: action.payload.title,
         seconds: 0,
+        colorParams: action.payload.colorParams,
         isTimerEnabled: action.payload.isTimerEnabled ?? false,
       };
 

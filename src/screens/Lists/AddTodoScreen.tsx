@@ -1,15 +1,19 @@
 import {useNavigation} from '@react-navigation/native';
 import React, {useState, useRef, useEffect} from 'react';
-import {Dimensions} from 'react-native';
+import {Dimensions, Pressable, Text} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {StyleSheet, View, SafeAreaView} from 'react-native';
-import {defaultTodoPlaceholders} from '../../utils/constants';
+import {defaultTodoPlaceholders, todoColors} from '../../utils/constants';
 import {useTheme} from '../../utils/hooks';
 import DefaultButton from '../../components/DefaultButton';
 import DefaultInput from '../../components/DefaultInput';
 import Title from '../../components/Title';
 import {ITodo, TodosActions} from '../../store/types/todosTypes';
 import DefaultCheckbox from '../../components/DefaultCheckbox';
+import Circle from '../../components/Circle';
+import ModalColor from '../../components/ModalColor';
+
+const CIRCLE_SIZE = 26;
 
 export const AddTodoScreen = () => {
   const {styles} = useStyles();
@@ -25,14 +29,15 @@ export const AddTodoScreen = () => {
   const [value, setValue] = useState('');
   const [isTimerEnabled, enableTimer] = useState(false);
   const [willStartOnCreate, setToStartOnCreate] = useState(false);
+  const [isModalVisible, showModal] = useState(false);
+  const [color, setColor] = useState(todoColors[0]);
 
   const handleSubmit = () => {
-    if (value === '') {
-      // Error handle ...
-    } else {
+    if (value !== '') {
       const todo = {
         title: value,
         status: willStartOnCreate ? 'active' : 'default',
+        colorParams: color,
         isTimerEnabled,
       } as ITodo;
 
@@ -44,9 +49,14 @@ export const AddTodoScreen = () => {
     }
   };
 
-  const handleEnableTimer = () => enableTimer(prev => !prev);
+  const handleSetColor = (c: any) => {
+    setColor(c);
+    showModal(false);
+  };
 
+  const handleEnableTimer = () => enableTimer(prev => !prev);
   const handleStartOnCreate = () => setToStartOnCreate(prev => !prev);
+  const handleModalVisibility = () => showModal(prev => !prev);
 
   useEffect(() => {
     if (!isTimerEnabled) {
@@ -67,6 +77,12 @@ export const AddTodoScreen = () => {
             onChangeText={setValue}
           />
         </View>
+        <Pressable onPress={handleModalVisibility}>
+          <View style={[styles.row, styles.inline]}>
+            <Text style={styles.text}>{color.title}</Text>
+            <Circle size={CIRCLE_SIZE} color={color.color} />
+          </View>
+        </Pressable>
         <View style={styles.row}>
           <DefaultCheckbox
             title={'Timer'}
@@ -87,12 +103,18 @@ export const AddTodoScreen = () => {
       <View style={styles.submitContainer}>
         <DefaultButton text={'Add'} onPress={handleSubmit} />
       </View>
+
+      <ModalColor
+        isVisible={isModalVisible}
+        onClose={handleModalVisibility}
+        onColorSet={handleSetColor}
+      />
     </SafeAreaView>
   );
 };
 
 const useStyles = () => {
-  const {colors} = useTheme();
+  const {colors, fonts} = useTheme();
 
   const styles = StyleSheet.create({
     container: {
@@ -112,8 +134,27 @@ const useStyles = () => {
       bottom: 15,
       left: 15,
     },
+    text: {
+      fontWeight: '500',
+      fontSize: fonts.medium,
+      color: colors.black,
+    },
     row: {
-      marginBottom: 15,
+      marginBottom: 20,
+    },
+    inline: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+    },
+    transparentCircle: {
+      borderWidth: 2,
+      borderColor: colors.grey,
+    },
+    color: {
+      width: CIRCLE_SIZE,
+      height: CIRCLE_SIZE,
+      borderRadius: CIRCLE_SIZE,
     },
   });
 

@@ -13,16 +13,21 @@ import {getModerateScale} from '../../../utils/Scaling';
 import {RootStackParamList} from '../../../utils/stackNavigation';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {Timer} from './Timer';
+import Circle from '../../../components/Circle';
 
 interface ITodoProps extends ITodo {
   selectedCategory: ITodo['status'];
 }
 
+const CIRCLE_SIZE = 16;
+
 const areItemsEqual = (prev: ITodoProps, next: ITodoProps) => {
   return (
     prev.startedAt === next.startedAt &&
     prev.pausedAt === next.pausedAt &&
-    prev.title === next.title
+    prev.title === next.title &&
+    prev.colorParams.color === next.colorParams.color &&
+    prev.isTimerEnabled === next.isTimerEnabled
   );
 };
 
@@ -102,6 +107,8 @@ export const ListItem = memo(
         navigate('EditTodo', {
           id: props.id,
           title: props.title,
+          colorParams: props.colorParams,
+          isTimerEnabled: props.isTimerEnabled,
         });
       };
 
@@ -203,16 +210,21 @@ export const ListItem = memo(
         onSwipeableWillOpen={handleSwipeableWillOpen}
         containerStyle={styles.wrapper}>
         <View style={[styles.row, styles.wrapper]}>
-          <View>
-            <Text
-              numberOfLines={1}
-              lineBreakMode={'clip'}
-              style={[
-                styles.title,
-                status === 'done' ? styles.todoSuccess : null,
-              ]}>
-              {props.title}
-            </Text>
+          <View style={styles.infoWrapper}>
+            <View style={[styles.inline, styles.titleWrapper]}>
+              <View style={styles.circleWrapper}>
+                <Circle size={CIRCLE_SIZE} color={props.colorParams.color} />
+              </View>
+              <Text
+                numberOfLines={1}
+                lineBreakMode={'clip'}
+                style={[
+                  styles.title,
+                  status === 'done' ? styles.todoSuccess : null,
+                ]}>
+                {props.title}
+              </Text>
+            </View>
             <Text style={styles.date}>
               created at{' '}
               {dateRef.hours < 10 ? `0${dateRef.hours}` : dateRef.hours}:
@@ -220,7 +232,7 @@ export const ListItem = memo(
             </Text>
           </View>
 
-          {props.isTimerEnabled ? <Timer item={props} status={status} /> : null}
+          <Timer item={props} status={status} />
         </View>
       </Swipeable>
     );
@@ -246,18 +258,25 @@ const useStyles = () => {
     inline: {
       flexDirection: 'row',
     },
+    infoWrapper: {
+      flex: 1,
+      maxWidth: '75%',
+    },
     title: {
       fontSize: fonts.medium,
       color: colors.black,
-      fontWeight: 'bold',
+      fontWeight: '500',
       paddingTop: 4,
       marginBottom: 4,
-      maxWidth: '90%',
+      width: '100%',
+    },
+    titleWrapper: {
+      alignItems: 'center',
     },
     date: {
-      fontWeight: '100',
+      fontWeight: '500',
       fontSize: fonts.small,
-      color: colors.infoLight,
+      color: colors.darkGrey,
     },
     button: {
       backgroundColor: colors.white,
@@ -276,6 +295,9 @@ const useStyles = () => {
     },
     todoSuccess: {
       textDecorationLine: 'line-through',
+    },
+    circleWrapper: {
+      marginRight: 6,
     },
   });
 
