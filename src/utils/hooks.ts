@@ -1,7 +1,7 @@
 import {colors} from './constants';
 import {getModerateScale} from './Scaling';
 import {useRef, useEffect} from 'react';
-import {AppState, AppStateStatic, AppStateStatus} from 'react-native';
+import {AppState, AppStateStatus} from 'react-native';
 
 export const useTheme = () => {
   const fonts = {
@@ -46,5 +46,5 @@ export const useAppStateCallbacks = (
     return () => {
       subscription.remove();
     };
-  }, []);
+  }, [onActive, onBackground]);
 };

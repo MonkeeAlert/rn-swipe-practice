@@ -1,4 +1,5 @@
 import {Dimensions} from 'react-native';
+import {ITodoColor} from './types';
 
 // Theme colors
 export const colors = {
@@ -18,6 +19,7 @@ export const colors = {
 };
 
 export const borders = Dimensions.get('screen').width - 100;
+export const defaultBorderRadius = 6;
 
 // Placeholers for todos
 export const defaultTodoPlaceholders = [
@@ -48,3 +50,38 @@ export const months = [
 ];
 
 export const defaultAnimationTiming = 500;
+
+export const todoColors: ITodoColor[] = [
+  {
+    title: 'Without color',
+    color: 'transparent',
+  },
+  {
+    title: 'Red',
+    color: '#f44336',
+  },
+  {
+    title: 'Purple',
+    color: '#673ab7',
+  },
+  {
+    title: 'Blue',
+    color: '#2196f3',
+  },
+  {
+    title: 'Teal',
+    color: '#009688',
+  },
+  {
+    title: 'Green',
+    color: '#4caf50',
+  },
+  {
+    title: 'Yellow',
+    color: '#ffeb3b',
+  },
+  {
+    title: 'Orange',
+    color: '#ff9800',
+  },
+];

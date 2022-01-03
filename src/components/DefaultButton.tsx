@@ -1,7 +1,9 @@
 import React from 'react';
 import {StyleSheet} from 'react-native';
 import {View, Text, TouchableOpacity, ColorValue} from 'react-native';
+import {defaultBorderRadius} from '../utils/constants';
 import {useTheme} from '../utils/hooks';
+import {getModerateScale} from '../utils/Scaling';
 
 interface IButton {
   text: string;
@@ -11,7 +13,8 @@ interface IButton {
 }
 
 const DefaultButton = (props: IButton) => {
-  const {colors} = useTheme();
+  const {styles, colors} = useStyles();
+
   const theme = StyleSheet.create({
     container: {
       backgroundColor: props.backgroundColor ?? colors.infoMain,
@@ -44,14 +47,21 @@ const DefaultButton = (props: IButton) => {
 
 export default DefaultButton;
 
-const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: 46,
-    borderRadius: 3,
-  },
-  text: {
-    fontSize: 16,
-  },
-});
+const useStyles = () => {
+  const {colors, fonts} = useTheme();
+
+  const styles = StyleSheet.create({
+    container: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      height: getModerateScale(46),
+      borderRadius: defaultBorderRadius,
+    },
+    text: {
+      fontSize: fonts.medium,
+      textTransform: 'uppercase',
+    },
+  });
+
+  return {styles, colors, fonts};
+};

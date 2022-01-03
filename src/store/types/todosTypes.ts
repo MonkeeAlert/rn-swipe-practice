@@ -1,14 +1,16 @@
-import {ActionType} from '../../utils/types';
+import {ActionType, ITodoColor} from '../../utils/types';
 
 export interface ITodo {
   id: string;
-  created_at: number;
-  started_at: number;
-  finished_at: number;
+  createdAt: number;
+  startedAt: number;
+  pausedAt: number;
   status: 'default' | 'active' | 'paused' | 'done';
   title: string;
   wasCompleted: boolean;
   seconds: number;
+  colorParams: ITodoColor;
+  isTimerEnabled?: boolean;
 }
 
 export enum TodosActions {

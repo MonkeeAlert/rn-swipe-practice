@@ -1,36 +1,33 @@
 import Swipeable from 'react-native-gesture-handler/Swipeable';
-import React, {
-  useEffect,
-  useRef,
-  useState,
-  memo,
-  forwardRef,
-  useCallback,
-} from 'react';
+import React, {useRef, useState, memo, forwardRef, useEffect} from 'react';
 import {View, Text, StyleSheet, Animated, Dimensions} from 'react-native';
-import {
-  getDate,
-  getFormattedTimer,
-  getSecondsFrom,
-} from '../../../utils/functions';
-import {useAppStateCallbacks, useTheme} from '../../../utils/hooks';
+import {getDate} from '../../../utils/functions';
+import {useTheme} from '../../../utils/hooks';
 import {RectButton} from 'react-native-gesture-handler';
 import {Icon} from 'react-native-elements';
 import {useDispatch} from 'react-redux';
-import {ITodo, TodosActions} from '../../../store/types/todosTypes';
+import {ITodo} from '../../../store/types/todosTypes';
 import {deleteTodo, editTodo} from '../../../store/actions/todosActions';
 import {useNavigation} from '@react-navigation/native';
 import {getModerateScale} from '../../../utils/Scaling';
-import {RootStackParamList} from '../../../utils/stackNavgation';
+import {RootStackParamList} from '../../../utils/stackNavigation';
 import {StackNavigationProp} from '@react-navigation/stack';
+import {Timer} from './Timer';
+import Circle from '../../../components/Circle';
 
 interface ITodoProps extends ITodo {
   selectedCategory: ITodo['status'];
 }
 
+const CIRCLE_SIZE = 16;
+
 const areItemsEqual = (prev: ITodoProps, next: ITodoProps) => {
   return (
-    prev.started_at === next.started_at && prev.finished_at === next.finished_at
+    prev.startedAt === next.startedAt &&
+    prev.pausedAt === next.pausedAt &&
+    prev.title === next.title &&
+    prev.colorParams.color === next.colorParams.color &&
+    prev.isTimerEnabled === next.isTimerEnabled
   );
 };
 
@@ -42,37 +39,11 @@ export const ListItem = memo(
     const {navigate} = useNavigation<StackNavigationProp<RootStackParamList>>();
 
     const swipeRef = useRef<Swipeable>(null);
-    const timerRef = useRef<any>(null);
-    const secondsRef = useRef<number>(props.seconds);
-    const statusRef = useRef<ITodo['status']>(props.status);
+    const dateRef = useRef(getDate(props.createdAt).date).current;
 
-    const [createdAt, setCreatedAt] = useState('');
-    const [status, setStatus] = useState<ITodo['status']>(checkStatus());
-    const [timer, setTimer] = useState(getFormattedTimer(props.seconds));
-
-    function checkStatus() {
-      return props.wasCompleted ? 'done' : statusRef.current;
-    }
-
-    const setDifference = useCallback(() => {
-      const past =
-        props.seconds +
-        (props.status === 'active' ? getSecondsFrom(props.started_at) : 0);
-
-      secondsRef.current = past;
-      setTimer(getFormattedTimer(secondsRef.current));
-
-      // If todo was running before unmount, this will start to increment seconds
-      if (props.status === 'active') {
-        clearInterval(timerRef.current);
-
-        timerRef.current = setInterval(() => {
-          secondsRef.current += 1;
-
-          setTimer(getFormattedTimer(secondsRef.current));
-        }, 1000);
-      }
-    }, [props.seconds, props.started_at, props.status]);
+    const [status, setStatus] = useState<ITodo['status']>(
+      props.wasCompleted ? 'done' : props.status,
+    );
 
     const renderLeftActions = (_: any, dragX: any) => {
       const interpolations = [0, getModerateScale(60), getModerateScale(61)];
@@ -82,10 +53,7 @@ export const ListItem = memo(
         outputRange: [0, 1, 1],
       });
 
-      const handleAction = () => {
-        clearInterval(timerRef.current);
-        dispatch(deleteTodo(props.id));
-      };
+      const handleAction = () => dispatch(deleteTodo(props.id));
 
       return (
         <View style={styles.inline}>
@@ -136,65 +104,23 @@ export const ListItem = memo(
 
       // Edit todo in modal screen
       const handleEditTodo = () => {
-        navigate('Modal_Data', {
-          title: `Edit todo: ${
-            props.title.length > 18
-              ? `${props.title.slice(0, 15)}...`
-              : props.title
-          }`,
-          buttonConfig: {
-            title: 'Edit',
-            action: TodosActions.EDIT_TODO,
-            todoId: props.id,
-          },
+        navigate('EditTodo', {
+          id: props.id,
+          title: props.title,
+          colorParams: props.colorParams,
+          isTimerEnabled: props.isTimerEnabled,
         });
       };
 
       // Complete todo
       const handleCompleteTodo = () => {
-        statusRef.current = status === 'done' ? 'default' : 'done';
-
-        const now = Date.now();
-        const todo = {
-          ...props,
-          category: statusRef.current,
-          started_at: now,
-          finished_at: now,
-          wasCompleted: status === 'done',
-        };
-
-        clearInterval(timerRef.current);
-        setStatus(statusRef.current);
-        dispatch(editTodo(todo));
+        setStatus(prev => (prev === 'done' ? 'default' : 'done'));
         swipeRef.current?.close();
       };
 
       // Change state to active or paused
       const changeTodoState = () => {
-        statusRef.current = status === 'active' ? 'paused' : 'active';
-
-        const now = Date.now();
-
-        const todo: ITodo = {
-          ...props,
-          status: statusRef.current,
-          started_at: now,
-          finished_at: statusRef.current === 'paused' ? now : props.finished_at,
-          seconds: secondsRef.current,
-        };
-
-        if (statusRef.current === 'active') {
-          timerRef.current = setInterval(() => {
-            secondsRef.current += 1;
-
-            setTimer(getFormattedTimer(secondsRef.current));
-          }, 1000);
-        } else {
-          clearInterval(timerRef.current);
-        }
-
-        setStatus(statusRef.current);
-        dispatch(editTodo(todo));
+        setStatus(prev => (prev === 'active' ? 'paused' : 'active'));
         swipeRef.current?.close();
       };
 
@@ -260,53 +186,20 @@ export const ListItem = memo(
       previousRef.current = swipeRef.current;
     };
 
-    // Change seconds
-    useAppStateCallbacks(undefined, date => {
-      const past = getSecondsFrom(date);
+    useEffect(() => {
+      if (!props.isTimerEnabled) {
+        const now = Date.now();
 
-      if (statusRef.current === 'active') {
         const todo: ITodo = {
           ...props,
-          status: 'active',
-          started_at: Date.now(),
-          finished_at: props.finished_at,
-          seconds: secondsRef.current + past,
+          status,
+          startedAt: now,
+          pausedAt: now,
         };
 
         dispatch(editTodo(todo));
       }
-    });
-
-    useEffect(() => {
-      // Set date of todo creation
-      const d = getDate(props.created_at).toString();
-      setCreatedAt(d);
-
-      // Triggers when user leaves screen
-      return () => {
-        const now = Date.now();
-        const statusOnUnmount = statusRef.current;
-
-        const savedTodo: ITodo = {
-          ...props,
-          status: statusOnUnmount,
-          started_at: statusOnUnmount === 'active' ? now : props.started_at,
-          seconds: secondsRef.current,
-        };
-
-        clearInterval(timerRef.current);
-        dispatch(editTodo(savedTodo));
-      };
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [dispatch]);
-
-    useEffect(() => {
-      setDifference();
-
-      return () => {
-        clearInterval(timerRef.current);
-      };
-    }, [setDifference]);
+    }, [status]);
 
     return (
       <Swipeable
@@ -317,19 +210,29 @@ export const ListItem = memo(
         onSwipeableWillOpen={handleSwipeableWillOpen}
         containerStyle={styles.wrapper}>
         <View style={[styles.row, styles.wrapper]}>
-          <View>
-            <Text
-              style={[
-                styles.title,
-                status === 'done' ? styles.todoSuccess : null,
-              ]}>
-              {props.title}
+          <View style={styles.infoWrapper}>
+            <View style={[styles.inline, styles.titleWrapper]}>
+              <View style={styles.circleWrapper}>
+                <Circle size={CIRCLE_SIZE} color={props.colorParams.color} />
+              </View>
+              <Text
+                numberOfLines={1}
+                lineBreakMode={'clip'}
+                style={[
+                  styles.title,
+                  status === 'done' ? styles.todoSuccess : null,
+                ]}>
+                {props.title}
+              </Text>
+            </View>
+            <Text style={styles.date}>
+              created at{' '}
+              {dateRef.hours < 10 ? `0${dateRef.hours}` : dateRef.hours}:
+              {dateRef.minutes < 10 ? `0${dateRef.minutes}` : dateRef.minutes}
             </Text>
-            <Text style={styles.date}>{createdAt}</Text>
           </View>
-          <View>
-            <Text style={styles.date}>{timer}</Text>
-          </View>
+
+          <Timer item={props} status={status} />
         </View>
       </Swipeable>
     );
@@ -355,17 +258,25 @@ const useStyles = () => {
     inline: {
       flexDirection: 'row',
     },
+    infoWrapper: {
+      flex: 1,
+      maxWidth: '75%',
+    },
     title: {
       fontSize: fonts.medium,
       color: colors.black,
-      fontWeight: 'bold',
+      fontWeight: '500',
       paddingTop: 4,
       marginBottom: 4,
+      width: '100%',
+    },
+    titleWrapper: {
+      alignItems: 'center',
     },
     date: {
-      fontWeight: '100',
+      fontWeight: '500',
       fontSize: fonts.small,
-      color: colors.infoLight,
+      color: colors.darkGrey,
     },
     button: {
       backgroundColor: colors.white,
@@ -384,6 +295,9 @@ const useStyles = () => {
     },
     todoSuccess: {
       textDecorationLine: 'line-through',
+    },
+    circleWrapper: {
+      marginRight: 6,
     },
   });
 
