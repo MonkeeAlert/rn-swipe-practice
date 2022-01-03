@@ -1,4 +1,4 @@
-import {ActionType} from '../../utils/types';
+import {ActionType, ITodoColor} from '../../utils/types';
 
 export interface ITodo {
   id: string;
@@ -9,7 +9,7 @@ export interface ITodo {
   title: string;
   wasCompleted: boolean;
   seconds: number;
-  color: string;
+  colorParams: ITodoColor;
   isTimerEnabled?: boolean;
 }
 

@@ -1,4 +1,5 @@
 import {Dimensions} from 'react-native';
+import {ITodoColor} from './types';
 
 // Theme colors
 export const colors = {
@@ -50,7 +51,7 @@ export const months = [
 
 export const defaultAnimationTiming = 500;
 
-export const todoColors = [
+export const todoColors: ITodoColor[] = [
   {
     title: 'Without color',
     color: 'transparent',

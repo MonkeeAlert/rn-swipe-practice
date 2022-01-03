@@ -10,8 +10,8 @@ import DefaultInput from '../../components/DefaultInput';
 import Title from '../../components/Title';
 import {ITodo, TodosActions} from '../../store/types/todosTypes';
 import DefaultCheckbox from '../../components/DefaultCheckbox';
-import {ModalWrapper} from '../../components/ModalWrapper';
 import Circle from '../../components/Circle';
+import ModalColor from '../../components/ModalColor';
 
 const CIRCLE_SIZE = 26;
 
@@ -37,7 +37,7 @@ export const AddTodoScreen = () => {
       const todo = {
         title: value,
         status: willStartOnCreate ? 'active' : 'default',
-        color: color.color,
+        colorParams: color,
         isTimerEnabled,
       } as ITodo;
 
@@ -104,19 +104,11 @@ export const AddTodoScreen = () => {
         <DefaultButton text={'Add'} onPress={handleSubmit} />
       </View>
 
-      <ModalWrapper isVisible={isModalVisible} onClose={handleModalVisibility}>
-        <View style={styles.modalContainer}>
-          {todoColors.map((i, k) => (
-            <Pressable
-              key={`Color_${k}`}
-              onPress={() => handleSetColor(todoColors[k])}
-              style={styles.colorButton}>
-              <Circle size={CIRCLE_SIZE} color={i.color} />
-              <Text style={[styles.text, styles.colorText]}>{i.title}</Text>
-            </Pressable>
-          ))}
-        </View>
-      </ModalWrapper>
+      <ModalColor
+        isVisible={isModalVisible}
+        onClose={handleModalVisibility}
+        onColorSet={handleSetColor}
+      />
     </SafeAreaView>
   );
 };
@@ -155,9 +147,6 @@ const useStyles = () => {
       alignItems: 'center',
       justifyContent: 'space-between',
     },
-    modalContainer: {
-      paddingHorizontal: 22,
-    },
     transparentCircle: {
       borderWidth: 2,
       borderColor: colors.grey,
@@ -166,15 +155,6 @@ const useStyles = () => {
       width: CIRCLE_SIZE,
       height: CIRCLE_SIZE,
       borderRadius: CIRCLE_SIZE,
-    },
-    colorButton: {
-      flexDirection: 'row',
-      justifyContent: 'flex-start',
-      alignItems: 'center',
-      marginVertical: 8,
-    },
-    colorText: {
-      marginLeft: 10,
     },
   });
 

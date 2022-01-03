@@ -25,7 +25,9 @@ const areItemsEqual = (prev: ITodoProps, next: ITodoProps) => {
   return (
     prev.startedAt === next.startedAt &&
     prev.pausedAt === next.pausedAt &&
-    prev.title === next.title
+    prev.title === next.title &&
+    prev.colorParams.color === next.colorParams.color &&
+    prev.isTimerEnabled === next.isTimerEnabled
   );
 };
 
@@ -105,6 +107,8 @@ export const ListItem = memo(
         navigate('EditTodo', {
           id: props.id,
           title: props.title,
+          colorParams: props.colorParams,
+          isTimerEnabled: props.isTimerEnabled,
         });
       };
 
@@ -209,7 +213,7 @@ export const ListItem = memo(
           <View style={styles.infoWrapper}>
             <View style={[styles.inline, styles.titleWrapper]}>
               <View style={styles.circleWrapper}>
-                <Circle size={CIRCLE_SIZE} color={props.color} />
+                <Circle size={CIRCLE_SIZE} color={props.colorParams.color} />
               </View>
               <Text
                 numberOfLines={1}
@@ -228,7 +232,7 @@ export const ListItem = memo(
             </Text>
           </View>
 
-          {props.isTimerEnabled ? <Timer item={props} status={status} /> : null}
+          <Timer item={props} status={status} />
         </View>
       </Swipeable>
     );
@@ -270,9 +274,9 @@ const useStyles = () => {
       alignItems: 'center',
     },
     date: {
-      fontWeight: '100',
+      fontWeight: '500',
       fontSize: fonts.small,
-      color: colors.infoLight,
+      color: colors.darkGrey,
     },
     button: {
       backgroundColor: colors.white,

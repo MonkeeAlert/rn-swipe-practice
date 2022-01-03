@@ -10,7 +10,7 @@ export interface IIcon {
   color?: string;
 }
 
-export interface ITodoCategory {
+export interface ITodoColor {
   title: string;
   color: string;
 }

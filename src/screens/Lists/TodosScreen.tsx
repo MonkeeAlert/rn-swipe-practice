@@ -15,6 +15,7 @@ import {parseTodosForSectionList} from '../../utils/functions';
 import {CategoriesBar} from './Components/CategoriesBar';
 import {Icon} from 'react-native-elements';
 
+const ICON_SIZE = 20;
 const CATEGORIES = [
   {
     title: 'All',
@@ -30,8 +31,6 @@ const CATEGORIES = [
   },
 ];
 
-const ICON_SIZE = 20;
-
 const TodosScreen = () => {
   const {styles, colors} = useStyles();
   const itemRef = useRef<any>(null);
@@ -40,7 +39,8 @@ const TodosScreen = () => {
   const [data, setData] = useState<any[]>([]);
   const [search, setSearch] = useState('');
   const [selectedIndex, selectIndex] = useState<number>(0);
-  const [areCatetoriesVisible, showCategories] = useState(false);
+  const [areCategoriesVisible, showCategories] = useState(false);
+  const [categories, setCategories] = useState<string[]>([]);
 
   const handleShowCategories = () => showCategories(prev => !prev);
 
@@ -69,17 +69,19 @@ const TodosScreen = () => {
     const status = CATEGORIES[selectedIndex].key;
 
     if (list?.length > 0) {
-      if (status === 'default') {
-        const filtered = filterListByTitle(list);
+      let filtered = filterListByTitle(list);
 
-        setData(parseTodosForSectionList(filtered));
-      } else {
-        const filtered = filterListByTitle(list).filter(
-          i => i.status === status,
-        );
-
-        setData(parseTodosForSectionList(filtered));
+      if (status !== 'default') {
+        filtered = filtered.filter(i => i.status === status);
       }
+
+      if (categories.length > 0) {
+        filtered = filtered.filter(i =>
+          categories.includes(i.colorParams.color),
+        );
+      }
+
+      setData(parseTodosForSectionList(filtered));
     } else {
       setData([]);
     }
@@ -87,7 +89,7 @@ const TodosScreen = () => {
     return () => {
       itemRef.current = null;
     };
-  }, [selectedIndex, list, search]);
+  }, [selectedIndex, list, search, categories]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -105,10 +107,13 @@ const TodosScreen = () => {
             />
           </Pressable>
         </View>
-        {areCatetoriesVisible && list.length > 0 ? (
+        {areCategoriesVisible && list.length > 0 ? (
           <View style={styles.categoriesBar}>
             <View style={styles.cut} />
-            <CategoriesBar data={[...new Set(list.map(i => i.color))]} />
+            <CategoriesBar
+              data={[...new Set(list.map(i => i.colorParams.color))]}
+              onSelect={setCategories}
+            />
           </View>
         ) : null}
       </View>
@@ -169,7 +174,8 @@ const useStyles = () => {
       justifyContent: 'center',
     },
     headerContainer: {
-      marginVertical: getModerateScale(6),
+      backgroundColor: colors.lightGrey,
+      paddingVertical: getModerateScale(6),
       alignItems: 'center',
     },
     headerText: {

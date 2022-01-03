@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {editTodo} from '../../../store/actions/todosActions';
 import {ITodo} from '../../../store/types/todosTypes';
@@ -106,11 +106,9 @@ export const Timer = (props: IProps) => {
     dispatch(editTodo(modified));
   }, [status]);
 
-  return (
-    <View>
-      <Text style={styles.date}>{timer}</Text>
-    </View>
-  );
+  return props.item.isTimerEnabled ? (
+    <Text style={styles.date}>{timer}</Text>
+  ) : null;
 };
 
 const useStyles = () => {
@@ -118,9 +116,9 @@ const useStyles = () => {
 
   const styles = StyleSheet.create({
     date: {
-      fontWeight: '100',
+      fontWeight: '500',
       fontSize: fonts.small,
-      color: colors.infoLight,
+      color: colors.darkGrey,
     },
   });
 
