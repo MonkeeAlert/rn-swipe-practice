@@ -55,9 +55,6 @@ export const todosReducer = (
 
       return {list};
 
-    case TodosActions.UPDATE_TODO_LIST:
-      return {list: action.payload.list};
-
     default:
       return state;
   }

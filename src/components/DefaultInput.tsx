@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import {TextInput, TextInputProps} from 'react-native';
 import {Icon} from 'react-native-elements';
 import {useTheme} from '../utils/hooks';
@@ -25,17 +25,29 @@ const DefaultInput = (props: IProps) => {
       height: getModerateScale(HEIGHT),
       paddingBottom: 6,
       paddingLeft: 0,
-      paddingRight: props.icon ? props.icon?.size + 4 : 0,
+      paddingRight: props.icon?.size ? props.icon?.size + 4 : 0,
       borderColor: colors.darkGrey,
       fontSize: fonts.regular,
       color: colors.black,
-      ...props.style,
+      ...(props.style as object),
     },
     icon: {
       position: 'absolute',
       top: getModerateScale((HEIGHT - (props.icon?.size ?? 16)) / 2),
       right: 0,
       zIndex: 2,
+    },
+    maxLength: {
+      position: 'absolute',
+      top: getModerateScale(HEIGHT - fonts.regular) / 2,
+      right: 0,
+      zIndex: 2,
+      color:
+        props.value?.length &&
+        props.maxLength &&
+        props.value?.length >= props.maxLength
+          ? colors.error
+          : colors.darkGrey,
     },
   });
 
@@ -55,6 +67,11 @@ const DefaultInput = (props: IProps) => {
           color={props.icon.color ?? colors.darkGrey}
           containerStyle={theme.icon}
         />
+      ) : null}
+      {props.maxLength ? (
+        <Text style={theme.maxLength}>
+          {props.value?.length}/{props.maxLength}
+        </Text>
       ) : null}
     </View>
   );

@@ -232,7 +232,9 @@ export const ListItem = memo(
             </Text>
           </View>
 
-          <Timer item={props} status={status} />
+          <View style={status === 'done' ? styles.disabled : null}>
+            <Timer item={props} status={status} />
+          </View>
         </View>
       </Swipeable>
     );
@@ -295,9 +297,13 @@ const useStyles = () => {
     },
     todoSuccess: {
       textDecorationLine: 'line-through',
+      opacity: 0.25,
     },
     circleWrapper: {
       marginRight: 6,
+    },
+    disabled: {
+      opacity: 0.5,
     },
   });
 

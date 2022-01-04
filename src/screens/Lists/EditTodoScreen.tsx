@@ -73,6 +73,7 @@ export const EditTodoScreen = () => {
             value={value}
             placeholder={placeholderRef}
             onChangeText={setValue}
+            maxLength={28}
           />
         </View>
         <Pressable onPress={handleModalVisibility}>
