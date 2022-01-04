@@ -17,8 +17,3 @@ export const deleteTodo = (id: string) => ({
   type: TodosActions.DELETE_TODO,
   payload: {id},
 });
-
-export const updateTodoList = (list: ITodo[]) => ({
-  type: TodosActions.UPDATE_TODO_LIST,
-  payload: {list},
-});

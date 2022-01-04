@@ -6,7 +6,7 @@ export const colors = {
   white: '#fff',
   black: '#141414',
   grey: '#e0e0e0',
-  lightGrey: '#eeeeee',
+  lightGrey: '#f3f3f3',
   darkGrey: '#aeaeae',
   infoMain: '#0288d1',
   infoLight: '#03a9f4',
@@ -53,7 +53,7 @@ export const defaultAnimationTiming = 500;
 
 export const todoColors: ITodoColor[] = [
   {
-    title: 'Without color',
+    title: 'Blank',
     color: 'transparent',
   },
   {
@@ -83,5 +83,9 @@ export const todoColors: ITodoColor[] = [
   {
     title: 'Orange',
     color: '#ff9800',
+  },
+  {
+    title: 'Silver',
+    color: '#bdc3c7',
   },
 ];

@@ -52,13 +52,12 @@ export const Timer = (props: IProps) => {
       const now = Date.now();
       const statusOnUnmount = statusRef.current;
 
-      const savedTodo: ITodo = {
-        ...props.item,
+      const savedTodo = {
         status: statusOnUnmount,
         startedAt: statusOnUnmount === 'active' ? now : props.item.startedAt,
         pausedAt: now,
         seconds: secondsRef.current,
-      };
+      } as ITodo;
 
       clearInterval(timerRef.current);
       dispatch(editTodo(savedTodo));

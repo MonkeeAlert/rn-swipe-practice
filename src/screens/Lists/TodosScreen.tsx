@@ -71,7 +71,10 @@ const TodosScreen = () => {
     const status = CATEGORIES[selectedIndex].key;
 
     if (list?.length > 0) {
-      let filtered = filterListByTitle(list);
+      let filtered = filterListByTitle(list).filter(i => i.status !== 'done');
+      let done = filterListByTitle(list).filter(i => i.status === 'done');
+
+      filtered = [...filtered, ...done];
 
       if (status !== 'default') {
         filtered = filtered.filter(i => i.status === status);
@@ -91,10 +94,12 @@ const TodosScreen = () => {
     return () => {
       itemRef.current = null;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedIndex, list, search, categories]);
 
   useEffect(() => {
     showCategories(false);
+
     if (itemRef.current) {
       itemRef.current.close();
     }
@@ -159,6 +164,7 @@ const useStyles = () => {
   const styles = StyleSheet.create({
     container: {
       flex: 1,
+      backgroundColor: colors.lightGrey,
     },
     contentContainer: {
       flexGrow: 1,
