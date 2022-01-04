@@ -47,18 +47,20 @@ const useStyles = () => {
   const styles = StyleSheet.create({
     modalContainer: {
       paddingHorizontal: 22,
+      flexDirection: 'row',
+      flexWrap: 'wrap',
     },
     colorButton: {
-      flexDirection: 'row',
-      justifyContent: 'flex-start',
+      width: '33.3333%',
       alignItems: 'center',
       marginVertical: 8,
     },
     colorText: {
       fontWeight: '500',
-      fontSize: fonts.medium,
+      fontSize: fonts.regular,
       color: colors.black,
-      marginLeft: 10,
+      marginTop: 5,
+      textAlign: 'center',
     },
   });
 
