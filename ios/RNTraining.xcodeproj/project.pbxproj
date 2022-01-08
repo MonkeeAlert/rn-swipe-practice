@@ -7,13 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		00E356F31AD99517003FC87E /* RNSwipePracticeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* RNSwipePracticeTests.m */; };
+		00E356F31AD99517003FC87E /* RNTrainingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* RNTrainingTests.m */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		6172F2D35A4C3AA820D92908 /* libPods-RNSwipePractice.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6423831EA8574132BED9D8CC /* libPods-RNSwipePractice.a */; };
-		7EF68E3733C33B6898317E18 /* libPods-RNSwipePractice-RNSwipePracticeTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ABFE59519B596E51CEFDCCC0 /* libPods-RNSwipePractice-RNSwipePracticeTests.a */; };
+		3A0B0B86496E8FBE26E7F674 /* libPods-RNTraining-RNTrainingTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DB8091F72AF20A191863CF90 /* libPods-RNTraining-RNTrainingTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		DE80A45C82C4F4966FE8606E /* libPods-RNTraining.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 96D62563CD3BD691855D0F30 /* libPods-RNTraining.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -22,28 +22,28 @@
 			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
-			remoteInfo = RNSwipePractice;
+			remoteInfo = RNTraining;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		00E356EE1AD99517003FC87E /* RNSwipePracticeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RNSwipePracticeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		00E356EE1AD99517003FC87E /* RNTrainingTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RNTrainingTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		00E356F21AD99517003FC87E /* RNSwipePracticeTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNSwipePracticeTests.m; sourceTree = "<group>"; };
-		13B07F961A680F5B00A75B9A /* RNSwipePractice.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RNSwipePractice.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = RNSwipePractice/AppDelegate.h; sourceTree = "<group>"; };
-		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = RNSwipePractice/AppDelegate.m; sourceTree = "<group>"; };
-		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = RNSwipePractice/Images.xcassets; sourceTree = "<group>"; };
-		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = RNSwipePractice/Info.plist; sourceTree = "<group>"; };
-		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = RNSwipePractice/main.m; sourceTree = "<group>"; };
-		1D0AE47A65C8663E3B452821 /* Pods-RNSwipePractice-RNSwipePracticeTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNSwipePractice-RNSwipePracticeTests.release.xcconfig"; path = "Target Support Files/Pods-RNSwipePractice-RNSwipePracticeTests/Pods-RNSwipePractice-RNSwipePracticeTests.release.xcconfig"; sourceTree = "<group>"; };
-		6423831EA8574132BED9D8CC /* libPods-RNSwipePractice.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RNSwipePractice.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		6C97AB639B58BBB4B15BBE30 /* Pods-RNSwipePractice-RNSwipePracticeTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNSwipePractice-RNSwipePracticeTests.debug.xcconfig"; path = "Target Support Files/Pods-RNSwipePractice-RNSwipePracticeTests/Pods-RNSwipePractice-RNSwipePracticeTests.debug.xcconfig"; sourceTree = "<group>"; };
-		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = RNSwipePractice/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		ABFE59519B596E51CEFDCCC0 /* libPods-RNSwipePractice-RNSwipePracticeTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RNSwipePractice-RNSwipePracticeTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		C0A881CF5CF3F2B244570E2A /* Pods-RNSwipePractice.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNSwipePractice.debug.xcconfig"; path = "Target Support Files/Pods-RNSwipePractice/Pods-RNSwipePractice.debug.xcconfig"; sourceTree = "<group>"; };
-		D00AAFFCFCFDA5787532823F /* Pods-RNSwipePractice.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNSwipePractice.release.xcconfig"; path = "Target Support Files/Pods-RNSwipePractice/Pods-RNSwipePractice.release.xcconfig"; sourceTree = "<group>"; };
+		00E356F21AD99517003FC87E /* RNTrainingTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNTrainingTests.m; sourceTree = "<group>"; };
+		13B07F961A680F5B00A75B9A /* RNTraining.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RNTraining.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = RNTraining/AppDelegate.h; sourceTree = "<group>"; };
+		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = RNTraining/AppDelegate.m; sourceTree = "<group>"; };
+		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = RNTraining/Images.xcassets; sourceTree = "<group>"; };
+		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = RNTraining/Info.plist; sourceTree = "<group>"; };
+		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = RNTraining/main.m; sourceTree = "<group>"; };
+		592A3C8CD8D5793728F9DB03 /* Pods-RNTraining.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNTraining.debug.xcconfig"; path = "Target Support Files/Pods-RNTraining/Pods-RNTraining.debug.xcconfig"; sourceTree = "<group>"; };
+		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = RNTraining/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		891799A333A1E54A9301BFE6 /* Pods-RNTraining-RNTrainingTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNTraining-RNTrainingTests.release.xcconfig"; path = "Target Support Files/Pods-RNTraining-RNTrainingTests/Pods-RNTraining-RNTrainingTests.release.xcconfig"; sourceTree = "<group>"; };
+		8EA5ED1EF45A5C88E2039073 /* Pods-RNTraining-RNTrainingTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNTraining-RNTrainingTests.debug.xcconfig"; path = "Target Support Files/Pods-RNTraining-RNTrainingTests/Pods-RNTraining-RNTrainingTests.debug.xcconfig"; sourceTree = "<group>"; };
+		96D62563CD3BD691855D0F30 /* libPods-RNTraining.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RNTraining.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		DB8091F72AF20A191863CF90 /* libPods-RNTraining-RNTrainingTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RNTraining-RNTrainingTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		F0B4D7302D5BFBF2AF47DCBA /* Pods-RNTraining.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNTraining.release.xcconfig"; path = "Target Support Files/Pods-RNTraining/Pods-RNTraining.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,7 +51,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7EF68E3733C33B6898317E18 /* libPods-RNSwipePractice-RNSwipePracticeTests.a in Frameworks */,
+				3A0B0B86496E8FBE26E7F674 /* libPods-RNTraining-RNTrainingTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -59,20 +59,20 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6172F2D35A4C3AA820D92908 /* libPods-RNSwipePractice.a in Frameworks */,
+				DE80A45C82C4F4966FE8606E /* libPods-RNTraining.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		00E356EF1AD99517003FC87E /* RNSwipePracticeTests */ = {
+		00E356EF1AD99517003FC87E /* RNTrainingTests */ = {
 			isa = PBXGroup;
 			children = (
-				00E356F21AD99517003FC87E /* RNSwipePracticeTests.m */,
+				00E356F21AD99517003FC87E /* RNTrainingTests.m */,
 				00E356F01AD99517003FC87E /* Supporting Files */,
 			);
-			path = RNSwipePracticeTests;
+			path = RNTrainingTests;
 			sourceTree = "<group>";
 		};
 		00E356F01AD99517003FC87E /* Supporting Files */ = {
@@ -83,7 +83,7 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		13B07FAE1A68108700A75B9A /* RNSwipePractice */ = {
+		13B07FAE1A68108700A75B9A /* RNTraining */ = {
 			isa = PBXGroup;
 			children = (
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -93,17 +93,28 @@
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
 			);
-			name = RNSwipePractice;
+			name = RNTraining;
 			sourceTree = "<group>";
 		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				6423831EA8574132BED9D8CC /* libPods-RNSwipePractice.a */,
-				ABFE59519B596E51CEFDCCC0 /* libPods-RNSwipePractice-RNSwipePracticeTests.a */,
+				96D62563CD3BD691855D0F30 /* libPods-RNTraining.a */,
+				DB8091F72AF20A191863CF90 /* libPods-RNTraining-RNTrainingTests.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		4484A9921CCA9873CCA82DC6 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				592A3C8CD8D5793728F9DB03 /* Pods-RNTraining.debug.xcconfig */,
+				F0B4D7302D5BFBF2AF47DCBA /* Pods-RNTraining.release.xcconfig */,
+				8EA5ED1EF45A5C88E2039073 /* Pods-RNTraining-RNTrainingTests.debug.xcconfig */,
+				891799A333A1E54A9301BFE6 /* Pods-RNTraining-RNTrainingTests.release.xcconfig */,
+			);
+			path = Pods;
 			sourceTree = "<group>";
 		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
@@ -116,13 +127,12 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				13B07FAE1A68108700A75B9A /* RNSwipePractice */,
+				13B07FAE1A68108700A75B9A /* RNTraining */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
-				00E356EF1AD99517003FC87E /* RNSwipePracticeTests */,
+				00E356EF1AD99517003FC87E /* RNTrainingTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
-				E233CBF5F47BEE60B243DCF8 /* Pods */,
-				495B7FF74CBF4CDCB89A23B3 /* Resources */,
+				4484A9921CCA9873CCA82DC6 /* Pods */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -132,76 +142,56 @@
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				13B07F961A680F5B00A75B9A /* RNSwipePractice.app */,
-				00E356EE1AD99517003FC87E /* RNSwipePracticeTests.xctest */,
+				13B07F961A680F5B00A75B9A /* RNTraining.app */,
+				00E356EE1AD99517003FC87E /* RNTrainingTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		E233CBF5F47BEE60B243DCF8 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				C0A881CF5CF3F2B244570E2A /* Pods-RNSwipePractice.debug.xcconfig */,
-				D00AAFFCFCFDA5787532823F /* Pods-RNSwipePractice.release.xcconfig */,
-				6C97AB639B58BBB4B15BBE30 /* Pods-RNSwipePractice-RNSwipePracticeTests.debug.xcconfig */,
-				1D0AE47A65C8663E3B452821 /* Pods-RNSwipePractice-RNSwipePracticeTests.release.xcconfig */,
-			);
-			name = Pods;
-			path = Pods;
-			sourceTree = "<group>";
-		};
-		495B7FF74CBF4CDCB89A23B3 /* Resources */ = {
-			isa = "PBXGroup";
-			children = (
-			);
-			name = Resources;
-			sourceTree = "<group>";
-			path = "";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		00E356ED1AD99517003FC87E /* RNSwipePracticeTests */ = {
+		00E356ED1AD99517003FC87E /* RNTrainingTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "RNSwipePracticeTests" */;
+			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "RNTrainingTests" */;
 			buildPhases = (
-				A130D646172E58E1D159D8F2 /* [CP] Check Pods Manifest.lock */,
+				8E3E7D569F4682EB5BE82887 /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
-				077E01280D4B4AD18B2E1770 /* [CP] Embed Pods Frameworks */,
-				4E62BDF20514810D028A5FBF /* [CP] Copy Pods Resources */,
+				4121803E9A615C668DB67329 /* [CP] Embed Pods Frameworks */,
+				63DFA8492D20D015B7D9E1E3 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				00E356F51AD99517003FC87E /* PBXTargetDependency */,
 			);
-			name = RNSwipePracticeTests;
-			productName = RNSwipePracticeTests;
-			productReference = 00E356EE1AD99517003FC87E /* RNSwipePracticeTests.xctest */;
+			name = RNTrainingTests;
+			productName = RNTrainingTests;
+			productReference = 00E356EE1AD99517003FC87E /* RNTrainingTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		13B07F861A680F5B00A75B9A /* RNSwipePractice */ = {
+		13B07F861A680F5B00A75B9A /* RNTraining */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "RNSwipePractice" */;
+			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "RNTraining" */;
 			buildPhases = (
-				3E482C27206C4DEF2FE45063 /* [CP] Check Pods Manifest.lock */,
+				545C8482BA83247831C065AA /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				C8AC78B0264D0F9F6F6D630E /* [CP] Embed Pods Frameworks */,
-				ADC9DDC32298B72B3CF5DC8E /* [CP] Copy Pods Resources */,
+				688A7206063B11A67481BDFB /* [CP] Embed Pods Frameworks */,
+				40A52AB1FC05E5051012E8D6 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = RNSwipePractice;
-			productName = RNSwipePractice;
-			productReference = 13B07F961A680F5B00A75B9A /* RNSwipePractice.app */;
+			name = RNTraining;
+			productName = RNTraining;
+			productReference = 13B07F961A680F5B00A75B9A /* RNTraining.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -210,7 +200,7 @@
 		83CBB9F71A601CBA00E9B192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1210;
+				LastUpgradeCheck = 1320;
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
 						CreatedOnToolsVersion = 6.2;
@@ -221,7 +211,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "RNSwipePractice" */;
+			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "RNTraining" */;
 			compatibilityVersion = "Xcode 12.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -234,8 +224,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				13B07F861A680F5B00A75B9A /* RNSwipePractice */,
-				00E356ED1AD99517003FC87E /* RNSwipePracticeTests */,
+				13B07F861A680F5B00A75B9A /* RNTraining */,
+				00E356ED1AD99517003FC87E /* RNTrainingTests */,
 			);
 		};
 /* End PBXProject section */
@@ -274,24 +264,41 @@
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\nexport NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
-		077E01280D4B4AD18B2E1770 /* [CP] Embed Pods Frameworks */ = {
+		40A52AB1FC05E5051012E8D6 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-RNSwipePractice-RNSwipePracticeTests/Pods-RNSwipePractice-RNSwipePracticeTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-RNTraining/Pods-RNTraining-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			name = "[CP] Embed Pods Frameworks";
+			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-RNSwipePractice-RNSwipePracticeTests/Pods-RNSwipePractice-RNSwipePracticeTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-RNTraining/Pods-RNTraining-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-RNSwipePractice-RNSwipePracticeTests/Pods-RNSwipePractice-RNSwipePracticeTests-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-RNTraining/Pods-RNTraining-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		3E482C27206C4DEF2FE45063 /* [CP] Check Pods Manifest.lock */ = {
+		4121803E9A615C668DB67329 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-RNTraining-RNTrainingTests/Pods-RNTraining-RNTrainingTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-RNTraining-RNTrainingTests/Pods-RNTraining-RNTrainingTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-RNTraining-RNTrainingTests/Pods-RNTraining-RNTrainingTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		545C8482BA83247831C065AA /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -306,31 +313,48 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-RNSwipePractice-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-RNTraining-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		4E62BDF20514810D028A5FBF /* [CP] Copy Pods Resources */ = {
+		63DFA8492D20D015B7D9E1E3 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-RNSwipePractice-RNSwipePracticeTests/Pods-RNSwipePractice-RNSwipePracticeTests-resources-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-RNTraining-RNTrainingTests/Pods-RNTraining-RNTrainingTests-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-RNSwipePractice-RNSwipePracticeTests/Pods-RNSwipePractice-RNSwipePracticeTests-resources-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-RNTraining-RNTrainingTests/Pods-RNTraining-RNTrainingTests-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-RNSwipePractice-RNSwipePracticeTests/Pods-RNSwipePractice-RNSwipePracticeTests-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-RNTraining-RNTrainingTests/Pods-RNTraining-RNTrainingTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		A130D646172E58E1D159D8F2 /* [CP] Check Pods Manifest.lock */ = {
+		688A7206063B11A67481BDFB /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-RNTraining/Pods-RNTraining-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-RNTraining/Pods-RNTraining-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-RNTraining/Pods-RNTraining-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		8E3E7D569F4682EB5BE82887 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -345,45 +369,11 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-RNSwipePractice-RNSwipePracticeTests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-RNTraining-RNTrainingTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		ADC9DDC32298B72B3CF5DC8E /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-RNSwipePractice/Pods-RNSwipePractice-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-RNSwipePractice/Pods-RNSwipePractice-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-RNSwipePractice/Pods-RNSwipePractice-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		C8AC78B0264D0F9F6F6D630E /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-RNSwipePractice/Pods-RNSwipePractice-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-RNSwipePractice/Pods-RNSwipePractice-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-RNSwipePractice/Pods-RNSwipePractice-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FD10A7F022414F080027D42C /* Start Packager */ = {
@@ -412,7 +402,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				00E356F31AD99517003FC87E /* RNSwipePracticeTests.m in Sources */,
+				00E356F31AD99517003FC87E /* RNTrainingTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -430,7 +420,7 @@
 /* Begin PBXTargetDependency section */
 		00E356F51AD99517003FC87E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 13B07F861A680F5B00A75B9A /* RNSwipePractice */;
+			target = 13B07F861A680F5B00A75B9A /* RNTraining */;
 			targetProxy = 00E356F41AD99517003FC87E /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -438,15 +428,16 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6C97AB639B58BBB4B15BBE30 /* Pods-RNSwipePractice-RNSwipePracticeTests.debug.xcconfig */;
+			baseConfigurationReference = 8EA5ED1EF45A5C88E2039073 /* Pods-RNTraining-RNTrainingTests.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = RNSwipePracticeTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				INFOPLIST_FILE = RNTrainingTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -459,18 +450,19 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RNSwipePractice.app/RNSwipePractice";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RNTraining.app/RNTraining";
 			};
 			name = Debug;
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1D0AE47A65C8663E3B452821 /* Pods-RNSwipePractice-RNSwipePracticeTests.release.xcconfig */;
+			baseConfigurationReference = 891799A333A1E54A9301BFE6 /* Pods-RNTraining-RNTrainingTests.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
-				INFOPLIST_FILE = RNSwipePracticeTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				INFOPLIST_FILE = RNTrainingTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -483,19 +475,20 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RNSwipePractice.app/RNSwipePractice";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RNTraining.app/RNTraining";
 			};
 			name = Release;
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C0A881CF5CF3F2B244570E2A /* Pods-RNSwipePractice.debug.xcconfig */;
+			baseConfigurationReference = 592A3C8CD8D5793728F9DB03 /* Pods-RNTraining.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = XTTV5LZZ73;
 				ENABLE_BITCODE = NO;
-				INFOPLIST_FILE = RNSwipePractice/Info.plist;
+				INFOPLIST_FILE = RNTraining/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -506,7 +499,7 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = RNSwipePractice;
+				PRODUCT_NAME = RNTraining;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -515,12 +508,13 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D00AAFFCFCFDA5787532823F /* Pods-RNSwipePractice.release.xcconfig */;
+			baseConfigurationReference = F0B4D7302D5BFBF2AF47DCBA /* Pods-RNTraining.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				INFOPLIST_FILE = RNSwipePractice/Info.plist;
+				DEVELOPMENT_TEAM = XTTV5LZZ73;
+				INFOPLIST_FILE = RNTraining/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -531,7 +525,7 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = RNSwipePractice;
+				PRODUCT_NAME = RNTraining;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -570,7 +564,7 @@
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "arm64 ";
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -586,7 +580,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					/usr/lib/swift,
 					"$(inherited)",
@@ -635,7 +629,7 @@
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "arm64 ";
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -644,7 +638,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					/usr/lib/swift,
 					"$(inherited)",
@@ -663,7 +657,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "RNSwipePracticeTests" */ = {
+		00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "RNTrainingTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				00E356F61AD99517003FC87E /* Debug */,
@@ -672,7 +666,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "RNSwipePractice" */ = {
+		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "RNTraining" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				13B07F941A680F5B00A75B9A /* Debug */,
@@ -681,7 +675,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "RNSwipePractice" */ = {
+		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "RNTraining" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,
