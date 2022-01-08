@@ -1,6 +1,11 @@
 import {useNavigation} from '@react-navigation/native';
 import React from 'react';
-import {StyleSheet, TouchableWithoutFeedback, View} from 'react-native';
+import {
+  SafeAreaView,
+  StyleSheet,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native';
 import {defaultBorderRadius} from '../utils/constants';
 import {useTheme} from '../utils/hooks';
 import Title from './Title';
@@ -26,7 +31,7 @@ const NavigationLink = (props: INavigationLink) => {
   const handleRedirect = () => navigate(props.route, props.routeOptions);
 
   return (
-    <View style={styles.wrapper}>
+    <SafeAreaView style={styles.wrapper}>
       <TouchableWithoutFeedback onPress={handleRedirect}>
         <View style={[styles.container, theme.container]}>
           <View style={styles.text}>
@@ -34,7 +39,7 @@ const NavigationLink = (props: INavigationLink) => {
           </View>
         </View>
       </TouchableWithoutFeedback>
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -42,15 +47,12 @@ export default NavigationLink;
 
 const styles = StyleSheet.create({
   wrapper: {
-    paddingVertical: 5,
-    paddingHorizontal: 15,
+    marginVertical: 5,
   },
   container: {
     width: '100%',
     height: 125,
     borderRadius: defaultBorderRadius,
-    paddingVertical: 10,
-    paddingHorizontal: 15,
     marginVertical: 8,
     position: 'relative',
     shadowColor: '#000',
@@ -65,7 +67,7 @@ const styles = StyleSheet.create({
   },
   text: {
     position: 'absolute',
-    bottom: 0,
+    bottom: 10,
     left: 15,
   },
 });

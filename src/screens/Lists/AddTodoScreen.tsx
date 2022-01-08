@@ -12,6 +12,8 @@ import {ITodo, TodosActions} from '../../store/types/todosTypes';
 import DefaultCheckbox from '../../components/DefaultCheckbox';
 import Circle from '../../components/Circle';
 import ModalColor from '../../components/ModalColor';
+import GoBackButton from '../../components/GoBackButton';
+import {getModerateScale} from '../../utils/Scaling';
 
 const CIRCLE_SIZE = 26;
 
@@ -67,6 +69,10 @@ export const AddTodoScreen = () => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.mainWrapper}>
+        <View style={styles.back}>
+          <GoBackButton size={32} />
+        </View>
+
         <View style={styles.header}>
           <Title text={'Add todo'} />
         </View>
@@ -123,7 +129,8 @@ const useStyles = () => {
       flex: 1,
     },
     header: {
-      paddingTop: 50,
+      marginTop: 50,
+      marginBottom: 20,
     },
     mainWrapper: {
       paddingHorizontal: 15,
@@ -132,7 +139,7 @@ const useStyles = () => {
     submitContainer: {
       width: Dimensions.get('screen').width - 30,
       position: 'absolute',
-      bottom: 15,
+      bottom: 30,
       left: 15,
     },
     text: {
@@ -156,6 +163,11 @@ const useStyles = () => {
       width: CIRCLE_SIZE,
       height: CIRCLE_SIZE,
       borderRadius: CIRCLE_SIZE,
+    },
+    back: {
+      marginTop: 20,
+      marginLeft: -getModerateScale(10),
+      alignItems: 'flex-start',
     },
   });
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {Platform, StyleSheet, Text, View} from 'react-native';
 import {TextInput, TextInputProps} from 'react-native';
 import {Icon} from 'react-native-elements';
 import {useTheme} from '../utils/hooks';
@@ -23,7 +23,7 @@ const DefaultInput = (props: IProps) => {
     input: {
       borderBottomWidth: 1,
       height: getModerateScale(HEIGHT),
-      paddingBottom: 6,
+      paddingBottom: Platform.OS === 'android' ? 6 : 0,
       paddingLeft: 0,
       paddingRight: props.icon?.size ? props.icon?.size + 4 : 0,
       borderColor: colors.darkGrey,

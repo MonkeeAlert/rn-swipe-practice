@@ -4,7 +4,13 @@ import {
   CardStyleInterpolators,
   createStackNavigator,
 } from '@react-navigation/stack';
-import {ScrollView, StatusBar, View} from 'react-native';
+import {
+  Platform,
+  SafeAreaView,
+  ScrollView,
+  StatusBar,
+  View,
+} from 'react-native';
 import {StyleSheet} from 'react-native';
 import {useTheme} from '../utils/hooks';
 import NavigationLink from '../components/NavigationLink';
@@ -17,19 +23,15 @@ import {navigate, navigationRef} from '../navigation/RootNavigation';
 import {routes} from '../assets/routes';
 import {AddTodoScreen} from '../screens/Lists/AddTodoScreen';
 import {EditTodoScreen} from '../screens/Lists/EditTodoScreen';
+import GoBackButton from '../components/GoBackButton';
 
 const RootStack = createStackNavigator();
 
 const Dashboard = () => {
-  const {colors} = useTheme();
-  const theme = StyleSheet.create({
-    container: {
-      backgroundColor: colors.white,
-    },
-  });
+  const {styles, colors} = useStyles();
 
   return (
-    <ScrollView style={theme.container}>
+    <ScrollView style={styles.container}>
       <StatusBar backgroundColor={colors.white} barStyle={'dark-content'} />
       <View style={styles.header}>
         <Title text={'Trainings'} size={28} />
@@ -72,6 +74,7 @@ const MainStackScreen = () => {
             name={'Todos'}
             component={TodosScreen}
             options={{
+              headerLeft: () => <GoBackButton size={32} />,
               headerRight: () => (
                 <HeaderIcon
                   name={'add'}
@@ -110,11 +113,21 @@ const MainStackScreen = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  header: {
-    paddingTop: 50,
-    paddingHorizontal: 15,
-  },
-});
+const useStyles = () => {
+  const {colors} = useTheme();
+
+  const styles = StyleSheet.create({
+    header: {
+      marginTop: Platform.OS === 'android' ? 50 : 100,
+      marginBottom: 20,
+    },
+    container: {
+      backgroundColor: colors.white,
+      paddingHorizontal: 15,
+    },
+  });
+
+  return {styles, colors};
+};
 
 export default MainStackScreen;
