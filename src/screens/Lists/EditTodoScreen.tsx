@@ -13,6 +13,8 @@ import {RootStackParamList} from '../../utils/stackNavigation';
 import ModalColor from '../../components/ModalColor';
 import Circle from '../../components/Circle';
 import DefaultCheckbox from '../../components/DefaultCheckbox';
+import GoBackButton from '../../components/GoBackButton';
+import {getModerateScale} from '../../utils/Scaling';
 
 const CIRCLE_SIZE = 26;
 
@@ -65,6 +67,9 @@ export const EditTodoScreen = () => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.mainWrapper}>
+        <View style={styles.back}>
+          <GoBackButton size={32} />
+        </View>
         <View style={styles.header}>
           <Title text={'Edit todo'} />
         </View>
@@ -112,7 +117,8 @@ const useStyles = () => {
       flex: 1,
     },
     header: {
-      paddingTop: 50,
+      marginTop: 50,
+      marginBottom: 20,
     },
     mainWrapper: {
       paddingHorizontal: 15,
@@ -121,7 +127,7 @@ const useStyles = () => {
     submitContainer: {
       width: Dimensions.get('screen').width - 30,
       position: 'absolute',
-      bottom: 15,
+      bottom: 30,
       left: 15,
     },
     row: {
@@ -136,6 +142,11 @@ const useStyles = () => {
       fontWeight: '500',
       fontSize: fonts.medium,
       color: colors.black,
+    },
+    back: {
+      marginTop: 20,
+      marginLeft: -getModerateScale(10),
+      alignItems: 'flex-start',
     },
   });
 
