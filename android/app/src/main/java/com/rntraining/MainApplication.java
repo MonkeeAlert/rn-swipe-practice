@@ -4,17 +4,11 @@ import android.app.Application;
 import android.content.Context;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
-import com.oblador.vectoricons.VectorIconsPackage;
-import org.devio.rn.splashscreen.SplashScreenReactPackage;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.soloader.SoLoader;
 import java.lang.reflect.InvocationTargetException;
-import com.facebook.react.ReactActivityDelegate;
-import com.facebook.react.ReactRootView;
-import com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView;
-import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
 import java.util.List;
 
 public class MainApplication extends Application implements ReactApplication {
@@ -52,16 +46,6 @@ public class MainApplication extends Application implements ReactApplication {
     SoLoader.init(this, /* native exopackage */ false);
     initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
   }
-
-  // @Override
-  //  protected ReactActivityDelegate createReactActivityDelegate() {
-  //    return new ReactActivityDelegate(this, getMainComponentName()) {
-  //      @Override
-  //      protected ReactRootView createRootView() {
-  //       return new RNGestureHandlerEnabledRootView(MainActivity.this);
-  //      }
-  //    };
-  //  }
 
   /**
    * Loads Flipper in React Native templates. Call this in the onCreate method with something like
