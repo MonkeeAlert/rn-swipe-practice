@@ -18,17 +18,7 @@ const Title = (props: ITitle) => {
     },
   });
 
-  return (
-    <View style={styles.container}>
-      <Text style={theme.text}>{props.text ?? 'Unnamed'}</Text>
-    </View>
-  );
+  return <Text style={theme.text}>{props.text ?? 'Unnamed'}</Text>;
 };
 
 export default Title;
-
-const styles = StyleSheet.create({
-  container: {
-    marginBottom: 10,
-  },
-});
