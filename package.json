@@ -3,8 +3,10 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "android": "react-native run-android",
-    "ios": "react-native run-ios",
+    "android:beta": "react-native run-android",
+    "ios:beta": "react-native run-ios",
+    "android:release": "react-native run-android --variant=release",
+    "ios:release": "react-native run-ios --configuration=Release",
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
@@ -13,6 +15,7 @@
     "@react-native-async-storage/async-storage": "^1.15.9",
     "@react-native-community/cli": "^6.3.1",
     "@react-native-community/hooks": "^2.8.1",
+    "@react-native-firebase/app": "^14.2.2",
     "@react-navigation/bottom-tabs": "^6.0.5",
     "@react-navigation/native": "^6.0.2",
     "@react-navigation/native-stack": "^6.1.0",
