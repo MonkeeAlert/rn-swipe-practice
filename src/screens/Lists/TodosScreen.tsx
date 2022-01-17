@@ -4,7 +4,6 @@ import {EmptyList} from './Components/EmptyList';
 import {ListItem} from './Components/ListItem';
 import {useTheme} from '../../utils/hooks';
 import {getModerateScale} from '../../utils/Scaling';
-import {ButtonGroup} from 'react-native-elements/dist/buttons/ButtonGroup';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useSelector} from 'react-redux';
 import {getTodosState} from '../../store/rootSelectors';
@@ -15,16 +14,13 @@ import {parseTodosForSectionList} from '../../utils/functions';
 import {CategoriesBar} from './Components/CategoriesBar';
 import {Icon} from 'react-native-elements';
 import {useNavigationState} from '@react-navigation/core';
+import DefaultButtonGroup from '../../components/DefaultButtonGroup';
 
 const ICON_SIZE = 20;
 const CATEGORIES = [
   {
-    title: 'All',
+    title: 'Not done',
     key: 'default',
-  },
-  {
-    title: 'Active',
-    key: 'active',
   },
   {
     title: 'Done',
@@ -43,6 +39,7 @@ const TodosScreen = () => {
   const [selectedIndex, selectIndex] = useState<number>(0);
   const [areCategoriesVisible, showCategories] = useState(false);
   const [categories, setCategories] = useState<string[]>([]);
+  const [numberOfItems, setNumberOfItems] = useState<number[]>([0, 0]);
 
   const handleShowCategories = () => showCategories(prev => !prev);
 
@@ -74,7 +71,9 @@ const TodosScreen = () => {
       let filtered = filterListByTitle(list).filter(i => i.status !== 'done');
       let done = filterListByTitle(list).filter(i => i.status === 'done');
 
-      filtered = [...filtered, ...done];
+      setNumberOfItems([filtered.length, done.length]);
+
+      filtered = status === 'done' ? [...filtered, ...done] : [...filtered];
 
       if (status !== 'default') {
         filtered = filtered.filter(i => i.status === status);
@@ -88,6 +87,7 @@ const TodosScreen = () => {
 
       setData(parseTodosForSectionList(filtered));
     } else {
+      setNumberOfItems([0, 0]);
       setData([]);
     }
 
@@ -130,16 +130,17 @@ const TodosScreen = () => {
             />
           </View>
         ) : null}
+        <DefaultButtonGroup
+          buttons={CATEGORIES.map(c => c.title)}
+          keyExtractor={'Category'}
+          onPress={selectIndex}
+          selectedIndex={selectedIndex}
+          numberOfItems={numberOfItems}
+          textStyle={styles.buttonTextStyle}
+          containerStyle={styles.buttonContainer}
+          selectedTextStyle={styles.selectedButtonText}
+        />
       </View>
-      <ButtonGroup
-        buttons={CATEGORIES.map(i => i.title)}
-        onPress={selectIndex}
-        selectedIndex={selectedIndex}
-        innerBorderStyle={styles.buttonGroupBorder}
-        containerStyle={styles.buttonContainer}
-        selectedTextStyle={styles.selectedButtonText}
-        textStyle={styles.buttonTextStyle}
-      />
       {data.length === 0 ? (
         <View style={[styles.contentContainer, styles.emptyListContainer]}>
           <EmptyList />
@@ -173,6 +174,16 @@ const useStyles = () => {
     buttonContainer: {
       borderRadius: defaultBorderRadius,
       height: getModerateScale(45),
+      backgroundColor: colors.white,
+      marginVertical: getModerateScale(12),
+      shadowColor: colors.black,
+      shadowOffset: {
+        width: 0,
+        height: 1,
+      },
+      shadowOpacity: 0.22,
+      shadowRadius: 2.22,
+      elevation: 3,
     },
     buttonGroupBorder: {
       width: 0,
@@ -190,7 +201,7 @@ const useStyles = () => {
     },
     headerContainer: {
       backgroundColor: colors.lightGrey,
-      paddingVertical: getModerateScale(6),
+      paddingVertical: getModerateScale(12),
       alignItems: 'center',
     },
     headerText: {
