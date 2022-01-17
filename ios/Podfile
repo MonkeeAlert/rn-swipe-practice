@@ -1,10 +1,13 @@
 require_relative '../node_modules/react-native/scripts/react_native_pods'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 
-platform :ios, '11.0'
+platform :ios, '12.0'
+
+IOS_VERSION = '11.0'
 
 target 'RNTraining' do
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+   pod 'Firebase/Core'
 
   config = use_native_modules!
 
@@ -27,5 +30,21 @@ target 'RNTraining' do
 
   post_install do |installer|
     react_native_post_install(installer)
+
+    # https://github.com/facebook/flipper/issues/834#issuecomment-899725463
+    installer.pods_project.targets.each do |target|
+      target.build_configurations.each do |config|
+        config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = IOS_VERSION
+        config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "arm64"
+        config.build_settings["ONLY_ACTIVE_ARCH"] = "YES"
+      end
+  
+      case target.name
+      when 'RCT-Folly'
+        target.build_configurations.each do |config|
+          config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '9.0'
+        end
+      end
+    end
   end
 end

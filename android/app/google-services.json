@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "594478339263",
+    "project_id": "rn-trainings",
+    "storage_bucket": "rn-trainings.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:594478339263:android:264c4acafc1a466de8a20a",
+        "android_client_info": {
+          "package_name": "com.rntrainings"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "594478339263-03qr0blka7tmiqlf83mubsoobu3kplgu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDZv3W5Zx2xtFEtvAqhK_dKtSc9gkL14-w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "594478339263-03qr0blka7tmiqlf83mubsoobu3kplgu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

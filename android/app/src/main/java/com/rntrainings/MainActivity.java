@@ -1,4 +1,4 @@
-package com.rntraining;
+package com.rntrainings;
 
 import com.facebook.react.ReactActivity;
 
