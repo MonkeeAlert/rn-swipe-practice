@@ -128,16 +128,19 @@ export const ListItem = memo(
         <View style={styles.inline}>
           {status !== 'done' ? (
             <>
-              <RectButton style={styles.button} onPress={handleCompleteTodo}>
-                <Animated.View
-                  style={[styles.rightButtonsBorder, {opacity: third}]}>
-                  <Icon
-                    type={'material'}
-                    name={'done'}
-                    color={colors.darkGrey}
-                  />
-                </Animated.View>
-              </RectButton>
+              {props.isTimerEnabled ? (
+                <RectButton style={styles.button} onPress={changeTodoState}>
+                  <Animated.View
+                    style={[styles.rightButtonsBorder, {opacity: third}]}>
+                    <Icon
+                      type={'material'}
+                      name={status === 'active' ? 'pause' : 'play-arrow'}
+                      color={colors.darkGrey}
+                    />
+                  </Animated.View>
+                </RectButton>
+              ) : null}
+
               <RectButton style={styles.button} onPress={handleEditTodo}>
                 <Animated.View
                   style={[styles.rightButtonsBorder, {opacity: second}]}>
@@ -148,12 +151,13 @@ export const ListItem = memo(
                   />
                 </Animated.View>
               </RectButton>
-              <RectButton style={styles.button} onPress={changeTodoState}>
+
+              <RectButton style={styles.button} onPress={handleCompleteTodo}>
                 <Animated.View
                   style={[styles.rightButtonsBorder, {opacity: first}]}>
                   <Icon
                     type={'material'}
-                    name={status === 'active' ? 'pause' : 'play-arrow'}
+                    name={'done'}
                     color={colors.darkGrey}
                   />
                 </Animated.View>
@@ -218,10 +222,7 @@ export const ListItem = memo(
               <Text
                 numberOfLines={1}
                 lineBreakMode={'clip'}
-                style={[
-                  styles.title,
-                  status === 'done' ? styles.todoSuccess : null,
-                ]}>
+                style={styles.title}>
                 {props.title}
               </Text>
             </View>
@@ -294,10 +295,6 @@ const useStyles = () => {
     rightButtonsBorder: {
       borderColor: colors.grey,
       borderLeftWidth: 1,
-    },
-    todoSuccess: {
-      textDecorationLine: 'line-through',
-      opacity: 0.25,
     },
     circleWrapper: {
       marginRight: 6,

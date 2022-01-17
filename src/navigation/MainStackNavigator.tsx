@@ -4,13 +4,7 @@ import {
   CardStyleInterpolators,
   createStackNavigator,
 } from '@react-navigation/stack';
-import {
-  Platform,
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  View,
-} from 'react-native';
+import {Platform, ScrollView, StatusBar, View} from 'react-native';
 import {StyleSheet} from 'react-native';
 import {useTheme} from '../utils/hooks';
 import NavigationLink from '../components/NavigationLink';
@@ -74,6 +68,7 @@ const MainStackScreen = () => {
             name={'Todos'}
             component={TodosScreen}
             options={{
+              gestureEnabled: false,
               headerLeft: () => <GoBackButton size={32} />,
               headerRight: () => (
                 <HeaderIcon
