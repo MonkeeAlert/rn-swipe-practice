@@ -1,5 +1,5 @@
 import React from 'react';
-import {NavigationContainer} from '@react-navigation/native';
+import {NavigationContainer, useNavigation} from '@react-navigation/native';
 import {
   CardStyleInterpolators,
   createStackNavigator,
@@ -18,17 +18,34 @@ import {routes} from '../assets/routes';
 import {AddTodoScreen} from '../screens/Lists/AddTodoScreen';
 import {EditTodoScreen} from '../screens/Lists/EditTodoScreen';
 import GoBackButton from '../components/GoBackButton';
+import {Icon} from 'react-native-elements';
+import {SettingsScreen} from '../screens/Settings/SettingsScreen';
 
 const RootStack = createStackNavigator();
 
 const Dashboard = () => {
   const {styles, colors} = useStyles();
+  const {navigate} = useNavigation();
+
+  const goToSettings = () => {
+    navigate('Settings');
+  };
 
   return (
     <ScrollView style={styles.container}>
       <StatusBar backgroundColor={colors.white} barStyle={'dark-content'} />
       <View style={styles.header}>
         <Title text={'Trainings'} size={28} />
+        <View style={styles.icons}>
+          <Icon
+            size={28}
+            style={styles.icon}
+            color={colors.black}
+            name={'settings-sharp'}
+            type={'ionicon'}
+            onPress={goToSettings}
+          />
+        </View>
       </View>
 
       {routes.map(s => (
@@ -79,6 +96,13 @@ const MainStackScreen = () => {
               ),
             }}
           />
+          <RootStack.Screen
+            name={'Settings'}
+            component={SettingsScreen}
+            options={{
+              headerShown: false,
+            }}
+          />
         </RootStack.Group>
 
         <RootStack.Group
@@ -115,10 +139,20 @@ const useStyles = () => {
     header: {
       marginTop: Platform.OS === 'android' ? 50 : 100,
       marginBottom: 20,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
     },
     container: {
       backgroundColor: colors.white,
       paddingHorizontal: 15,
+    },
+    icons: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    icon: {
+      marginLeft: 10,
     },
   });
 
