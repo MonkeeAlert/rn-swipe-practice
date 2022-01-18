@@ -67,6 +67,7 @@ const MainStackScreen = () => {
         screenOptions={{
           headerTitleAlign: 'center',
           cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+          gestureEnabled: false,
         }}>
         <RootStack.Group>
           <RootStack.Screen
@@ -85,7 +86,6 @@ const MainStackScreen = () => {
             name={'Todos'}
             component={TodosScreen}
             options={{
-              gestureEnabled: false,
               headerLeft: () => <GoBackButton size={32} />,
               headerRight: () => (
                 <HeaderIcon
