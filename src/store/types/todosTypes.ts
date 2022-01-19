@@ -17,9 +17,11 @@ export enum TodosActions {
   ADD_TODO = 'ADD_TODO',
   EDIT_TODO = 'EDIT_TODO',
   DELETE_TODO = 'DELETE_TODO',
+  CLEAR_ALL_TODOS = 'CLEAR_ALL_TODOS',
 }
 
 export type TodosActionsTypes =
   | ActionType<typeof TodosActions.ADD_TODO, ITodo>
   | ActionType<typeof TodosActions.EDIT_TODO, ITodo>
-  | ActionType<typeof TodosActions.DELETE_TODO, {id: string}>;
+  | ActionType<typeof TodosActions.DELETE_TODO, {id: string}>
+  | ActionType<typeof TodosActions.CLEAR_ALL_TODOS, {}>;

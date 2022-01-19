@@ -17,3 +17,8 @@ export const deleteTodo = (id: string) => ({
   type: TodosActions.DELETE_TODO,
   payload: {id},
 });
+
+export const clearAllTodos = () => ({
+  type: TodosActions.CLEAR_ALL_TODOS,
+  payload: {},
+});

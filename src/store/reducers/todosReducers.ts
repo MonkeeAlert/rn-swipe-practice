@@ -55,6 +55,9 @@ export const todosReducer = (
 
       return {list};
 
+    case TodosActions.CLEAR_ALL_TODOS:
+      return {list: []};
+
     default:
       return state;
   }
