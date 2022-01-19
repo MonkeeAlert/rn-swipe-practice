@@ -18,18 +18,15 @@ import {routes} from '../assets/routes';
 import {AddTodoScreen} from '../screens/Lists/AddTodoScreen';
 import {EditTodoScreen} from '../screens/Lists/EditTodoScreen';
 import GoBackButton from '../components/GoBackButton';
-import {Icon} from 'react-native-elements';
 import {SettingsScreen} from '../screens/Settings/SettingsScreen';
+import AnimatedIcon from '../components/AnimatedIcon';
 
 const RootStack = createStackNavigator();
 
 const Dashboard = () => {
   const {styles, colors} = useStyles();
-  const {navigate} = useNavigation();
 
-  const goToSettings = () => {
-    navigate('Settings');
-  };
+  const goToSettings = () => navigate('Settings');
 
   return (
     <ScrollView style={styles.container}>
@@ -37,14 +34,17 @@ const Dashboard = () => {
       <View style={styles.header}>
         <Title text={'Trainings'} size={28} />
         <View style={styles.icons}>
-          <Icon
-            size={28}
-            style={styles.icon}
-            color={colors.black}
-            name={'settings-sharp'}
-            type={'ionicon'}
-            onPress={goToSettings}
-          />
+          <View style={styles.icon}>
+            <AnimatedIcon
+              size={28}
+              color={colors.black}
+              name={'settings-sharp'}
+              type={'ionicon'}
+              onPress={goToSettings}
+              duration={1000}
+              delay={3000}
+            />
+          </View>
         </View>
       </View>
 
