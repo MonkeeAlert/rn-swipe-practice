@@ -4,6 +4,8 @@
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 
+#import <RNSplashScreen.h>
+
 #import <Firebase.h>
 
 #ifdef FB_SONARKIT_ENABLED
@@ -58,6 +60,8 @@ static void InitializeFlipper(UIApplication *application) {
   UIViewController *vc = [sb instantiateInitialViewController];
   rootView.loadingView = vc.view;
 
+  [RNSplashScreen show];
+  
   return YES;
 }
 
