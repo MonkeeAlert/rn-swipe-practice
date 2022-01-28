@@ -2,8 +2,26 @@ import {colors} from './constants';
 import {getModerateScale} from './Scaling';
 import {useRef, useEffect} from 'react';
 import {AppState, AppStateStatus} from 'react-native';
+import {useSelector} from 'react-redux';
+import {getUserState} from '../store/rootSelectors';
 
 export const useTheme = () => {
+  const {theme} = useSelector(getUserState);
+
+  const isDarkTheme = theme === 'dark';
+
+  const themedColors = isDarkTheme
+    ? {
+        statusBar: colors.black,
+        background: colors.black,
+        text: colors.white,
+      }
+    : {
+        statusBar: colors.white,
+        background: colors.white,
+        text: colors.black,
+      };
+
   const fonts = {
     small: getModerateScale(14 - 2),
     regular: getModerateScale(16 - 2),
@@ -11,7 +29,7 @@ export const useTheme = () => {
     large: getModerateScale(20 - 2),
   };
 
-  return {colors, fonts};
+  return {colors, fonts, themedColors};
 };
 
 export const useAppStateCallbacks = (
