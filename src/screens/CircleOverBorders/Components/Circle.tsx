@@ -1,7 +1,17 @@
 import React, {useRef, useEffect, useState} from 'react';
-import {StyleSheet, Animated, PanResponder} from 'react-native';
+import {
+  StyleSheet,
+  Animated,
+  PanResponder,
+  PanResponderGestureState,
+} from 'react-native';
 import {borders} from '../../../utils/constants';
 import {useTheme} from '../../../utils/hooks';
+
+interface IProps {
+  onOverBorders: (state: boolean) => void;
+  onRelease: () => void;
+}
 
 const SIZE = 50;
 const INITIAL_POINTS = {x: 0, y: 0};
@@ -22,10 +32,19 @@ const OVER_BORDERS_ANIMATIONS = {
   useNativeDriver: true,
 };
 
-export const Circle = () => {
+export const Circle = (props: IProps) => {
   const {colors} = useTheme();
   const [isOverBorders, setOverBorders] = useState(false);
   const [wasTouched, setWasTouched] = useState(false);
+
+  const checkByGestures = (gestures: PanResponderGestureState) => {
+    const overflowByXAxis = Math.abs(gestures.dx) > OUTER_RADIUS;
+    const overflowByYAxis = Math.abs(gestures.dy) > OUTER_RADIUS;
+    const overflowByCuts =
+      Math.abs(gestures.dx) + Math.abs(gestures.dy) > OUTER_RADIUS + SIZE;
+
+    return overflowByXAxis || overflowByYAxis || overflowByCuts;
+  };
 
   // Handle gestures
   const touch = useRef(new Animated.ValueXY(INITIAL_POINTS)).current;
@@ -43,22 +62,22 @@ export const Circle = () => {
         Animated.timing(scale, GRANT_ANIMATION).start();
       },
       onPanResponderMove: (_, gestures) => {
-        const overflowByXAxis = Math.abs(gestures.dx) > OUTER_RADIUS;
-        const overflowByYAxis = Math.abs(gestures.dy) > OUTER_RADIUS;
-        const overflowByCuts =
-          Math.abs(gestures.dx) + Math.abs(gestures.dy) > OUTER_RADIUS + SIZE;
-
-        setOverBorders(overflowByXAxis || overflowByYAxis || overflowByCuts);
+        setOverBorders(checkByGestures(gestures));
 
         touch.setValue({x: gestures.dx, y: gestures.dy});
       },
-      onPanResponderRelease: () => {
+      onPanResponderRelease: (_, gestures) => {
         Animated.timing(opacity, RELEASE_ANIMATION).start();
         Animated.timing(scale, RELEASE_ANIMATION).start();
-        Animated.spring(touch, {
-          toValue: INITIAL_POINTS,
-          useNativeDriver: true,
-        }).start();
+
+        if (checkByGestures(gestures)) {
+          props.onRelease();
+        } else {
+          Animated.spring(touch, {
+            toValue: INITIAL_POINTS,
+            useNativeDriver: true,
+          }).start();
+        }
       },
     }),
   ).current;
@@ -72,6 +91,8 @@ export const Circle = () => {
         Animated.timing(opacity, GRANT_ANIMATION).start();
         Animated.timing(scale, GRANT_ANIMATION).start();
       }
+
+      props.onOverBorders(isOverBorders);
     }
   }, [isOverBorders, wasTouched]);
 

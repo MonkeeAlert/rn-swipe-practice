@@ -121,11 +121,11 @@ export const AddTodoScreen = () => {
 };
 
 const useStyles = () => {
-  const {colors, fonts} = useTheme();
+  const {colors, fonts, userTheme} = useTheme();
 
   const styles = StyleSheet.create({
     container: {
-      backgroundColor: colors.white,
+      backgroundColor: userTheme.background,
       flex: 1,
     },
     header: {
@@ -145,7 +145,7 @@ const useStyles = () => {
     text: {
       fontWeight: '500',
       fontSize: fonts.medium,
-      color: colors.black,
+      color: userTheme.text,
     },
     row: {
       marginBottom: 20,

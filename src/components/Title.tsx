@@ -9,10 +9,10 @@ interface ITitle {
 }
 
 const Title = (props: ITitle) => {
-  const {colors} = useTheme();
+  const {colors, userTheme} = useTheme();
   const theme = StyleSheet.create({
     text: {
-      color: props.color ?? colors.black,
+      color: props.color ?? userTheme.text,
       fontSize: props.size ?? 24,
       fontWeight: 'bold',
     },

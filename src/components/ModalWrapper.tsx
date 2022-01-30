@@ -35,7 +35,7 @@ export const ModalWrapper = (props: IProps) => {
 };
 
 const useStyles = () => {
-  const {colors} = useTheme();
+  const {userTheme} = useTheme();
 
   const styles = StyleSheet.create({
     container: {
@@ -47,7 +47,7 @@ const useStyles = () => {
       justifyContent: 'center',
     },
     inner: {
-      backgroundColor: colors.white,
+      backgroundColor: userTheme.background,
       marginHorizontal: 50,
       marginVertical: 100,
       borderRadius: defaultBorderRadius,
