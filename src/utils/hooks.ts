@@ -15,7 +15,7 @@ export const useTheme = () => {
     card: colors.white,
     text: colors.black,
     border: colors.lightGrey,
-    notifications: '',
+    notification: colors.white,
   };
 
   const darkTheme: IUserTheme = {
@@ -24,7 +24,7 @@ export const useTheme = () => {
     card: colors.black,
     text: colors.white,
     border: colors.darkGrey,
-    notifications: '',
+    notification: colors.black,
   };
 
   const userTheme = isDarkTheme ? darkTheme : lightTheme;
