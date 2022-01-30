@@ -34,7 +34,7 @@ const Dashboard = () => {
   return (
     <ScrollView style={styles.container}>
       <StatusBar
-        backgroundColor={userTheme.text}
+        backgroundColor={userTheme.background}
         barStyle={`${isDarkTheme ? 'light' : 'dark'}-content`}
       />
       <View style={styles.header}>
