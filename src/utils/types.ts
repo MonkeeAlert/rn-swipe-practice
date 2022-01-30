@@ -21,5 +21,5 @@ export interface IUserTheme {
   card: string;
   text: string;
   border: string;
-  notifications: string;
+  notification: string;
 }

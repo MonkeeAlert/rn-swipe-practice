@@ -68,9 +68,12 @@ const Dashboard = () => {
 
 const MainStackScreen = () => {
   const {userTheme} = useTheme();
+  const {isDarkTheme} = useSelector(getUserState);
 
   return (
-    <NavigationContainer ref={navigationRef}>
+    <NavigationContainer
+      ref={navigationRef}
+      theme={{dark: isDarkTheme, colors: userTheme}}>
       <RootStack.Navigator
         screenOptions={{
           headerTitleAlign: 'center',
