@@ -244,7 +244,7 @@ export const ListItem = memo(
 );
 
 const useStyles = () => {
-  const {colors, fonts} = useTheme();
+  const {colors, fonts, userTheme} = useTheme();
 
   const styles = StyleSheet.create({
     row: {
@@ -256,7 +256,7 @@ const useStyles = () => {
       flexDirection: 'row',
     },
     wrapper: {
-      backgroundColor: colors.white,
+      backgroundColor: userTheme.background,
     },
     inline: {
       flexDirection: 'row',
@@ -267,7 +267,7 @@ const useStyles = () => {
     },
     title: {
       fontSize: fonts.medium,
-      color: colors.black,
+      color: userTheme.text,
       fontWeight: '500',
       paddingTop: 4,
       marginBottom: 4,
@@ -282,7 +282,7 @@ const useStyles = () => {
       color: colors.darkGrey,
     },
     button: {
-      backgroundColor: colors.white,
+      backgroundColor: userTheme.background,
       width: getModerateScale(60),
       justifyContent: 'center',
     },

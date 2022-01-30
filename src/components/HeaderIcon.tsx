@@ -10,7 +10,7 @@ interface IHeaderIcon {
 }
 
 export const HeaderIcon = (props: IHeaderIcon) => {
-  const {colors} = useTheme();
+  const {userTheme} = useTheme();
 
   return (
     <Icon
@@ -18,7 +18,7 @@ export const HeaderIcon = (props: IHeaderIcon) => {
       type={props.type}
       onPress={props.onPress}
       containerStyle={style.container}
-      color={colors.black}
+      color={userTheme.text}
       size={26}
     />
   );

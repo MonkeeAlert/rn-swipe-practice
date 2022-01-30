@@ -20,24 +20,30 @@ import {EditTodoScreen} from '../screens/Lists/EditTodoScreen';
 import GoBackButton from '../components/GoBackButton';
 import {SettingsScreen} from '../screens/Settings/SettingsScreen';
 import AnimatedIcon from '../components/AnimatedIcon';
+import {useSelector} from 'react-redux';
+import {getUserState} from '../store/rootSelectors';
 
 const RootStack = createStackNavigator();
 
 const Dashboard = () => {
-  const {styles, colors} = useStyles();
+  const {styles, userTheme} = useStyles();
+  const {isDarkTheme} = useSelector(getUserState);
 
   const goToSettings = () => navigate('Settings');
 
   return (
     <ScrollView style={styles.container}>
-      <StatusBar backgroundColor={colors.white} barStyle={'dark-content'} />
+      <StatusBar
+        backgroundColor={userTheme.background}
+        barStyle={`${isDarkTheme ? 'light' : 'dark'}-content`}
+      />
       <View style={styles.header}>
         <Title text={'Trainings'} size={28} />
         <View style={styles.icons}>
           <View style={styles.icon}>
             <AnimatedIcon
               size={28}
-              color={colors.black}
+              color={userTheme.text}
               name={'settings-sharp'}
               type={'ionicon'}
               onPress={goToSettings}
@@ -61,13 +67,24 @@ const Dashboard = () => {
 };
 
 const MainStackScreen = () => {
+  const {userTheme} = useTheme();
+  const {isDarkTheme} = useSelector(getUserState);
+
   return (
-    <NavigationContainer ref={navigationRef}>
+    <NavigationContainer
+      ref={navigationRef}
+      theme={{dark: isDarkTheme, colors: userTheme}}>
       <RootStack.Navigator
         screenOptions={{
           headerTitleAlign: 'center',
           cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
           gestureEnabled: false,
+          headerStyle: {
+            backgroundColor: userTheme.background,
+          },
+          headerTitleStyle: {
+            color: userTheme.text,
+          },
         }}>
         <RootStack.Group>
           <RootStack.Screen
@@ -133,7 +150,7 @@ const MainStackScreen = () => {
 };
 
 const useStyles = () => {
-  const {colors} = useTheme();
+  const {userTheme} = useTheme();
 
   const styles = StyleSheet.create({
     header: {
@@ -144,7 +161,7 @@ const useStyles = () => {
       alignItems: 'center',
     },
     container: {
-      backgroundColor: colors.white,
+      backgroundColor: userTheme.background,
       paddingHorizontal: 15,
     },
     icons: {
@@ -156,7 +173,7 @@ const useStyles = () => {
     },
   });
 
-  return {styles, colors};
+  return {styles, userTheme};
 };
 
 export default MainStackScreen;

@@ -13,7 +13,7 @@ interface IProps extends TextInputProps {
 const HEIGHT = 42;
 
 const DefaultInput = (props: IProps) => {
-  const {colors, fonts} = useTheme();
+  const {colors, fonts, userTheme} = useTheme();
 
   const theme = StyleSheet.create({
     container: {
@@ -26,9 +26,9 @@ const DefaultInput = (props: IProps) => {
       paddingBottom: Platform.OS === 'android' ? 6 : 0,
       paddingLeft: 0,
       paddingRight: props.icon?.size ? props.icon?.size + 4 : 0,
-      borderColor: colors.darkGrey,
+      borderColor: userTheme.border,
       fontSize: fonts.regular,
-      color: colors.black,
+      color: userTheme.text,
       ...(props.style as object),
     },
     icon: {

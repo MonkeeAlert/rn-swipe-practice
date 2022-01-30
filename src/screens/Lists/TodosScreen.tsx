@@ -161,11 +161,12 @@ const TodosScreen = () => {
 export default TodosScreen;
 
 const useStyles = () => {
-  const {colors, fonts} = useTheme();
+  const {colors, fonts, userTheme} = useTheme();
+
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: colors.lightGrey,
+      backgroundColor: userTheme.background,
     },
     contentContainer: {
       flexGrow: 1,
@@ -174,7 +175,7 @@ const useStyles = () => {
     buttonContainer: {
       borderRadius: defaultBorderRadius,
       height: getModerateScale(45),
-      backgroundColor: colors.white,
+      backgroundColor: userTheme.background,
       marginVertical: getModerateScale(12),
       shadowColor: colors.black,
       shadowOffset: {
@@ -194,13 +195,13 @@ const useStyles = () => {
       fontWeight: 'bold',
     },
     selectedButtonText: {
-      color: colors.black,
+      color: userTheme.text,
     },
     emptyListContainer: {
       justifyContent: 'center',
     },
     headerContainer: {
-      backgroundColor: colors.lightGrey,
+      backgroundColor: userTheme.primary,
       paddingVertical: getModerateScale(12),
       alignItems: 'center',
     },
@@ -226,32 +227,28 @@ const useStyles = () => {
       marginLeft: getModerateScale(10),
     },
     categoriesBar: {
-      backgroundColor: colors.white,
+      backgroundColor: userTheme.background,
       paddingHorizontal: getModerateScale(12),
       paddingVertical: getModerateScale(6),
       borderRadius: defaultBorderRadius,
       borderWidth: 1,
-      borderColor: colors.grey,
+      borderColor: userTheme.border,
       position: 'relative',
       marginTop: getModerateScale(6),
     },
     cut: {
       width: ICON_SIZE,
       height: ICON_SIZE,
-      backgroundColor: colors.white,
+      backgroundColor: userTheme.background,
       position: 'absolute',
       top: -ICON_SIZE / 2,
       right: ICON_SIZE / 2,
-      borderLeftColor: colors.grey,
-      borderTopColor: colors.grey,
+      borderLeftColor: userTheme.border,
+      borderTopColor: userTheme.border,
       borderRightColor: 'transparent',
       borderBottomColor: 'transparent',
       borderWidth: 1,
-      transform: [
-        {
-          rotateZ: '45deg',
-        },
-      ],
+      transform: [{rotateZ: '45deg'}],
     },
   });
 
