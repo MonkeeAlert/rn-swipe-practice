@@ -8,12 +8,13 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="175dp"
         android:layout_centerInParent="true"
         >
+
         <ImageView
-            android:layout_width="162dp"
-            android:layout_height="162dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:layout_centerHorizontal="true"
             android:src="@mipmap/ic_launcher" />
 
@@ -25,7 +26,7 @@
             android:textFontWeight="500"
             android:text="React Native Trainings"
             android:textColor="@color/blue"
-            android:textSize="32dp"
+            android:textSize="28dp"
             android:gravity="center"
             />
     </RelativeLayout>
