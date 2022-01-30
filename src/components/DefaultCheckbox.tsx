@@ -13,7 +13,7 @@ const CIRCLE_SIZE = 26;
 const ELEMENT_HEIGHT = CIRCLE_SIZE + 4;
 
 export default function DefaultCheckbox(props: IProps) {
-  const {styles, colors} = useStyles();
+  const {styles, colors, userTheme} = useStyles();
   const [isActive, setActive] = useState(props.isActive ?? false);
   const animationRef = useRef(new Animated.Value(0)).current;
 
@@ -28,7 +28,7 @@ export default function DefaultCheckbox(props: IProps) {
 
   const colorInterpolation = animationRef.interpolate({
     inputRange: [0, 1],
-    outputRange: [colors.grey, colors.successLight],
+    outputRange: [colors.darkGrey, colors.successLight],
   });
 
   useEffect(() => {
@@ -78,7 +78,7 @@ export default function DefaultCheckbox(props: IProps) {
 }
 
 const useStyles = () => {
-  const {colors, fonts} = useTheme();
+  const {colors, fonts, userTheme} = useTheme();
 
   const styles = StyleSheet.create({
     container: {
@@ -89,7 +89,7 @@ const useStyles = () => {
     title: {
       fontWeight: '500',
       fontSize: fonts.medium,
-      color: colors.black,
+      color: userTheme.text,
     },
     togglerWrapper: {
       width: getModerateScale(ELEMENT_HEIGHT * 1.75),
@@ -100,7 +100,6 @@ const useStyles = () => {
       justifyContent: 'center',
       paddingHorizontal: 1,
       paddingVertical: 1,
-      backgroundColor: colors.grey,
     },
     togglerCircle: {
       width: getModerateScale(CIRCLE_SIZE),
@@ -110,5 +109,5 @@ const useStyles = () => {
     },
   });
 
-  return {styles, colors};
+  return {styles, colors, userTheme};
 };

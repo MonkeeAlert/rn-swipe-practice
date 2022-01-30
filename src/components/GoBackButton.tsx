@@ -2,7 +2,7 @@ import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {Pressable} from 'react-native';
 import {Icon} from 'react-native-elements';
-import {colors} from '../utils/constants';
+import {useTheme} from '../utils/hooks';
 
 interface IProps {
   size: number;
@@ -13,6 +13,7 @@ const SIZE = 32;
 
 const GoBackButton = (props: IProps) => {
   const {goBack} = useNavigation();
+  const {userTheme} = useTheme();
 
   return (
     <Pressable onPress={goBack}>
@@ -20,7 +21,7 @@ const GoBackButton = (props: IProps) => {
         name={'chevron-left'}
         type={'material'}
         size={props.size ?? SIZE}
-        color={props.color ?? colors.black}
+        color={props.color ?? userTheme.text}
       />
     </Pressable>
   );

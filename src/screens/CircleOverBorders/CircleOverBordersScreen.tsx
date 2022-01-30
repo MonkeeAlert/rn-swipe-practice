@@ -1,5 +1,5 @@
 import {useNavigation} from '@react-navigation/native';
-import React from 'react';
+import React, {useState} from 'react';
 import {StyleSheet, View, Text, Pressable} from 'react-native';
 import {useTheme} from '../../utils/hooks';
 import {Borders} from './Components/Borders';
@@ -9,14 +9,24 @@ const CircleOverBordersScreen = () => {
   const {styles} = useStyles();
   const {goBack} = useNavigation();
 
+  const [isOverBorders, setOverBorders] = useState(false);
+
+  const handleOverBorders = (s: boolean) => setOverBorders(s);
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.text}>Drag that circle</Text>
-        <Text style={styles.text}>over borders</Text>
+        {isOverBorders ? (
+          <Text style={styles.text}>Now you can exit</Text>
+        ) : (
+          <>
+            <Text style={styles.text}>Drag that circle</Text>
+            <Text style={styles.text}>over borders to exit</Text>
+          </>
+        )}
       </View>
       <Borders>
-        <Circle />
+        <Circle onOverBorders={handleOverBorders} onRelease={goBack} />
       </Borders>
 
       <Pressable onPress={goBack} style={styles.button}>
@@ -29,31 +39,33 @@ const CircleOverBordersScreen = () => {
 export default CircleOverBordersScreen;
 
 const useStyles = () => {
-  const {colors, fonts} = useTheme();
+  const {fonts, userTheme} = useTheme();
 
   const styles = StyleSheet.create({
     container: {
       flex: 1,
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: colors.white,
+      backgroundColor: userTheme.background,
     },
     header: {
       position: 'relative',
       bottom: 30,
       alignItems: 'center',
+      justifyContent: 'center',
+      minHeight: 65,
     },
     button: {
       position: 'absolute',
       bottom: 50,
     },
     text: {
-      color: colors.black,
+      color: userTheme.text,
       fontSize: fonts.large + 4,
     },
     buttonText: {
       fontSize: fonts.medium,
-      color: colors.infoDark,
+      color: userTheme.text,
     },
   });
 

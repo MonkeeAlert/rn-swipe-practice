@@ -54,7 +54,7 @@ export const defaultAnimationTiming = 500;
 export const todoColors: ITodoColor[] = [
   {
     title: 'Blank',
-    color: 'transparent',
+    color: '#fff',
   },
   {
     title: 'Red',

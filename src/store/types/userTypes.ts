@@ -1,7 +1,7 @@
 import {ActionType} from '../../utils/types';
 
 export interface IUser {
-  theme: 'dark' | 'light';
+  isDarkTheme: boolean;
 }
 
 export enum UserActions {
