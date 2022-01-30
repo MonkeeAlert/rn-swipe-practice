@@ -2,8 +2,33 @@ import {colors} from './constants';
 import {getModerateScale} from './Scaling';
 import {useRef, useEffect} from 'react';
 import {AppState, AppStateStatus} from 'react-native';
+import {useSelector} from 'react-redux';
+import {getUserState} from '../store/rootSelectors';
+import {IUserTheme} from './types';
 
 export const useTheme = () => {
+  const {isDarkTheme} = useSelector(getUserState);
+
+  const lightTheme: IUserTheme = {
+    primary: colors.white,
+    background: colors.white,
+    card: colors.white,
+    text: colors.black,
+    border: colors.lightGrey,
+    notifications: '',
+  };
+
+  const darkTheme: IUserTheme = {
+    primary: colors.black,
+    background: colors.black,
+    card: colors.black,
+    text: colors.white,
+    border: colors.darkGrey,
+    notifications: '',
+  };
+
+  const userTheme = isDarkTheme ? darkTheme : lightTheme;
+
   const fonts = {
     small: getModerateScale(14 - 2),
     regular: getModerateScale(16 - 2),
@@ -11,7 +36,7 @@ export const useTheme = () => {
     large: getModerateScale(20 - 2),
   };
 
-  return {colors, fonts};
+  return {colors, fonts, userTheme};
 };
 
 export const useAppStateCallbacks = (

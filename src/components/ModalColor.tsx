@@ -42,7 +42,7 @@ const ModalColor = (props: IProps) => {
 export default ModalColor;
 
 const useStyles = () => {
-  const {colors, fonts} = useTheme();
+  const {userTheme, fonts} = useTheme();
 
   const styles = StyleSheet.create({
     modalContainer: {
@@ -58,7 +58,7 @@ const useStyles = () => {
     colorText: {
       fontWeight: '500',
       fontSize: fonts.regular,
-      color: colors.black,
+      color: userTheme.text,
       marginTop: 5,
       textAlign: 'center',
     },
