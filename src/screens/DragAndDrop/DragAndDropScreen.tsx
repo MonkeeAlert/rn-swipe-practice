@@ -1,13 +1,29 @@
-import {Pressable, SafeAreaView, StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import {
+  LayoutRectangle,
+  Pressable,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
+import React, {useEffect, useState} from 'react';
 import {useTheme} from '../../utils/hooks';
 import {useNavigation} from '@react-navigation/native';
 import {Cube} from './Components/Cube';
 import {borders} from '../../utils/constants';
+import {ICube} from '../../utils/types';
+
+const CUBES = 4;
 
 const DragAndDropScreen = () => {
   const {styles} = useStyles();
   const {goBack} = useNavigation();
+
+  const [map, setMap] = useState({});
+
+  const handleSetMap = (item: ICube) => {
+    setMap(prev => ({...prev, ...item}));
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -15,8 +31,13 @@ const DragAndDropScreen = () => {
         <Text style={styles.text}>Time to drag some cubes</Text>
       </View>
       <View style={styles.cubes}>
-        {['1', '2', '3', '4'].map(i => (
-          <Cube key={`Cube_${i}`} title={i} />
+        {[...new Array(CUBES)].map((_, k) => (
+          <Cube
+            key={`Cube_${k}`}
+            title={`${k + 1}`}
+            map={map}
+            onLoading={handleSetMap}
+          />
         ))}
       </View>
 
