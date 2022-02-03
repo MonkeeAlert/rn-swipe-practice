@@ -12,6 +12,7 @@ import Animated, {
   useAnimatedGestureHandler,
   useAnimatedStyle,
   withSpring,
+  SharedValue,
 } from 'react-native-reanimated';
 import {PanGestureHandler} from 'react-native-gesture-handler';
 import {ICube} from '../../../utils/types';
@@ -19,7 +20,10 @@ import {ICube} from '../../../utils/types';
 interface IProps {
   title: string;
   map: {[name: string]: ICube};
+  activeRef: SharedValue<string | null>;
+  isActive: boolean;
   onLoading: (item: ICube) => void;
+  // onDrag: (key: string) => void;
 }
 
 type Context = {
@@ -27,12 +31,15 @@ type Context = {
   y: number;
 };
 
+interface ICubeInfo {
+  name: string;
+  dx: number;
+  dy: number;
+}
+
 const SIZE = 64;
 
-const findNeighbour = (
-  item: {name: string; dx: number; dy: number},
-  map: any,
-) => {
+const findNeighbour = (item: ICubeInfo, map: any) => {
   'worklet';
 
   for (const key in map) {
@@ -40,7 +47,12 @@ const findNeighbour = (
       // skipping comparing element with itself
       continue;
     } else {
-      // ...
+      const dx = map[item.name].x - map[key].x + item.dx;
+      const dy = map[item.name].y - map[key].y + item.dy;
+
+      if (Math.abs(dx) < SIZE && Math.abs(dy) < SIZE) {
+        return map[key];
+      }
     }
   }
 };
@@ -67,21 +79,29 @@ export const Cube = (props: IProps) => {
     onStart: (_, context: Context) => {
       context.x = translationX.value;
       context.y = translationY.value;
+
+      props.activeRef.value = props.title;
     },
     onActive: (e, context: Context) => {
       translationX.value = e.translationX + context.x;
       translationY.value = e.translationY + context.y;
 
-      findNeighbour(
-        {
-          name: props.title,
-          dx: e.translationX,
-          dy: e.translationY,
-        },
-        props.map,
-      );
+      const _item: ICubeInfo = {
+        name: props.title,
+        dx: e.translationX,
+        dy: e.translationY,
+      };
+
+      const overflowing = findNeighbour(_item, props.map);
+
+      if (overflowing) {
+        console.log('@neighbour', overflowing, props.activeRef);
+      }
     },
     onEnd: () => {
+      props.activeRef.value = null;
+
+      // if overflowed we change tX values to overflowed tX values
       translationX.value = withSpring(0);
       translationY.value = withSpring(0);
     },

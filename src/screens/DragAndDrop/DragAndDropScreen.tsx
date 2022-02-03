@@ -12,18 +12,31 @@ import {useNavigation} from '@react-navigation/native';
 import {Cube} from './Components/Cube';
 import {borders} from '../../utils/constants';
 import {ICube} from '../../utils/types';
+import {useSharedValue} from 'react-native-reanimated';
 
-const CUBES = 4;
+const CUBES = 2;
 
 const DragAndDropScreen = () => {
   const {styles} = useStyles();
   const {goBack} = useNavigation();
 
   const [map, setMap] = useState({});
+  // const [overflowed, setOverflowed] = useShared(false);
+  // const [active, setActive] = useState<string | null>(null);
+
+  const active = useSharedValue<string | null>(null);
 
   const handleSetMap = (item: ICube) => {
     setMap(prev => ({...prev, ...item}));
   };
+
+  // const handleDraggable = (key: string) => {
+  //   console.log('@key', key);
+  // };
+
+  // const checkOverflowing = (current: string, draggable: string) => {
+  //   console.log('@')
+  // }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -35,7 +48,12 @@ const DragAndDropScreen = () => {
           <Cube
             key={`Cube_${k}`}
             title={`${k + 1}`}
+            activeRef={active}
             map={map}
+            isActive={`${k + 1}` === active.value}
+            // isOverflowed={isOverflowed}
+            // onOverflowing={(k: number) => checkOverflowing(`${k + 1}`, key)}
+            // onDrag={handleDraggable}
             onLoading={handleSetMap}
           />
         ))}
