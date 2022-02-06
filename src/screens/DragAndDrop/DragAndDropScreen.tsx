@@ -1,12 +1,5 @@
-import {
-  LayoutRectangle,
-  Pressable,
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import {Pressable, SafeAreaView, StyleSheet, Text, View} from 'react-native';
+import React from 'react';
 import {useTheme} from '../../utils/hooks';
 import {useNavigation} from '@react-navigation/native';
 import {Cube} from './Components/Cube';
@@ -14,29 +7,18 @@ import {borders} from '../../utils/constants';
 import {ICube} from '../../utils/types';
 import {useSharedValue} from 'react-native-reanimated';
 
-const CUBES = 2;
+const CUBES = 4;
 
 const DragAndDropScreen = () => {
   const {styles} = useStyles();
   const {goBack} = useNavigation();
 
-  const [map, setMap] = useState({});
-  // const [overflowed, setOverflowed] = useShared(false);
-  // const [active, setActive] = useState<string | null>(null);
-
-  const active = useSharedValue<string | null>(null);
+  const mapRef = useSharedValue({});
+  const overflowed = useSharedValue(null);
 
   const handleSetMap = (item: ICube) => {
-    setMap(prev => ({...prev, ...item}));
+    mapRef.value = {...mapRef.value, ...item};
   };
-
-  // const handleDraggable = (key: string) => {
-  //   console.log('@key', key);
-  // };
-
-  // const checkOverflowing = (current: string, draggable: string) => {
-  //   console.log('@')
-  // }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -48,12 +30,8 @@ const DragAndDropScreen = () => {
           <Cube
             key={`Cube_${k}`}
             title={`${k + 1}`}
-            activeRef={active}
-            map={map}
-            isActive={`${k + 1}` === active.value}
-            // isOverflowed={isOverflowed}
-            // onOverflowing={(k: number) => checkOverflowing(`${k + 1}`, key)}
-            // onDrag={handleDraggable}
+            map={mapRef}
+            overflowedRef={overflowed}
             onLoading={handleSetMap}
           />
         ))}
