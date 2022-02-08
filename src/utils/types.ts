@@ -34,3 +34,9 @@ export type Coordinates = {
 export interface ICube {
   [position: number]: Coordinates | LayoutRectangle;
 }
+
+export interface ICubeInfo {
+  name: string;
+  dx: number;
+  dy: number;
+}

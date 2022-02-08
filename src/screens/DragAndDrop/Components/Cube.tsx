@@ -1,5 +1,5 @@
-import {Text, StyleSheet, LayoutChangeEvent} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import {Text, StyleSheet} from 'react-native';
+import React from 'react';
 import {defaultBorderRadius} from '../../../utils/constants';
 import {useTheme} from '../../../utils/hooks';
 import Animated, {
@@ -8,16 +8,15 @@ import Animated, {
   useAnimatedStyle,
   withSpring,
   useAnimatedReaction,
-  runOnJS,
+  SharedValue,
 } from 'react-native-reanimated';
 import {PanGestureHandler} from 'react-native-gesture-handler';
-import {ICube} from '../../../utils/types';
+import {getOrder, getPosition, SIZE} from '../Config/config';
 
 interface IProps {
   title: string;
-  map: {[name: string]: ICube};
-  overflowedRef: {value: any};
-  onLoading: (item: ICube) => void;
+  id: string;
+  map: SharedValue<any>;
 }
 
 type Context = {
@@ -25,57 +24,19 @@ type Context = {
   y: number;
 };
 
-interface ICubeInfo {
-  name: string;
-  dx: number;
-  dy: number;
-}
-
-const SIZE = 64;
-
-const getIndex = (item: ICubeInfo, map: any) => {
-  'worklet';
-
-  for (const k in map) {
-    if (k === item.name) {
-      // skipping comparing element with itself
-      continue;
-    } else {
-      const dx = map[item.name].x - map[k].x + item.dx;
-      const dy = map[item.name].y - map[k].y + item.dy;
-
-      if (Math.abs(dx) < SIZE && Math.abs(dy) < SIZE) {
-        return k;
-      }
-    }
-  }
-};
-
-const reorderMap = (map: any, changerIdx: string, changeableIdx: string) => {
-  'worklet';
-  const _map = JSON.parse(JSON.stringify(map));
-
-  const temp = _map[changerIdx];
-  _map[changerIdx] = _map[changeableIdx];
-  _map[changeableIdx] = temp;
-
-  return _map;
-};
-
-export const Cube = (props: IProps) => {
+export const Cube = ({id, map, title}: IProps) => {
   const {styles} = useStyles();
 
-  const [layout, setLayout] =
-    useState<LayoutChangeEvent['nativeEvent']['layout']>();
-  const [moving, setMoving] = useState(false);
+  const position = getPosition(map.value[id]);
 
-  const overflowed = useSharedValue<string | null>(null);
+  const isDragging = useSharedValue(false);
 
   // drag and drop shared values
-  const translationX = useSharedValue(props.map.value[props.title]?.x ?? 0);
-  const translationY = useSharedValue(props.map.value[props.title]?.y ?? 0);
+  const translationX = useSharedValue(position.x);
+  const translationY = useSharedValue(position.y);
   const tStyle = useAnimatedStyle(() => {
     return {
+      zIndex: +isDragging.value,
       transform: [
         {translateX: translationX.value},
         {translateY: translationY.value},
@@ -83,63 +44,60 @@ export const Cube = (props: IProps) => {
     };
   }, [translationX, translationY]);
 
+  const recalculate = (m: any) => {
+    'worklet';
+    const _map = getPosition(m);
+
+    translationX.value = withSpring(_map.x);
+    translationY.value = withSpring(_map.y);
+  };
+
   const gestureHandler = useAnimatedGestureHandler({
-    onStart: (_, context: Context) => {
-      context.x = translationX.value;
-      context.y = translationY.value;
+    onStart: (_, ctx: Context) => {
+      isDragging.value = true;
 
-      runOnJS(setMoving)(true);
+      ctx.x = translationX.value;
+      ctx.y = translationY.value;
     },
-    onActive: (e, context: Context) => {
-      translationX.value = e.translationX + context.x;
-      translationY.value = e.translationY + context.y;
+    onActive: (e, ctx: Context) => {
+      translationX.value = e.translationX + ctx.x;
+      translationY.value = e.translationY + ctx.y;
 
-      const _item: ICubeInfo = {
-        name: props.title,
-        dx: translationX.value,
-        dy: translationY.value,
-      };
+      const oldIdx = map.value[id];
+      const newIdx = getOrder(translationX.value, translationY.value);
 
-      const overflowingIdx = getIndex(_item, props.map.value);
+      if (oldIdx !== newIdx) {
+        const to = Object.keys(map.value).find(k => map.value[k] === newIdx);
 
-      if (overflowingIdx) {
-        overflowed.value = overflowingIdx;
+        if (to) {
+          const _map = JSON.parse(JSON.stringify(map.value));
 
-        props.map.value = reorderMap(
-          props.map.value,
-          props.title,
-          overflowingIdx,
-        );
+          _map[id] = newIdx;
+          _map[to] = oldIdx;
+
+          map.value = _map;
+        }
       }
     },
     onEnd: () => {
-      overflowed.value = null;
-      runOnJS(setMoving)(false);
+      recalculate(map.value[id]);
+      isDragging.value = false;
     },
   });
 
-  useEffect(() => {
-    if (layout && props.onLoading) {
-      props.onLoading({[props.title]: layout});
-    }
-  }, [layout]);
-
   useAnimatedReaction(
-    () => props.map.value[props.title],
-    (next, prev) => {
-      if (!moving) {
-        // ...
+    () => map.value[id],
+    next => {
+      if (!isDragging.value) {
+        recalculate(next);
       }
     },
-    [moving],
   );
 
   return (
     <PanGestureHandler onGestureEvent={gestureHandler}>
-      <Animated.View
-        style={[styles.container, tStyle]}
-        onLayout={e => setLayout(e.nativeEvent.layout)}>
-        <Text style={styles.text}>{props.title ?? 'Title'}</Text>
+      <Animated.View style={[styles.container, tStyle]}>
+        <Text style={styles.text}>{title ?? 'Title'}</Text>
       </Animated.View>
     </PanGestureHandler>
   );
@@ -158,7 +116,9 @@ const useStyles = () => {
       borderColor: colors.darkGrey,
       alignItems: 'center',
       justifyContent: 'center',
-      margin: SIZE / 2,
+      position: 'absolute',
+      top: 0,
+      left: 0,
     },
     text: {
       color: colors.darkGrey,
