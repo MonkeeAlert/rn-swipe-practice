@@ -69,6 +69,7 @@ const useStyles = () => {
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
+      marginHorizontal: 15,
     },
     icons: {
       flexDirection: 'row',

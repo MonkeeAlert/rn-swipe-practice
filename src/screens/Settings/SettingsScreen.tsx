@@ -29,19 +29,18 @@ export const SettingsScreen = () => {
   };
   const toggleTheme = () => setDarkMode(prev => !prev);
 
-  const color = isDarkMode ? colors.white : colors.black;
-
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar
-        backgroundColor={color}
+        backgroundColor={isDarkMode ? colors.black : colors.white}
         barStyle={`${isDarkMode ? 'light' : 'dark'}-content`}
+        animated={true}
       />
       <View style={styles.mainWrapper}>
         <View style={styles.back}>
           <GoBackButton
             size={32}
-            color={color}
+            color={isDarkMode ? colors.white : colors.black}
             onReturn={changeThemeOnReturn}
           />
         </View>

@@ -9,7 +9,6 @@ import Animated, {
   useAnimatedStyle,
   useSharedValue,
   withDelay,
-  withSequence,
   withTiming,
 } from 'react-native-reanimated';
 
@@ -67,7 +66,9 @@ const NavigationLink = (props: INavigationLink) => {
   const handleRedirect = () => navigate(props.route, props.routeOptions);
 
   return (
-    <Animated.View style={[styles.wrapper, aStyle]}>
+    <Animated.View
+      style={[styles.wrapper, aStyle]}
+      renderToHardwareTextureAndroid={true}>
       <TouchableWithoutFeedback onPress={handleRedirect}>
         <View style={[styles.container, theme.container]}>
           <View style={styles.text}>
@@ -86,20 +87,21 @@ const styles = StyleSheet.create({
     marginVertical: 5,
   },
   container: {
-    width: '100%',
+    // width: '100%',
     height: HEIGHT,
     borderRadius: defaultBorderRadius,
     marginVertical: 8,
+    marginHorizontal: 15,
     position: 'relative',
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
-      height: 5,
+      height: 2,
     },
-    shadowOpacity: 0.34,
-    shadowRadius: 9.51,
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
 
-    elevation: 10,
+    elevation: 5,
   },
   text: {
     position: 'absolute',

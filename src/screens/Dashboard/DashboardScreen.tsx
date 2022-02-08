@@ -1,4 +1,4 @@
-import {StyleSheet, ScrollView, StatusBar} from 'react-native';
+import {StyleSheet, ScrollView, StatusBar, View} from 'react-native';
 import React from 'react';
 import {useTheme} from '../../utils/hooks';
 import NavigationLink from './Components/NavigationLink';
@@ -41,7 +41,6 @@ const useStyles = () => {
   const styles = StyleSheet.create({
     container: {
       backgroundColor: userTheme.background,
-      paddingHorizontal: 15,
     },
   });
 
