@@ -3,11 +3,8 @@ import {StyleSheet, Text} from 'react-native';
 import {colors} from 'react-native-elements';
 import Animated, {
   interpolateColor,
-  useAnimatedReaction,
   useAnimatedStyle,
   useDerivedValue,
-  useSharedValue,
-  withSpring,
   withTiming,
 } from 'react-native-reanimated';
 import {useTheme} from '../utils/hooks';

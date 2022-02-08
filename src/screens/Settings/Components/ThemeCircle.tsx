@@ -7,11 +7,14 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
-import {SCALE, SIZE, DURATION} from '../Config/config';
 
 interface IProps {
   isEnabled: boolean;
 }
+
+const SIZE = 26;
+const SCALE = 100;
+const DURATION = 500;
 
 export const ThemeCircle = (props: IProps) => {
   const {styles} = useStyles();

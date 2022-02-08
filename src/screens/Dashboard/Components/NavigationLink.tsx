@@ -1,25 +1,61 @@
 import {useNavigation} from '@react-navigation/native';
 import React from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  TouchableWithoutFeedback,
-  View,
-} from 'react-native';
-import {defaultBorderRadius} from '../utils/constants';
-import {useTheme} from '../utils/hooks';
-import Title from './Title';
+import {StyleSheet, TouchableWithoutFeedback, View} from 'react-native';
+import {defaultBorderRadius} from '../../../utils/constants';
+import {useTheme} from '../../../utils/hooks';
+import Title from '../../../components/Title';
+import Animated, {
+  useAnimatedReaction,
+  useAnimatedStyle,
+  useSharedValue,
+  withDelay,
+  withSequence,
+  withTiming,
+} from 'react-native-reanimated';
 
 interface INavigationLink {
   title: string;
   route: string;
+  delay: number;
   color?: string;
   routeOptions?: object;
 }
 
+const HEIGHT = 150;
+const DURATION = 500;
+
 const NavigationLink = (props: INavigationLink) => {
   const {colors} = useTheme();
   const {navigate} = useNavigation();
+
+  const opacity = useSharedValue(0);
+  const translateY = useSharedValue(0);
+
+  const aStyle = useAnimatedStyle(() => ({
+    opacity: opacity.value,
+    transform: [{translateY: translateY.value - HEIGHT / 2}],
+  }));
+
+  useAnimatedReaction(
+    () => {},
+    () => {
+      // withSequence
+      opacity.value = withDelay(
+        props.delay,
+        withTiming(1, {
+          duration: DURATION,
+        }),
+      );
+
+      translateY.value = withDelay(
+        props.delay,
+        withTiming(HEIGHT / 2, {
+          duration: DURATION,
+        }),
+      );
+    },
+    [],
+  );
 
   const theme = StyleSheet.create({
     container: {
@@ -31,7 +67,7 @@ const NavigationLink = (props: INavigationLink) => {
   const handleRedirect = () => navigate(props.route, props.routeOptions);
 
   return (
-    <SafeAreaView style={styles.wrapper}>
+    <Animated.View style={[styles.wrapper, aStyle]}>
       <TouchableWithoutFeedback onPress={handleRedirect}>
         <View style={[styles.container, theme.container]}>
           <View style={styles.text}>
@@ -39,7 +75,7 @@ const NavigationLink = (props: INavigationLink) => {
           </View>
         </View>
       </TouchableWithoutFeedback>
-    </SafeAreaView>
+    </Animated.View>
   );
 };
 
@@ -51,7 +87,7 @@ const styles = StyleSheet.create({
   },
   container: {
     width: '100%',
-    height: 125,
+    height: HEIGHT,
     borderRadius: defaultBorderRadius,
     marginVertical: 8,
     position: 'relative',
