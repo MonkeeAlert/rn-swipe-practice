@@ -7,6 +7,8 @@ import {useTheme} from '../utils/hooks';
 interface IProps {
   size: number;
   color?: string;
+  isAnimated?: boolean;
+  onReturn?: () => void;
 }
 
 const SIZE = 32;
@@ -15,8 +17,16 @@ const GoBackButton = (props: IProps) => {
   const {goBack} = useNavigation();
   const {userTheme} = useTheme();
 
+  const handleGoBack = () => {
+    if (props.onReturn) {
+      props.onReturn();
+    }
+
+    goBack();
+  };
+
   return (
-    <Pressable onPress={goBack}>
+    <Pressable onPress={handleGoBack}>
       <Icon
         name={'chevron-left'}
         type={'material'}

@@ -1,5 +1,5 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {View, StyleSheet, SafeAreaView, Animated} from 'react-native';
+import React, {useRef, useState} from 'react';
+import {View, StyleSheet, SafeAreaView, StatusBar} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import DefaultCheckbox from '../../components/DefaultCheckbox';
 import GoBackButton from '../../components/GoBackButton';
@@ -9,42 +9,69 @@ import {changeTheme} from '../../store/actions/userActions';
 import {getTodosState, getUserState} from '../../store/rootSelectors';
 import {useTheme} from '../../utils/hooks';
 import {getModerateScale} from '../../utils/Scaling';
+import {ThemeCircle} from './Components/ThemeCircle';
 import {TableButton} from './Components/TableButton';
 import TableRow from './Components/TableRow';
 
 export const SettingsScreen = () => {
-  const {styles, fonts} = useStyles();
+  const {styles, fonts, colors} = useStyles();
   const {list} = useSelector(getTodosState);
   const {isDarkTheme} = useSelector(getUserState);
+  const [isDarkMode, setDarkMode] = useState(isDarkTheme);
+
+  const previousMode = useRef(isDarkTheme).current;
+
   const dispatch = useDispatch();
 
   const clearTodos = () => dispatch(clearAllTodos());
-
-  const toggleTheme = () => {
-    dispatch(changeTheme());
+  const changeThemeOnReturn = () => {
+    return previousMode !== isDarkMode ? dispatch(changeTheme()) : null;
   };
+  const toggleTheme = () => setDarkMode(prev => !prev);
+
+  const color = isDarkMode ? colors.white : colors.black;
 
   return (
     <SafeAreaView style={styles.container}>
+      <StatusBar
+        backgroundColor={color}
+        barStyle={`${isDarkMode ? 'light' : 'dark'}-content`}
+      />
       <View style={styles.mainWrapper}>
         <View style={styles.back}>
-          <GoBackButton size={32} />
-        </View>
-
-        <View style={styles.header}>
-          <Title text={'Settings'} />
-        </View>
-
-        <View style={styles.block}>
-          <DefaultCheckbox
-            title={'Dark theme'}
-            onToggle={toggleTheme}
-            isActive={isDarkTheme}
+          <GoBackButton
+            size={32}
+            color={color}
+            onReturn={changeThemeOnReturn}
           />
         </View>
 
+        <View style={styles.header}>
+          <Title
+            text={'Settings'}
+            isAnimated={true}
+            stateToAnimate={isDarkMode}
+          />
+        </View>
+
+        <View style={[styles.block, styles.row]}>
+          <Title
+            text={'Dark theme'}
+            size={fonts.medium}
+            isAnimated={true}
+            stateToAnimate={isDarkMode}
+          />
+          <DefaultCheckbox onToggle={toggleTheme} isActive={isDarkTheme} />
+          <ThemeCircle isEnabled={isDarkMode} />
+        </View>
+
         <View style={styles.block}>
-          <Title text={'Todos'} size={fonts.large} />
+          <Title
+            text={'Todos'}
+            size={fonts.large}
+            isAnimated={true}
+            stateToAnimate={isDarkMode}
+          />
           <View style={styles.divider} />
           <TableRow title={'All'} value={list?.length} />
           <TableRow
@@ -63,12 +90,12 @@ export const SettingsScreen = () => {
 };
 
 const useStyles = () => {
-  const {fonts, userTheme} = useTheme();
+  const {fonts, colors} = useTheme();
 
   const styles = StyleSheet.create({
     container: {
-      backgroundColor: userTheme.background,
       flex: 1,
+      backgroundColor: colors.white,
     },
     header: {
       marginTop: 50,
@@ -91,7 +118,12 @@ const useStyles = () => {
     divider: {
       marginTop: 10,
     },
+    row: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+    },
   });
 
-  return {styles, fonts};
+  return {styles, fonts, colors};
 };
