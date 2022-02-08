@@ -20,13 +20,14 @@
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="64dp"
+            android:layout_height="48dp"
             android:layout_alignParentBottom="true"
             android:fontFamily="sans-serif"
             android:textFontWeight="500"
             android:text="React Native Trainings"
+            android:textAllCaps="true"
             android:textColor="@color/blue"
-            android:textSize="28dp"
+            android:textSize="21dp"
             android:gravity="center"
             />
     </RelativeLayout>

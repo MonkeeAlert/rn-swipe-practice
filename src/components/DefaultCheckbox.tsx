@@ -1,11 +1,19 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {StyleSheet, Text, View, Animated, Pressable} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Animated,
+  Pressable,
+  ColorValue,
+} from 'react-native';
 import {useTheme} from '../utils/hooks';
 import {getModerateScale} from '../utils/Scaling';
 
 interface IProps {
-  title: string;
+  title?: string;
   isActive: boolean;
+  color?: ColorValue;
   onToggle: () => void;
 }
 
@@ -13,7 +21,7 @@ const CIRCLE_SIZE = 26;
 const ELEMENT_HEIGHT = CIRCLE_SIZE + 4;
 
 export default function DefaultCheckbox(props: IProps) {
-  const {styles, colors, userTheme} = useStyles();
+  const {styles, colors} = useStyles();
   const [isActive, setActive] = useState(props.isActive ?? false);
   const animationRef = useRef(new Animated.Value(0)).current;
 
@@ -40,7 +48,11 @@ export default function DefaultCheckbox(props: IProps) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{props.title ?? 'Title'}</Text>
+      {props.title && (
+        <Text style={[styles.title, props.color ? {color: props.color} : null]}>
+          {props.title}
+        </Text>
+      )}
 
       <Pressable onPress={handleToggle}>
         <Animated.View
