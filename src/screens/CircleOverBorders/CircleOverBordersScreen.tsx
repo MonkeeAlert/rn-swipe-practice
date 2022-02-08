@@ -46,7 +46,6 @@ const useStyles = () => {
       flex: 1,
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: userTheme.background,
     },
     header: {
       position: 'relative',

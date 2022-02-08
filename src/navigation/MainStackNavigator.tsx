@@ -1,5 +1,5 @@
 import React from 'react';
-import {NavigationContainer, useNavigation} from '@react-navigation/native';
+import {NavigationContainer} from '@react-navigation/native';
 import {
   CardStyleInterpolators,
   createStackNavigator,
@@ -22,6 +22,7 @@ import {SettingsScreen} from '../screens/Settings/SettingsScreen';
 import AnimatedIcon from '../components/AnimatedIcon';
 import {useSelector} from 'react-redux';
 import {getUserState} from '../store/rootSelectors';
+import DragAndDropScreen from '../screens/DragAndDrop/DragAndDropScreen';
 
 const RootStack = createStackNavigator();
 
@@ -95,6 +96,13 @@ const MainStackScreen = () => {
           <RootStack.Screen
             name={'CircleOverBorders'}
             component={CircleOverBordersScreen}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <RootStack.Screen
+            name={'DragAndDrop'}
+            component={DragAndDropScreen}
             options={{
               headerShown: false,
             }}
