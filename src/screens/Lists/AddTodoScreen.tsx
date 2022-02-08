@@ -125,7 +125,6 @@ const useStyles = () => {
 
   const styles = StyleSheet.create({
     container: {
-      backgroundColor: userTheme.background,
       flex: 1,
     },
     header: {

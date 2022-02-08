@@ -109,11 +109,10 @@ export const EditTodoScreen = () => {
 };
 
 const useStyles = () => {
-  const {colors, fonts, userTheme} = useTheme();
+  const {fonts, userTheme} = useTheme();
 
   const styles = StyleSheet.create({
     container: {
-      backgroundColor: userTheme.background,
       flex: 1,
     },
     header: {

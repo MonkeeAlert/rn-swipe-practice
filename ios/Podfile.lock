@@ -430,6 +430,34 @@ PODS:
     - React-Core
   - RNGestureHandler (1.10.3):
     - React-Core
+  - RNReanimated (2.3.1):
+    - DoubleConversion
+    - FBLazyVector
+    - FBReactNativeSpec
+    - glog
+    - RCT-Folly
+    - RCTRequired
+    - RCTTypeSafety
+    - React
+    - React-callinvoker
+    - React-Core
+    - React-Core/DevSupport
+    - React-Core/RCTWebSocket
+    - React-CoreModules
+    - React-cxxreact
+    - React-jsi
+    - React-jsiexecutor
+    - React-jsinspector
+    - React-RCTActionSheet
+    - React-RCTAnimation
+    - React-RCTBlob
+    - React-RCTImage
+    - React-RCTLinking
+    - React-RCTNetwork
+    - React-RCTSettings
+    - React-RCTText
+    - ReactCommon/turbomodule/core
+    - Yoga
   - RNScreens (3.10.1):
     - React-Core
     - React-RCTImage
@@ -496,6 +524,7 @@ DEPENDENCIES:
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - "RNFBApp (from `../node_modules/@react-native-firebase/app`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
+  - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
@@ -593,6 +622,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-firebase/app"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
+  RNReanimated:
+    :path: "../node_modules/react-native-reanimated"
   RNScreens:
     :path: "../node_modules/react-native-screens"
   RNVectorIcons:
@@ -657,11 +688,12 @@ SPEC CHECKSUMS:
   RNCAsyncStorage: ea6b5c280997b2b32a587793163b1f10e580c4f7
   RNFBApp: 78d0446e8b28dc30616c134a9e4d8d4b01f9f966
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
+  RNReanimated: 629fedd82e9f6b9138421caa342f0a5ebd711cbe
   RNScreens: 522705f2e5c9d27efb17f24aceb2bf8335bc7b8e
   RNVectorIcons: 31cebfcf94e8cf8686eb5303ae0357da64d7a5a4
   Yoga: aa0cb45287ebe1004c02a13f279c55a95f1572f4
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: c687b8d93ccad74acaf6e9f043f1cb89cb584ea1
+PODFILE CHECKSUM: e2a23cc9458099518d8ab431bef7fcbf39705ba2
 
 COCOAPODS: 1.11.2

@@ -1,3 +1,5 @@
+import {LayoutRectangle} from 'react-native';
+
 export interface ActionType<T, P> {
   type: T;
   payload: P;
@@ -22,4 +24,19 @@ export interface IUserTheme {
   text: string;
   border: string;
   notification: string;
+}
+
+export type Coordinates = {
+  x: number;
+  y: number;
+};
+
+export interface ICube {
+  [position: number]: Coordinates | LayoutRectangle;
+}
+
+export interface ICubeInfo {
+  name: string;
+  dx: number;
+  dy: number;
 }

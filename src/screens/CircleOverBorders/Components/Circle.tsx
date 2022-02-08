@@ -13,7 +13,7 @@ interface IProps {
   onRelease: () => void;
 }
 
-const SIZE = 50;
+const SIZE = 64;
 const INITIAL_POINTS = {x: 0, y: 0};
 const OUTER_RADIUS = borders / 2;
 const GRANT_ANIMATION = {
@@ -33,7 +33,8 @@ const OVER_BORDERS_ANIMATIONS = {
 };
 
 export const Circle = (props: IProps) => {
-  const {colors} = useTheme();
+  const {styles} = useStyles();
+
   const [isOverBorders, setOverBorders] = useState(false);
   const [wasTouched, setWasTouched] = useState(false);
 
@@ -96,17 +97,10 @@ export const Circle = (props: IProps) => {
     }
   }, [isOverBorders, wasTouched]);
 
-  const theme = StyleSheet.create({
-    circle: {
-      backgroundColor: colors.infoMain,
-    },
-  });
-
   return (
     <Animated.View
       style={[
         styles.circle,
-        theme.circle,
         {
           transform: [
             {translateX: touch.x},
@@ -121,10 +115,16 @@ export const Circle = (props: IProps) => {
   );
 };
 
-const styles = StyleSheet.create({
-  circle: {
-    width: SIZE,
-    height: SIZE,
-    borderRadius: SIZE / 2,
-  },
-});
+const useStyles = () => {
+  const {colors} = useTheme();
+  const styles = StyleSheet.create({
+    circle: {
+      width: SIZE,
+      height: SIZE,
+      borderRadius: SIZE / 2,
+      backgroundColor: colors.infoMain,
+    },
+  });
+
+  return {styles};
+};
