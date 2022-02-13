@@ -1,4 +1,4 @@
-import {StyleSheet, ScrollView, StatusBar, View} from 'react-native';
+import {StyleSheet, ScrollView, StatusBar} from 'react-native';
 import React from 'react';
 import {useTheme} from '../../utils/hooks';
 import NavigationLink from './Components/NavigationLink';
@@ -22,12 +22,13 @@ export default function DashboardScreen() {
 
       <Header />
 
-      {routes.map((s, k) => (
+      {routes.map(({key, title, route, color, background}, k) => (
         <NavigationLink
-          key={s.key}
-          title={s.title}
-          route={s.route}
-          color={s.color}
+          key={key}
+          title={title}
+          route={route}
+          color={color}
+          backgroundImage={background ?? 'diagonals'}
           delay={DURATION * k + DURATION}
         />
       ))}
