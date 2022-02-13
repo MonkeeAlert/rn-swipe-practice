@@ -28,7 +28,7 @@ export default function DashboardScreen() {
           title={title}
           route={route}
           color={color}
-          backgroundImage={background}
+          backgroundImage={background ?? 'diagonals'}
           delay={DURATION * k + DURATION}
         />
       ))}

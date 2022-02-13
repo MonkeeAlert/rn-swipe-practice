@@ -1,6 +1,15 @@
+import {ColorValue} from 'react-native';
 import {IMAGES} from './imagesURI';
 
-export const routes = [
+interface IRoute {
+  key: string;
+  title: string;
+  route: string;
+  color?: ColorValue;
+  background: string;
+}
+
+export const routes: IRoute[] = [
   {
     key: 'Circle',
     title: 'Circle',

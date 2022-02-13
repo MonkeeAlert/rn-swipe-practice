@@ -1,7 +1,11 @@
-import {accelerometer} from 'react-native-sensors';
 import {useNavigation} from '@react-navigation/native';
-import React, {useEffect, useState} from 'react';
-import {StyleSheet, TouchableWithoutFeedback, View} from 'react-native';
+import React, {useState} from 'react';
+import {
+  ColorValue,
+  StyleSheet,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native';
 import {defaultBorderRadius} from '../../../utils/constants';
 import {useTheme} from '../../../utils/hooks';
 import Title from '../../../components/Title';
@@ -20,9 +24,9 @@ interface INavigationLink {
   title: string;
   route: string;
   delay: number;
-  color?: string;
+  color?: ColorValue;
   routeOptions?: object;
-  backgroundImage?: BackgroundImage;
+  backgroundImage?: BackgroundImage | string;
 }
 
 interface IImageSize {
@@ -67,12 +71,6 @@ const NavigationLink = (props: INavigationLink) => {
     [],
   );
 
-  const theme = StyleSheet.create({
-    container: {
-      backgroundColor: props.color ?? colors.infoLight,
-    },
-  });
-
   // Redirection handler
   const handleRedirect = () => navigate(props.route, props.routeOptions);
 
@@ -82,7 +80,10 @@ const NavigationLink = (props: INavigationLink) => {
       renderToHardwareTextureAndroid={true}>
       <TouchableWithoutFeedback onPress={handleRedirect}>
         <View
-          style={[styles.container, theme.container]}
+          style={[
+            styles.container,
+            {backgroundColor: props.color ?? colors.infoLight},
+          ]}
           onLayout={e =>
             setSize({
               width: e.nativeEvent.layout.width,
@@ -96,8 +97,8 @@ const NavigationLink = (props: INavigationLink) => {
           {props.backgroundImage && (
             <Background
               image={props.backgroundImage}
-              width={size.width + 50}
-              height={size.height + 50}
+              width={size.width}
+              height={size.height}
             />
           )}
         </View>
@@ -133,10 +134,5 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 10,
     left: 15,
-  },
-  dot: {
-    width: 10,
-    height: 10,
-    backgroundColor: 'red',
   },
 });

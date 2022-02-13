@@ -11,13 +11,13 @@ interface IProps {
 
 const Background = (props: IProps) => {
   return (
-    <View style={styles.container}>
+    <View style={styles.container} pointerEvents={'none'}>
       <Image
         resizeMode={'repeat'}
         source={{uri: props.image}}
         style={{
-          width: props.width ? props.width * 2 : 100,
-          height: props.height ? props.height * 2 : 100,
+          width: props.width ?? 100,
+          height: props.height ?? 100,
         }}
       />
     </View>
@@ -27,5 +27,10 @@ const Background = (props: IProps) => {
 export default Background;
 
 const styles = StyleSheet.create({
-  container: {zIndex: -1, opacity: 0.25},
+  container: {
+    zIndex: -1,
+    opacity: 0.25,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 });
