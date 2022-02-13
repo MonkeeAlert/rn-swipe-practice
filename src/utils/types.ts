@@ -40,3 +40,5 @@ export interface ICubeInfo {
   dx: number;
   dy: number;
 }
+
+export type BackgroundImage = 'cubes' | 'diagonals' | 'lines';

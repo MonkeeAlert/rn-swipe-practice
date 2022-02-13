@@ -1,6 +1,11 @@
 import {useNavigation} from '@react-navigation/native';
-import React from 'react';
-import {StyleSheet, TouchableWithoutFeedback, View} from 'react-native';
+import React, {useState} from 'react';
+import {
+  ColorValue,
+  StyleSheet,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native';
 import {defaultBorderRadius} from '../../../utils/constants';
 import {useTheme} from '../../../utils/hooks';
 import Title from '../../../components/Title';
@@ -12,12 +17,21 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 
+import Background from './Background';
+import {BackgroundImage} from '../../../utils/types';
+
 interface INavigationLink {
   title: string;
   route: string;
   delay: number;
-  color?: string;
+  color?: ColorValue;
   routeOptions?: object;
+  backgroundImage?: BackgroundImage | string;
+}
+
+interface IImageSize {
+  width: number;
+  height: number;
 }
 
 const HEIGHT = 150;
@@ -26,6 +40,8 @@ const DURATION = 500;
 const NavigationLink = (props: INavigationLink) => {
   const {colors} = useTheme();
   const {navigate} = useNavigation();
+
+  const [size, setSize] = useState<IImageSize>({width: 0, height: 0});
 
   const opacity = useSharedValue(0);
   const translateY = useSharedValue(0);
@@ -38,7 +54,6 @@ const NavigationLink = (props: INavigationLink) => {
   useAnimatedReaction(
     () => {},
     () => {
-      // withSequence
       opacity.value = withDelay(
         props.delay,
         withTiming(1, {
@@ -56,12 +71,6 @@ const NavigationLink = (props: INavigationLink) => {
     [],
   );
 
-  const theme = StyleSheet.create({
-    container: {
-      backgroundColor: props.color ?? colors.infoLight,
-    },
-  });
-
   // Redirection handler
   const handleRedirect = () => navigate(props.route, props.routeOptions);
 
@@ -70,10 +79,28 @@ const NavigationLink = (props: INavigationLink) => {
       style={[styles.wrapper, aStyle]}
       renderToHardwareTextureAndroid={true}>
       <TouchableWithoutFeedback onPress={handleRedirect}>
-        <View style={[styles.container, theme.container]}>
+        <View
+          style={[
+            styles.container,
+            {backgroundColor: props.color ?? colors.infoLight},
+          ]}
+          onLayout={e =>
+            setSize({
+              width: e.nativeEvent.layout.width,
+              height: e.nativeEvent.layout.height,
+            })
+          }>
           <View style={styles.text}>
             <Title text={props.title} color={colors.white} />
           </View>
+
+          {props.backgroundImage && (
+            <Background
+              image={props.backgroundImage}
+              width={size.width}
+              height={size.height}
+            />
+          )}
         </View>
       </TouchableWithoutFeedback>
     </Animated.View>
@@ -87,13 +114,13 @@ const styles = StyleSheet.create({
     marginVertical: 5,
   },
   container: {
-    // width: '100%',
     height: HEIGHT,
     borderRadius: defaultBorderRadius,
     marginVertical: 8,
     marginHorizontal: 15,
     position: 'relative',
     shadowColor: '#000',
+    overflow: 'hidden',
     shadowOffset: {
       width: 0,
       height: 2,
